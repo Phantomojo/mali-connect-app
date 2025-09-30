@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .status {
+            background: rgba(16, 185, 129, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #10B981;
+            margin: 20px 0;
+        }
+        .error {
+            background: rgba(239, 68, 68, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #EF4444;
+            margin: 20px 0;
+        }
+        .info {
+            background: rgba(59, 130, 246, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #3B82F6;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .button {
+            background: linear-gradient(45deg, #10B981, #059669);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            transition: transform 0.2s;
+        }
+        .button:hover {
+            transform: translateY(-2px);
+        }
+        .loading {
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #10B981;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .test-results {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .test-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        .success { color: #10B981; }
+        .error-text { color: #EF4444; }
+        .pending { color: #F59E0B; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 Network Test</h1>
+        <p>Testing connection to Mali-Connect server...</p>
+        
+        <div id="status" class="status">
+            <div class="loading"></div>
+            <p>Running connection tests...</p>
+        </div>
+        
+        <div id="test-results" class="test-results" style="display: none;">
+            <h3>Test Results:</h3>
+            <div id="results-list"></div>
+        </div>
+        
+        <div id="connection-info" class="info" style="display: none;">
+            <h3>Connection Information:</h3>
+            <p><strong>Your IP:</strong> <span id="client-ip">Detecting...</span></p>
+            <p><strong>Server IP:</strong> <span id="server-ip">192.168.0.100</span></p>
+            <p><strong>Port:</strong> <span id="server-port">3000</span></p>
+            <p><strong>User Agent:</strong> <span id="user-agent"></span></p>
+            <p><strong>Screen Size:</strong> <span id="screen-size"></span></p>
+        </div>
+        
+        <div id="actions" style="display: none;">
+            <a href="/" class="button">Go to Main App</a>
+            <button onclick="runTests()" class="button">Run Tests Again</button>
+        </div>
+    </div>
+    
+    <script>
+        let testResults = [];
+        
+        function updateStatus(message, type = 'status') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = type;
+            statusDiv.innerHTML = `<p>${message}</p>`;
+        }
+        
+        function addTestResult(test, status, details = '') {
+            testResults.push({ test, status, details });
+            updateResultsList();
+        }
+        
+        function updateResultsList() {
+            const resultsList = document.getElementById('results-list');
+            resultsList.innerHTML = testResults.map(result => `
+                <div class="test-item">
+                    <span>${result.test}</span>
+                    <span class="${result.status}">${result.status.toUpperCase()}</span>
+                </div>
+            `).join('');
+        }
+        
+        async function testConnection(url, testName) {
+            try {
+                const startTime = Date.now();
+                const response = await fetch(url, { 
+                    method: 'HEAD',
+                    mode: 'no-cors',
+                    cache: 'no-cache'
+                });
+                const endTime = Date.now();
+                const duration = endTime - startTime;
+                
+                addTestResult(testName, 'success', `${duration}ms`);
+                return true;
+            } catch (error) {
+                addTestResult(testName, 'error', error.message);
+                return false;
+            }
+        }
+        
+        async function runTests() {
+            testResults = [];
+            updateStatus('Running connection tests...', 'status');
+            document.getElementById('test-results').style.display = 'block';
+            
+            // Test different URLs
+            const urls = [
+                { url: 'http://192.168.0.100:3000', name: '192.168.0.100:3000' },
+                { url: 'http://192.168.0.101:3000', name: '192.168.0.101:3000' },
+                { url: 'http://192.168.0.100:5173', name: '192.168.0.100:5173' },
+                { url: 'http://192.168.0.101:5173', name: '192.168.0.101:5173' }
+            ];
+            
+            let successCount = 0;
+            for (const { url, name } of urls) {
+                const success = await testConnection(url, name);
+                if (success) successCount++;
+                await new Promise(resolve => setTimeout(resolve, 500)); // Small delay between tests
+            }
+            
+            // Update connection info
+            document.getElementById('client-ip').textContent = 'Detected via tests';
+            document.getElementById('user-agent').textContent = navigator.userAgent;
+            document.getElementById('screen-size').textContent = `${window.innerWidth}x${window.innerHeight}`;
+            document.getElementById('connection-info').style.display = 'block';
+            
+            if (successCount > 0) {
+                updateStatus(`✅ Connection successful! ${successCount}/${urls.length} servers responding.`, 'status');
+                document.getElementById('actions').style.display = 'block';
+            } else {
+                updateStatus('❌ No servers responding. Check network connection.', 'error');
+            }
+        }
+        
+        // Run tests on page load
+        window.addEventListener('load', runTests);
+    </script>
+</body>
+</html>

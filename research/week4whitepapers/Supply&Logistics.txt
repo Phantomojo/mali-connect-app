@@ -1,0 +1,74 @@
+Firefox
+
+1 of 2
+
+https://mail.proton.me/u/0/inbox/ylyql_fPVsnTsALwniQUmZ5alF7v...
+
+LOGISTICS AND SUPPLY CHAIN WHITEPAPER
+From
+
+Kytabu <vivienne@kytabu.com>
+
+To
+
+mirungu015@proton.me
+
+Date
+
+Monday, September 29th, 2025 at 804 AM
+
+Connecting Humans to AI
+
+September
+2025
+
+CHAI HACKATHON
+
+Data Fragmentation & Supply Chain
+Transparency
+A freight truck on an African highway illustrates how disconnected networks and paper
+trails slow goods movement. Across many African markets, logistics data are
+fragmented in silos (e.g. paper manifests, isolated Excel ledgers, unlinked ICT
+systems), obscuring visibility from source to destination. For example, Nigeria’s 2023
+Logistics Performance Index (LPI) score was only 2.6/5 (rank 88/139), reflecting
+severe gaps in customs, tracking, and infrastructure. These inefficiencies inflate
+supply chain costs by up to 30% and contribute to excessive delays (only ~15% of
+Nigerian roads are paved, causing port dwell times up to 20 days vs ~4 days in
+benchmark countries). Digital adoption is low: just ~12% of sub‐Saharan logistics
+firms use digital platforms (vs ~68% in Southeast Asia), and interoperability between
+
+9/29/25, 9:47 AM
+
+Firefox
+
+2 of 2
+
+https://mail.proton.me/u/0/inbox/ylyql_fPVsnTsALwniQUmZ5alF7v...
+
+government and industry systems is nearly nonexistent. As a result, actors often lack
+real-time tracking, cannot flag misroutes or theft, and struggle to forecast delays. The
+pain is felt across sectors (e.g. pharmaceuticals expire in transit, agri-food spoilage,
+counterfeiting of high-value goods).
+• Concrete examples: Up to half of delivery effort is last-mile (as explained
+
+below), but even first-mile and mid-mile suffer from missing handoffs. In
+practice, a shipment might have a barcode scanned only at entry and exit
+points, leaving multiday gaps with no records.
+• Scale of impact: Estimates suggest resolving data gaps could boost intra-
+
+African trade significantly; for instance, only ~12% of African trade is intracontinental, in part due to opaque cross-border flows.
+• Solution scope: Viable prototypes include interoperable data dashboards and
+
+basic e-manifests. For example, a minimum‐viable system could combine GPS
+trackers on trucks with a mobile/web dashboard that updates location, status,
+and scanned receipts at each checkpoint. Startups like Sokowatch and Twiga
+Foods show similar ideas: Sokowatch’s mobile/SMS ordering links retailers
+and suppliers, giving instant stock visibility; Twiga’s offline-capable mobile
+platform streamlines farmer-to-retailer flows and payments.
+
+View email in browser
+update your preferences or unsubscribe
+
+9/29/25, 9:47 AM
+
+

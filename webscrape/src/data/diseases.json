@@ -1,0 +1,35 @@
+{
+  "lumpy_skin_disease": {
+    "common_name": "Lumpy Skin Disease",
+    "key_symptoms": [
+      "Fever, lacrimation, nasal discharge, and hypersalivation",
+      "Well-circumscribed, round, slightly raised, firm, and painful skin nodules",
+      "Nodules may develop on the muzzle and within the nasal and buccal mucous membranes",
+      "Regional lymph nodes are swollen, and edema develops in the udder, brisket, and legs"
+    ],
+    "action_required": "Administration of antibiotics to control secondary infection and good nursing care are recommended. Vaccination with attenuated virus offers the most promising method of control.",
+    "source_url": "https://www.merckvetmanual.com/integumentary-system/pox-diseases/lumpy-skin-disease-in-cattle"
+  },
+  "ringworm": {
+    "common_name": "Ringworm (Dermatophytosis)",
+    "key_symptoms": [
+      "Circular, hairless patches with gray-white crusts",
+      "Lesions commonly occur on the head and neck",
+      "Mild inflammation and itching may be present",
+      "In severe cases, multiple lesions can coalesce"
+    ],
+    "action_required": "Topical antifungal treatments are commonly used. In more severe cases, systemic antifungal therapy may be necessary. Environmental decontamination is crucial to prevent reinfection.",
+    "source_url": "https://www.merckvetmanual.com/integumentary-system/fungal-skin-infections/dermatophytosis-in-animals"
+  },
+  "photosensitization": {
+    "common_name": "Photosensitization",
+    "key_symptoms": [
+      "Redness, swelling, and pain in unpigmented skin areas",
+      "Crusting, scaling, and ulceration of affected skin",
+      "Severe itching and rubbing behavior",
+      "Lesions typically occur on areas exposed to sunlight (ears, face, back)"
+    ],
+    "action_required": "Remove animals from sunlight immediately. Identify and eliminate the causative agent (plants, drugs, or liver dysfunction). Provide supportive care including anti-inflammatory drugs and wound management.",
+    "source_url": "https://www.merckvetmanual.com/integumentary-system/photosensitization/photosensitization-in-animals"
+  }
+}
