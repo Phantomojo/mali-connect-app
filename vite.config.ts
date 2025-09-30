@@ -21,7 +21,24 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true
+    sourcemap: false,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          three: ['three', '@react-three/fiber', '@react-three/drei'],
+          ui: ['lottie-web', 'react-feather'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000,
   },
   optimizeDeps: {
     exclude: ['three']

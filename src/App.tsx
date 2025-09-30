@@ -1,10 +1,12 @@
-import { useState } from 'react'
-import CattleViewer3D from './components/CattleViewer3D'
-import CaseSelection from './components/CaseSelection'
-import AIAnalysis from './components/AIAnalysis'
-import MaliScoreDisplay from './components/MaliScoreDisplay'
-import EcosystemPanel from './components/EcosystemPanel'
+import { useState, Suspense, lazy } from 'react'
 import './App.css'
+
+// Lazy load heavy components
+const AdaptiveCattleViewer = lazy(() => import('./components/AdaptiveCattleViewer'))
+const CaseSelection = lazy(() => import('./components/CaseSelection'))
+const AIAnalysis = lazy(() => import('./components/AIAnalysis'))
+const MaliScoreDisplay = lazy(() => import('./components/MaliScoreDisplay'))
+const EcosystemPanel = lazy(() => import('./components/EcosystemPanel'))
 
 interface AssessmentCase {
   id: string
@@ -76,55 +78,95 @@ function App() {
         
         {/* Case Selection Section */}
         {activeSection === 'case-selection' && (
-          <CaseSelection onCaseSelect={handleCaseSelect} />
+          <Suspense fallback={
+            <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading case selection...</p>
+            </div>
+          }>
+            <CaseSelection onCaseSelect={handleCaseSelect} />
+          </Suspense>
         )}
 
         {/* Analysis Section */}
         {activeSection === 'analysis' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="space-y-6">
-              <AIAnalysis isAnalyzing={isAnalyzing} />
-              {selectedCase && (
-                <div className="card">
-                  <h3 className="text-xl font-bold text-mali-dark mb-4">Selected Case</h3>
-                  <div className="space-y-2">
-                    <p className="font-medium">{selectedCase.name}</p>
-                    <p className="text-sm text-mali-gray">{selectedCase.description}</p>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-mali-green">Expected Score: {selectedCase.expectedScore}</span>
-                      <span className="text-mali-blue">${selectedCase.marketValue}</span>
+          <Suspense fallback={
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading analysis...</p>
+              </div>
+              <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading 3D viewer...</p>
+              </div>
+            </div>
+          }>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <AIAnalysis isAnalyzing={isAnalyzing} />
+                {selectedCase && (
+                  <div className="card">
+                    <h3 className="text-xl font-bold text-mali-dark mb-4">Selected Case</h3>
+                    <div className="space-y-2">
+                      <p className="font-medium">{selectedCase.name}</p>
+                      <p className="text-sm text-mali-gray">{selectedCase.description}</p>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-mali-green">Expected Score: {selectedCase.expectedScore}</span>
+                        <span className="text-mali-blue">${selectedCase.marketValue}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+              <div className="card h-96 lg:h-full">
+                <AdaptiveCattleViewer 
+                  activeSection={activeSection}
+                  maliScore={mockMaliScore}
+                  isAnalyzing={isAnalyzing}
+                />
+              </div>
             </div>
-            <div className="card h-96 lg:h-full">
-              <CattleViewer3D 
-                activeSection={activeSection}
-                maliScore={mockMaliScore}
-                isAnalyzing={isAnalyzing}
-              />
-            </div>
-          </div>
+          </Suspense>
         )}
 
         {/* Score Display Section */}
         {activeSection === 'score' && showScore && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <MaliScoreDisplay maliScore={mockMaliScore} />
-            <div className="card h-96 lg:h-full">
-              <CattleViewer3D 
-                activeSection={activeSection}
-                maliScore={mockMaliScore}
-                isAnalyzing={isAnalyzing}
-              />
+          <Suspense fallback={
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading score display...</p>
+              </div>
+              <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading 3D viewer...</p>
+              </div>
             </div>
-          </div>
+          }>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <MaliScoreDisplay maliScore={mockMaliScore} />
+              <div className="card h-96 lg:h-full">
+                <AdaptiveCattleViewer 
+                  activeSection={activeSection}
+                  maliScore={mockMaliScore}
+                  isAnalyzing={isAnalyzing}
+                />
+              </div>
+            </div>
+          </Suspense>
         )}
 
         {/* Ecosystem Section */}
         {activeSection === 'ecosystem' && (
-          <EcosystemPanel maliScore={mockMaliScore} />
+          <Suspense fallback={
+            <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading ecosystem panel...</p>
+            </div>
+          }>
+            <EcosystemPanel maliScore={mockMaliScore} />
+          </Suspense>
         )}
 
         {/* Enhanced Navigation */}
