@@ -28,6 +28,7 @@ import AnimalDetailView from './components/AnimalDetailView'
 import Marketplace from './components/Marketplace'
 import FinancialServices from './components/FinancialServices'
 import EcosystemMap from './components/EcosystemMap'
+import OnboardingModal from './components/OnboardingModal'
 import DarkModeToggle from './components/DarkModeToggle'
 import type { Animal } from './data/herdData'
 
@@ -71,6 +72,9 @@ function AppContent() {
   const [showDetailView, setShowDetailView] = useState(false)
   const [showChat, setShowChat] = useState(false)
   
+  // Onboarding state
+  const [showOnboarding, setShowOnboarding] = useState(false)
+  
   // Existing state
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [selectedCase, setSelectedCase] = useState<AssessmentCase | null>(null)
@@ -91,6 +95,14 @@ function AppContent() {
     getMarketAnalysis, 
     testConnectivity 
   } = useAI()
+
+  // Check for first-time visitor and show onboarding
+  useEffect(() => {
+    const hasVisited = localStorage.getItem('hasVisitedMaliConnect')
+    if (!hasVisited) {
+      setShowOnboarding(true)
+    }
+  }, [])
 
   // Test API connectivity on component mount
   useEffect(() => {
@@ -483,6 +495,12 @@ function AppContent() {
             </div>
           )}
         </Suspense>
+
+        {/* Onboarding Modal */}
+        <OnboardingModal 
+          isOpen={showOnboarding}
+          onClose={() => setShowOnboarding(false)}
+        />
 
       </div>
     </div>
