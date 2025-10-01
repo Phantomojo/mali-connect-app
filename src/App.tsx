@@ -221,10 +221,46 @@ function AppContent() {
         <div className="flex justify-between items-center mb-8">
           <div className="flex-1"></div>
           <div className="text-center flex-1">
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">Mali-Connect</h1>
-            <p className={`text-xl transition-colors duration-300 ${
-              isDarkMode ? 'text-gray-300' : 'text-gray-600'
-            }`}>AI-Powered Livestock Assessment</p>
+            <div className="relative">
+              <h1 className="text-6xl md:text-7xl font-black bg-gradient-to-r from-emerald-500 via-cyan-500 to-violet-500 bg-clip-text text-transparent mb-4 tracking-tight">
+                MALI
+                <span className="block text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
+                  CONNECT
+                </span>
+              </h1>
+              <div className="absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-pulse"></div>
+              <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-gradient-to-r from-green-400 to-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+            </div>
+            <p className={`text-2xl md:text-3xl font-semibold transition-colors duration-300 mb-2 ${
+              isDarkMode ? 'text-gray-200' : 'text-gray-700'
+            }`}>
+              Next-Gen Livestock Intelligence
+            </p>
+            <p className={`text-lg md:text-xl transition-colors duration-300 ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-600'
+            }`}>
+              AI-Powered • Real-Time Analysis • Market Intelligence
+            </p>
+            <div className="flex justify-center items-center mt-4 space-x-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span className={`text-sm font-medium ${
+                  isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                }`}>Live AI Analysis</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0.3s' }}></div>
+                <span className={`text-sm font-medium ${
+                  isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                }`}>3D Visualization</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0.6s' }}></div>
+                <span className={`text-sm font-medium ${
+                  isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                }`}>Market Insights</span>
+              </div>
+            </div>
           </div>
           <div className="flex-1 flex justify-end">
             <DarkModeToggle />

@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import { Send, MessageCircle, User, X } from 'react-feather'
 import useAI from '../hooks/useAI'
+import { ThemeContext } from '../contexts/ThemeContext'
 
 interface ChatMessage {
   id: string
@@ -18,6 +19,7 @@ interface MaliChatProps {
 }
 
 const MaliChat: React.FC<MaliChatProps> = ({ maliScore, selectedImage, isOpen, onClose }) => {
+  const { isDarkMode } = useContext(ThemeContext)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [inputMessage, setInputMessage] = useState('')
   const [isTyping, setIsTyping] = useState(false)
@@ -241,21 +243,33 @@ const MaliChat: React.FC<MaliChatProps> = ({ maliScore, selectedImage, isOpen, o
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] flex flex-col">
+      <div className={`rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] flex flex-col ${
+        isDarkMode ? 'bg-gray-900' : 'bg-white'
+      }`}>
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className={`flex items-center justify-between p-4 border-b ${
+          isDarkMode ? 'border-gray-700' : 'border-gray-200'
+        }`}>
           <div className="flex items-center">
             <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mr-3">
               <MessageCircle className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-gray-800">Mali AI Chat</h3>
-              <p className="text-sm text-gray-600">Your livestock intelligence assistant</p>
+              <h3 className={`text-lg font-bold ${
+                isDarkMode ? 'text-white' : 'text-gray-800'
+              }`}>Mali AI Chat</h3>
+              <p className={`text-sm ${
+                isDarkMode ? 'text-gray-400' : 'text-gray-600'
+              }`}>Your livestock intelligence assistant</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className={`p-2 rounded-full transition-colors ${
+              isDarkMode 
+                ? 'hover:bg-gray-700 text-gray-300' 
+                : 'hover:bg-gray-100 text-gray-600'
+            }`}
           >
             <X className="w-5 h-5" />
           </button>
@@ -283,7 +297,9 @@ const MaliChat: React.FC<MaliChatProps> = ({ maliScore, selectedImage, isOpen, o
                 <div className={`rounded-lg px-4 py-2 ${
                   message.type === 'user'
                     ? 'bg-blue-500 text-white'
-                    : 'bg-gray-100 text-gray-800'
+                    : isDarkMode 
+                      ? 'bg-gray-800 text-gray-100' 
+                      : 'bg-gray-100 text-gray-800'
                 }`}>
                   <div className="text-sm whitespace-pre-wrap">
                     {message.message.split('\n').map((line, index) => {
@@ -308,7 +324,11 @@ const MaliChat: React.FC<MaliChatProps> = ({ maliScore, selectedImage, isOpen, o
                     })}
                   </div>
                   <p className={`text-xs mt-1 ${
-                    message.type === 'user' ? 'text-blue-100' : 'text-gray-500'
+                    message.type === 'user' 
+                      ? 'text-blue-100' 
+                      : isDarkMode 
+                        ? 'text-gray-400' 
+                        : 'text-gray-500'
                   }`}>
                     {message.timestamp.toLocaleTimeString()}
                   </p>
@@ -323,7 +343,9 @@ const MaliChat: React.FC<MaliChatProps> = ({ maliScore, selectedImage, isOpen, o
                 <div className="w-8 h-8 rounded-full bg-purple-500 mr-2 flex items-center justify-center">
                   <MessageCircle className="w-4 h-4 text-white" />
                 </div>
-                <div className="bg-gray-100 rounded-lg px-4 py-2">
+                <div className={`rounded-lg px-4 py-2 ${
+                  isDarkMode ? 'bg-gray-800' : 'bg-gray-100'
+                }`}>
                   <div className="flex space-x-1">
                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -339,18 +361,26 @@ const MaliChat: React.FC<MaliChatProps> = ({ maliScore, selectedImage, isOpen, o
 
         {/* Quick Actions */}
         {messages.length <= 1 && (
-          <div className="p-4 border-t border-gray-200">
-            <p className="text-sm text-gray-600 mb-3">Quick actions:</p>
+          <div className={`p-4 border-t ${
+            isDarkMode ? 'border-gray-700' : 'border-gray-200'
+          }`}>
+            <p className={`text-sm mb-3 ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-600'
+            }`}>Quick actions:</p>
             <div className="grid grid-cols-2 gap-2">
               {quickActions.map((action, index) => (
                 <button
                   key={index}
                   onClick={() => handleQuickAction(action.action)}
-                  className="flex items-center p-2 text-sm bg-gray-50 hover:bg-purple-50 rounded-lg transition-colors text-left"
+                  className={`flex items-center p-2 text-sm rounded-lg transition-colors text-left ${
+                    isDarkMode
+                      ? 'bg-gray-800 hover:bg-purple-900 text-gray-200'
+                      : 'bg-gray-50 hover:bg-purple-50 text-gray-700'
+                  }`}
                   disabled={isTyping}
                 >
                   <span className="mr-2">{action.icon}</span>
-                  <span className="text-gray-700">{action.label}</span>
+                  <span>{action.label}</span>
                 </button>
               ))}
             </div>
@@ -358,7 +388,9 @@ const MaliChat: React.FC<MaliChatProps> = ({ maliScore, selectedImage, isOpen, o
         )}
 
         {/* Input */}
-        <div className="p-4 border-t border-gray-200">
+        <div className={`p-4 border-t ${
+          isDarkMode ? 'border-gray-700' : 'border-gray-200'
+        }`}>
           <div className="flex space-x-2">
             <input
               type="text"
@@ -366,7 +398,11 @@ const MaliChat: React.FC<MaliChatProps> = ({ maliScore, selectedImage, isOpen, o
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Ask me anything about your livestock..."
-              className="flex-1 p-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 placeholder-gray-500"
+              className={`flex-1 p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                isDarkMode
+                  ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400'
+                  : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+              }`}
               disabled={isTyping}
             />
             <button
