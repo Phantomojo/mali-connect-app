@@ -225,24 +225,24 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
                     }`}
                   >
                     <div className="flex-shrink-0">
-                      {feature.properties.type === 'water' && <Droplet className="w-4 h-4 text-blue-500" />}
-                      {feature.properties.type === 'market' && <ShoppingCart className="w-4 h-4 text-purple-500" />}
-                      {feature.properties.type === 'clinic' && <Heart className="w-4 h-4 text-red-500" />}
-                      {feature.properties.type === 'hospital' && <Heart className="w-4 h-4 text-red-500" />}
-                      {feature.properties.type === 'weather' && <Cloud className="w-4 h-4 text-cyan-500" />}
-                      {feature.properties.type === 'feed' && <Package className="w-4 h-4 text-orange-500" />}
-                      {feature.properties.type === 'transport' && <TransportIcon className="w-4 h-4 text-indigo-500" />}
-                      {feature.properties.type === 'processing' && <Settings className="w-4 h-4 text-gray-600" />}
-                      {feature.properties.quality && <Activity className="w-4 h-4 text-green-500" />}
+                      {location.type === 'water' && <Droplet className="w-4 h-4 text-blue-500" />}
+                      {location.type === 'market' && <ShoppingCart className="w-4 h-4 text-purple-500" />}
+                      {location.type === 'clinic' && <Heart className="w-4 h-4 text-red-500" />}
+                      {location.type === 'hospital' && <Heart className="w-4 h-4 text-red-500" />}
+                      {location.type === 'weather' && <Cloud className="w-4 h-4 text-cyan-500" />}
+                      {location.type === 'feed' && <Package className="w-4 h-4 text-orange-500" />}
+                      {location.type === 'transport' && <TransportIcon className="w-4 h-4 text-indigo-500" />}
+                      {location.type === 'processing' && <Settings className="w-4 h-4 text-gray-600" />}
+                      {location.quality && <Activity className="w-4 h-4 text-green-500" />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className={`font-medium truncate transition-colors duration-300 ${
                         isDarkMode ? 'text-gray-100' : 'text-gray-900'
-                      }`}>{feature.properties.name}</div>
+                      }`}>{location.name}</div>
                       <div className={`text-sm truncate transition-colors duration-300 ${
                         isDarkMode ? 'text-gray-400' : 'text-gray-500'
                       }`}>
-                        {feature.properties.country || feature.properties.area || feature.properties.type}
+                        {location.country || location.area || location.type}
                       </div>
                     </div>
                   </button>
@@ -433,12 +433,12 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
         onClick={(e) => {
           if (e.features && e.features.length > 0) {
             const feature = e.features[0]
-            if (feature.properties) {
+            if (location) {
               setPopupInfo({
                 longitude: e.lngLat.lng,
                 latitude: e.lngLat.lat,
-                name: feature.properties.name || 'Unknown Location',
-                properties: feature.properties
+                name: location.name || 'Unknown Location',
+                properties: location
               })
             }
           }
@@ -616,10 +616,10 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
             onClick={(e) => {
               e.originalEvent.stopPropagation()
               setPopupInfo({
-                longitude: feature.geometry.coordinates[0],
-                latitude: feature.geometry.coordinates[1],
-                name: feature.properties.name,
-                properties: feature.properties
+                longitude: location.coordinates[0],
+                latitude: location.coordinates[1],
+                name: location.name,
+                properties: location
               })
             }}
           >
@@ -633,15 +633,15 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
             {layerVisibility.markets && getLocationsByType('market').map((location, index) => (
           <Marker
             key={`market-${index}`}
-            longitude={feature.geometry.coordinates[0]}
-            latitude={feature.geometry.coordinates[1]}
+            longitude={location.coordinates[0]}
+            latitude={location.coordinates[1]}
             onClick={(e) => {
               e.originalEvent.stopPropagation()
               setPopupInfo({
-                longitude: feature.geometry.coordinates[0],
-                latitude: feature.geometry.coordinates[1],
-                name: feature.properties.name,
-                properties: feature.properties
+                longitude: location.coordinates[0],
+                latitude: location.coordinates[1],
+                name: location.name,
+                properties: location
               })
             }}
           >
@@ -652,18 +652,18 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
         ))}
 
             {/* Veterinary Services Markers */}
-            {layerVisibility.veterinary && africanVeterinaryServicesData.features.map((feature, index) => (
+            {layerVisibility.veterinary && getLocationsByType('veterinary').map((location, index) => (
           <Marker
             key={`vet-${index}`}
-            longitude={feature.geometry.coordinates[0]}
-            latitude={feature.geometry.coordinates[1]}
+            longitude={location.coordinates[0]}
+            latitude={location.coordinates[1]}
             onClick={(e) => {
               e.originalEvent.stopPropagation()
               setPopupInfo({
-                longitude: feature.geometry.coordinates[0],
-                latitude: feature.geometry.coordinates[1],
-                name: feature.properties.name,
-                properties: feature.properties
+                longitude: location.coordinates[0],
+                latitude: location.coordinates[1],
+                name: location.name,
+                properties: location
               })
             }}
           >
@@ -674,18 +674,18 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
         ))}
 
             {/* Weather Stations Markers */}
-            {layerVisibility.weather && africanWeatherStationsData.features.map((feature, index) => (
+            {layerVisibility.weather && getLocationsByType('weather').map((location, index) => (
           <Marker
             key={`weather-${index}`}
-            longitude={feature.geometry.coordinates[0]}
-            latitude={feature.geometry.coordinates[1]}
+            longitude={location.coordinates[0]}
+            latitude={location.coordinates[1]}
             onClick={(e) => {
               e.originalEvent.stopPropagation()
               setPopupInfo({
-                longitude: feature.geometry.coordinates[0],
-                latitude: feature.geometry.coordinates[1],
-                name: feature.properties.name,
-                properties: feature.properties
+                longitude: location.coordinates[0],
+                latitude: location.coordinates[1],
+                name: location.name,
+                properties: location
               })
             }}
           >
@@ -696,18 +696,18 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
         ))}
 
             {/* Feed Suppliers Markers */}
-            {layerVisibility.feedSuppliers && africanFeedSuppliersData.features.map((feature, index) => (
+            {layerVisibility.feedSuppliers && getLocationsByType('feed').map((location, index) => (
           <Marker
             key={`feed-${index}`}
-            longitude={feature.geometry.coordinates[0]}
-            latitude={feature.geometry.coordinates[1]}
+            longitude={location.coordinates[0]}
+            latitude={location.coordinates[1]}
             onClick={(e) => {
               e.originalEvent.stopPropagation()
               setPopupInfo({
-                longitude: feature.geometry.coordinates[0],
-                latitude: feature.geometry.coordinates[1],
-                name: feature.properties.name,
-                properties: feature.properties
+                longitude: location.coordinates[0],
+                latitude: location.coordinates[1],
+                name: location.name,
+                properties: location
               })
             }}
           >
@@ -718,18 +718,18 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
         ))}
 
             {/* Transport Hubs Markers */}
-            {layerVisibility.transport && africanTransportHubsData.features.map((feature, index) => (
+            {layerVisibility.transport && getLocationsByType('transport').map((location, index) => (
           <Marker
             key={`transport-${index}`}
-            longitude={feature.geometry.coordinates[0]}
-            latitude={feature.geometry.coordinates[1]}
+            longitude={location.coordinates[0]}
+            latitude={location.coordinates[1]}
             onClick={(e) => {
               e.originalEvent.stopPropagation()
               setPopupInfo({
-                longitude: feature.geometry.coordinates[0],
-                latitude: feature.geometry.coordinates[1],
-                name: feature.properties.name,
-                properties: feature.properties
+                longitude: location.coordinates[0],
+                latitude: location.coordinates[1],
+                name: location.name,
+                properties: location
               })
             }}
           >
@@ -740,18 +740,18 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
         ))}
 
             {/* Processing Facilities Markers */}
-            {layerVisibility.processing && africanProcessingFacilitiesData.features.map((feature, index) => (
+            {layerVisibility.processing && getLocationsByType('processing').map((location, index) => (
           <Marker
             key={`processing-${index}`}
-            longitude={feature.geometry.coordinates[0]}
-            latitude={feature.geometry.coordinates[1]}
+            longitude={location.coordinates[0]}
+            latitude={location.coordinates[1]}
             onClick={(e) => {
               e.originalEvent.stopPropagation()
               setPopupInfo({
-                longitude: feature.geometry.coordinates[0],
-                latitude: feature.geometry.coordinates[1],
-                name: feature.properties.name,
-                properties: feature.properties
+                longitude: location.coordinates[0],
+                latitude: location.coordinates[1],
+                name: location.name,
+                properties: location
               })
             }}
           >
@@ -836,15 +836,15 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
         {layerVisibility.wind && windData.features.map((feature, index) => (
           <Marker
             key={`wind-${index}`}
-            longitude={feature.geometry.coordinates[0]}
-            latitude={feature.geometry.coordinates[1]}
+            longitude={location.coordinates[0]}
+            latitude={location.coordinates[1]}
             onClick={(e) => {
               e.originalEvent.stopPropagation()
               setPopupInfo({
-                longitude: feature.geometry.coordinates[0],
-                latitude: feature.geometry.coordinates[1],
+                longitude: location.coordinates[0],
+                latitude: location.coordinates[1],
                 name: `Wind Station ${index + 1}`,
-                properties: feature.properties
+                properties: location
               })
             }}
           >

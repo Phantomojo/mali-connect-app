@@ -55,6 +55,14 @@ export const africanData: AfricanLocation[] = [
   }
 ]
 
+export const getLocationsByType = (type: string) => {
+  return africanData.filter(location => location.type === type)
+}
+
+export const getLocationsByCountry = (country: string) => {
+  return africanData.filter(location => location.country === country)
+}
+
 export const searchLocations = (query: string) => {
   const lowercaseQuery = query.toLowerCase()
   return africanData.filter(location => 

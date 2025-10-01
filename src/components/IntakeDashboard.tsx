@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { CheckCircle, XCircle, Eye, Clock, User, MapPin, Calendar, AlertTriangle } from 'react-feather'
 import { useTheme } from '../contexts/ThemeContext'
-import { Animal, mockHerd } from '../data/herdData'
+import type { Animal } from '../data/herdData'
+import { mockHerd } from '../data/herdData'
 
 interface IntakeDashboardProps {
   onAnimalSelect?: (animal: Animal) => void
