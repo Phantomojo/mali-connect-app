@@ -61,7 +61,7 @@ const CowModel: React.FC<any> = (props) => {
   })
   
   return (
-    <group {...props} dispose={null}>
+    <group {...props} dispose={null} scale={[1.5, 1.5, 1.5]} position={[0, -0.5, 0]}>
       <primitive object={clonedScene} />
     </group>
   )
@@ -74,35 +74,35 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
 
   return (
     <>
-      {/* Enhanced Colorful Lighting */}
-      <ambientLight intensity={0.8} color="#f0f9ff" />
+      {/* Enhanced Lighting for Better Visibility */}
+      <ambientLight intensity={1.2} color="#ffffff" />
       <directionalLight 
-        position={[5, 8, 3]} 
-        intensity={1.4} 
-        color="#fef3c7"
+        position={[5, 10, 5]} 
+        intensity={2.0} 
+        color="#ffffff"
         castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
-        shadow-camera-far={20}
-        shadow-camera-left={-10}
-        shadow-camera-right={10}
-        shadow-camera-top={10}
-        shadow-camera-bottom={-10}
+        shadow-mapSize-width={4096}
+        shadow-mapSize-height={4096}
+        shadow-camera-far={30}
+        shadow-camera-left={-15}
+        shadow-camera-right={15}
+        shadow-camera-top={15}
+        shadow-camera-bottom={-15}
       />
       <directionalLight 
-        position={[-3, 4, 2]} 
-        intensity={0.6} 
-        color="#ddd6fe"
+        position={[-5, 8, 5]} 
+        intensity={1.0} 
+        color="#ffffff"
       />
       <directionalLight 
-        position={[0, 6, -5]} 
-        intensity={0.5} 
-        color="#bbf7d0"
+        position={[0, 10, -5]} 
+        intensity={0.8} 
+        color="#ffffff"
       />
       <hemisphereLight 
-        intensity={0.6} 
-        color="#e0f2fe" 
-        groundColor="#f0fdf4" 
+        intensity={0.8} 
+        color="#ffffff" 
+        groundColor="#f8fafc" 
       />
 
       {/* Real 3D Cow Model */}
@@ -205,6 +205,16 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
         </mesh>
       ))}
 
+      {/* Ground Plane for Better Context */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]} receiveShadow>
+        <planeGeometry args={[20, 20]} />
+        <meshStandardMaterial 
+          color="#f8fafc" 
+          roughness={0.8}
+          metalness={0.1}
+        />
+      </mesh>
+
       {/* Environment */}
       <Environment preset="studio" />
     </>
@@ -213,11 +223,11 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
 
 const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
   return (
-    <div className="w-full h-full bg-gradient-to-br from-green-100 via-blue-100 to-purple-100 rounded-lg overflow-hidden relative shadow-xl border border-gray-200">
+    <div className="w-full h-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 rounded-lg overflow-hidden relative shadow-xl border border-gray-200">
       <Canvas
         camera={{ 
-          position: [8, 5, 8], 
-          fov: 50,
+          position: [6, 4, 6], 
+          fov: 60,
           near: 0.1,
           far: 100
         }}
@@ -269,13 +279,15 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
           enablePan={true}
           enableZoom={true}
           enableRotate={true}
-          minPolarAngle={Math.PI / 12}
-          maxPolarAngle={Math.PI - Math.PI / 12}
-          minDistance={5}
-          maxDistance={20}
+          minPolarAngle={Math.PI / 8}
+          maxPolarAngle={Math.PI - Math.PI / 8}
+          minDistance={3}
+          maxDistance={15}
           target={[0, 0, 0]}
           enableDamping={true}
           dampingFactor={0.05}
+          autoRotate={false}
+          autoRotateSpeed={0.5}
         />
       </Canvas>
 
