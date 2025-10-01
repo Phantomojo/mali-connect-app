@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect, useContext } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Send, MessageCircle, User, X } from 'react-feather'
 import useAI from '../hooks/useAI'
-import { ThemeContext } from '../contexts/ThemeContext'
+import { useTheme } from '../contexts/ThemeContext'
 
 interface ChatMessage {
   id: string
@@ -19,7 +19,7 @@ interface MaliChatProps {
 }
 
 const MaliChat: React.FC<MaliChatProps> = ({ maliScore, selectedImage, isOpen, onClose }) => {
-  const { isDarkMode } = useContext(ThemeContext)
+  const { isDarkMode } = useTheme()
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [inputMessage, setInputMessage] = useState('')
   const [isTyping, setIsTyping] = useState(false)
