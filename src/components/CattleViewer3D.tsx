@@ -9,6 +9,18 @@ interface CattleViewer3DProps {
   isAnalyzing?: boolean
 }
 
+// Helper function for model color
+const getModelColor = (maliScore?: any, isAnalyzing?: boolean) => {
+  if (isAnalyzing) return '#8B5CF6' // Purple during analysis
+  if (!maliScore) return '#059669' // Darker green - Default
+  
+  // Color based on Mali-Score with more vibrant colors
+  if (maliScore.totalScore >= 80) return '#059669' // Dark Green - Excellent
+  if (maliScore.totalScore >= 60) return '#2563EB' // Dark Blue - Good
+  if (maliScore.totalScore >= 40) return '#D97706' // Dark Orange - Fair
+  return '#DC2626' // Dark Red - Poor
+}
+
 // Direct GLB loading component with color override
 const CowModel: React.FC<any> = (props) => {
   const gltf = useGLTF('/models/low-poly_cow_-_neutral_pose.glb')
@@ -33,14 +45,14 @@ const CowModel: React.FC<any> = (props) => {
         console.warn('Material conversion failed, using fallback:', error)
         // Fallback to basic material
         child.material = new THREE.MeshStandardMaterial({
-          color: getModelColor(),
+          color: getModelColor(props.maliScore, props.isAnalyzing),
           roughness: 0.3,
           metalness: 0.1
         })
       }
       
       // Apply custom properties
-      child.material.color.set(props.color || '#059669')
+      child.material.color.set(props.color || getModelColor(props.maliScore, props.isAnalyzing))
       child.material.roughness = 0.4
       child.material.metalness = 0.1
       child.castShadow = true
@@ -59,16 +71,6 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
   maliScore, 
   isAnalyzing 
 }: any) => {
-  const getModelColor = () => {
-    if (isAnalyzing) return '#8B5CF6' // Purple during analysis
-    if (!maliScore) return '#059669' // Darker green - Default
-    
-    // Color based on Mali-Score with more vibrant colors
-    if (maliScore.totalScore >= 80) return '#059669' // Dark Green - Excellent
-    if (maliScore.totalScore >= 60) return '#2563EB' // Dark Blue - Good
-    if (maliScore.totalScore >= 40) return '#D97706' // Dark Orange - Fair
-    return '#DC2626' // Dark Red - Poor
-  }
 
   return (
     <>
@@ -110,7 +112,7 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
           <mesh position={[0, 0, 0]} castShadow receiveShadow>
             <boxGeometry args={[2, 1.2, 1]} />
             <meshStandardMaterial 
-              color={getModelColor()}
+              color={getModelColor(props.maliScore, props.isAnalyzing)}
               roughness={0.3}
               metalness={0.1}
             />
@@ -119,7 +121,7 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
           <mesh position={[1.2, 0.3, 0]} castShadow receiveShadow>
             <boxGeometry args={[0.8, 0.8, 0.8]} />
             <meshStandardMaterial 
-              color={getModelColor()}
+              color={getModelColor(props.maliScore, props.isAnalyzing)}
               roughness={0.3}
               metalness={0.1}
             />
@@ -128,7 +130,7 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
           <mesh position={[0.5, -0.8, 0.3]} castShadow receiveShadow>
             <boxGeometry args={[0.2, 0.8, 0.2]} />
             <meshStandardMaterial 
-              color={getModelColor()}
+              color={getModelColor(props.maliScore, props.isAnalyzing)}
               roughness={0.3}
               metalness={0.1}
             />
@@ -136,7 +138,7 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
           <mesh position={[0.5, -0.8, -0.3]} castShadow receiveShadow>
             <boxGeometry args={[0.2, 0.8, 0.2]} />
             <meshStandardMaterial 
-              color={getModelColor()}
+              color={getModelColor(props.maliScore, props.isAnalyzing)}
               roughness={0.3}
               metalness={0.1}
             />
@@ -144,7 +146,7 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
           <mesh position={[-0.5, -0.8, 0.3]} castShadow receiveShadow>
             <boxGeometry args={[0.2, 0.8, 0.2]} />
             <meshStandardMaterial 
-              color={getModelColor()}
+              color={getModelColor(props.maliScore, props.isAnalyzing)}
               roughness={0.3}
               metalness={0.1}
             />
@@ -152,7 +154,7 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
           <mesh position={[-0.5, -0.8, -0.3]} castShadow receiveShadow>
             <boxGeometry args={[0.2, 0.8, 0.2]} />
             <meshStandardMaterial 
-              color={getModelColor()}
+              color={getModelColor(props.maliScore, props.isAnalyzing)}
               roughness={0.3}
               metalness={0.1}
             />
@@ -163,7 +165,7 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
           position={[0, -0.8, 0]} 
           scale={[1.5, 1.5, 1.5]} 
           rotation={[0, Math.PI / 4, 0]}
-          color={getModelColor()}
+          color={getModelColor(props.maliScore, props.isAnalyzing)}
           castShadow 
           receiveShadow
         />
@@ -229,8 +231,7 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
               premultipliedAlpha: true,
               preserveDrawingBuffer: false,
               depth: true,
-              stencil: false,
-              desynchronized: true
+              stencil: false
             }}
             onCreated={({ gl }) => {
               // Configure WebGL for better stability
