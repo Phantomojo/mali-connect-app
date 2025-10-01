@@ -1,0 +1,321 @@
+import React from 'react'
+import { Eye, Calendar, MapPin, TrendingUp, AlertCircle, CheckCircle, Clock, XCircle } from 'react-feather'
+import type { Animal } from '../data/herdData'
+
+interface HerdDashboardProps {
+  onAnimalSelect?: (animal: Animal) => void
+  selectedAnimal?: Animal | null
+}
+
+const HerdDashboard: React.FC<HerdDashboardProps> = ({ onAnimalSelect, selectedAnimal }) => {
+  // Mock data - in real app, this would come from props or context
+  const mockHerd: Animal[] = [
+    {
+      id: 'ANI001',
+      herderId: 'herder01',
+      herderName: 'Jelani',
+      photoUrl: '/images/healthy/cattle-healthy-1.jpg',
+      maliScore: {
+        bodyCondition: 88,
+        physicalHealth: 85,
+        conformation: 92,
+        ageEstimation: 90,
+        totalScore: 88
+      },
+      submissionStatus: 'Approved',
+      submissionTime: '2024-01-15T10:30:00Z',
+      breed: 'Ankole',
+      age: 3,
+      weight: 450,
+      location: 'Nairobi County',
+      healthNotes: 'Excellent condition, ideal for breeding',
+      marketValue: 680
+    },
+    {
+      id: 'ANI002',
+      herderId: 'herder01',
+      herderName: 'Jelani',
+      photoUrl: '/images/healthy/cattle-healthy-2.jpg',
+      maliScore: {
+        bodyCondition: 82,
+        physicalHealth: 78,
+        conformation: 85,
+        ageEstimation: 88,
+        totalScore: 82
+      },
+      submissionStatus: 'Pending',
+      submissionTime: '2024-01-16T14:20:00Z',
+      breed: 'Boran',
+      age: 4,
+      weight: 420,
+      location: 'Nairobi County',
+      healthNotes: 'Good health, minor weight concerns',
+      marketValue: 620
+    },
+    {
+      id: 'ANI003',
+      herderId: 'herder01',
+      herderName: 'Jelani',
+      photoUrl: '/images/healthy/cattle-healthy-3.jpg',
+      maliScore: {
+        bodyCondition: 95,
+        physicalHealth: 92,
+        conformation: 88,
+        ageEstimation: 85,
+        totalScore: 92
+      },
+      submissionStatus: 'Under Review',
+      submissionTime: '2024-01-17T09:15:00Z',
+      breed: 'Friesian',
+      age: 2,
+      weight: 380,
+      location: 'Nairobi County',
+      healthNotes: 'Premium quality, exceptional body condition',
+      marketValue: 750
+    },
+    {
+      id: 'ANI007',
+      herderId: 'herder01',
+      herderName: 'Jelani',
+      photoUrl: '/images/healthy/cattle-healthy-7.jpg',
+      maliScore: {
+        bodyCondition: 85,
+        physicalHealth: 82,
+        conformation: 88,
+        ageEstimation: 90,
+        totalScore: 85
+      },
+      submissionStatus: 'Pending',
+      submissionTime: '2024-01-17T08:00:00Z',
+      breed: 'Ankole',
+      age: 4,
+      weight: 460,
+      location: 'Nairobi County',
+      healthNotes: 'Good overall health, minor conformation issues',
+      marketValue: 640
+    }
+  ]
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'Approved':
+        return <CheckCircle className="w-4 h-4 text-green-500" />
+      case 'Pending':
+        return <Clock className="w-4 h-4 text-yellow-500" />
+      case 'Under Review':
+        return <AlertCircle className="w-4 h-4 text-blue-500" />
+      case 'Rejected':
+        return <XCircle className="w-4 h-4 text-red-500" />
+      default:
+        return <Clock className="w-4 h-4 text-gray-500" />
+    }
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Approved':
+        return 'bg-green-100 text-green-800 border-green-200'
+      case 'Pending':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200'
+      case 'Under Review':
+        return 'bg-blue-100 text-blue-800 border-blue-200'
+      case 'Rejected':
+        return 'bg-red-100 text-red-800 border-red-200'
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200'
+    }
+  }
+
+  const getScoreColor = (score: number) => {
+    if (score >= 85) return 'text-green-600'
+    if (score >= 70) return 'text-blue-600'
+    if (score >= 55) return 'text-yellow-600'
+    return 'text-red-600'
+  }
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="bg-white rounded-2xl shadow-xl p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-800">My Herd Dashboard</h2>
+            <p className="text-gray-600">Manage and monitor your livestock health assessments</p>
+          </div>
+          <div className="text-right">
+            <div className="text-3xl font-bold text-green-600">{mockHerd.length}</div>
+            <div className="text-sm text-gray-500">Total Animals</div>
+          </div>
+        </div>
+        
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="bg-green-50 rounded-lg p-4">
+            <div className="flex items-center">
+              <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+              <div>
+                <div className="text-lg font-semibold text-green-800">
+                  {mockHerd.filter(a => a.submissionStatus === 'Approved').length}
+                </div>
+                <div className="text-sm text-green-600">Approved</div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-yellow-50 rounded-lg p-4">
+            <div className="flex items-center">
+              <Clock className="w-5 h-5 text-yellow-500 mr-2" />
+              <div>
+                <div className="text-lg font-semibold text-yellow-800">
+                  {mockHerd.filter(a => a.submissionStatus === 'Pending').length}
+                </div>
+                <div className="text-sm text-yellow-600">Pending</div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-blue-50 rounded-lg p-4">
+            <div className="flex items-center">
+              <AlertCircle className="w-5 h-5 text-blue-500 mr-2" />
+              <div>
+                <div className="text-lg font-semibold text-blue-800">
+                  {mockHerd.filter(a => a.submissionStatus === 'Under Review').length}
+                </div>
+                <div className="text-sm text-blue-600">Under Review</div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-purple-50 rounded-lg p-4">
+            <div className="flex items-center">
+              <TrendingUp className="w-5 h-5 text-purple-500 mr-2" />
+              <div>
+                <div className="text-lg font-semibold text-purple-800">
+                  ${mockHerd.reduce((sum, a) => sum + (a.marketValue || 0), 0).toLocaleString()}
+                </div>
+                <div className="text-sm text-purple-600">Total Value</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Animal Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {mockHerd.map((animal) => (
+          <div
+            key={animal.id}
+            onClick={() => onAnimalSelect?.(animal)}
+            className={`bg-white rounded-2xl shadow-xl border-2 transition-all duration-300 cursor-pointer hover:shadow-2xl hover:scale-105 ${
+              selectedAnimal?.id === animal.id
+                ? 'border-green-400 ring-2 ring-green-200'
+                : 'border-gray-200 hover:border-green-300'
+            }`}
+          >
+            {/* Animal Image */}
+            <div className="relative">
+              <img
+                src={animal.photoUrl}
+                alt={animal.id}
+                className="w-full h-48 object-cover rounded-t-2xl"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none'
+                }}
+              />
+              
+              {/* Status Badge */}
+              <div className="absolute top-4 right-4">
+                <div className={`flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(animal.submissionStatus)}`}>
+                  {getStatusIcon(animal.submissionStatus)}
+                  <span>{animal.submissionStatus}</span>
+                </div>
+              </div>
+              
+              {/* Mali Score Badge */}
+              <div className="absolute top-4 left-4">
+                <div className="bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-bold">
+                  <span className={getScoreColor(animal.maliScore.totalScore)}>
+                    {animal.maliScore.totalScore}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Animal Details */}
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-lg font-bold text-gray-800">{animal.id}</h3>
+                <div className="flex items-center text-sm text-gray-500">
+                  <MapPin className="w-4 h-4 mr-1" />
+                  {animal.location}
+                </div>
+              </div>
+
+              <div className="space-y-2 mb-4">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Breed:</span>
+                  <span className="font-medium">{animal.breed}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Age:</span>
+                  <span className="font-medium">{animal.age} years</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Weight:</span>
+                  <span className="font-medium">{animal.weight} kg</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Market Value:</span>
+                  <span className="font-medium text-green-600">${animal.marketValue?.toLocaleString()}</span>
+                </div>
+              </div>
+
+              {/* Submission Time */}
+              <div className="flex items-center text-xs text-gray-500 mb-4">
+                <Calendar className="w-4 h-4 mr-1" />
+                Submitted: {formatDate(animal.submissionTime)}
+              </div>
+
+              {/* Action Button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onAnimalSelect?.(animal)
+                }}
+                className="w-full flex items-center justify-center space-x-2 py-2 px-4 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-lg hover:from-green-500 hover:to-emerald-600 transition-all duration-200"
+              >
+                <Eye className="w-4 h-4" />
+                <span className="font-medium">View Details</span>
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Empty State */}
+      {mockHerd.length === 0 && (
+        <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
+          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Eye className="w-8 h-8 text-gray-400" />
+          </div>
+          <h3 className="text-xl font-semibold text-gray-800 mb-2">No Animals in Your Herd</h3>
+          <p className="text-gray-600 mb-6">Start by submitting your first animal for health assessment.</p>
+          <button className="px-6 py-3 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-lg hover:from-green-500 hover:to-emerald-600 transition-all duration-200">
+            Add First Animal
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default HerdDashboard

@@ -14,10 +14,16 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
-    headers: {
-      'Cross-Origin-Embedder-Policy': 'require-corp',
-      'Cross-Origin-Opener-Policy': 'same-origin',
+    hmr: {
+      overlay: false,
+      port: 5173
     }
+  },
+  css: {
+    devSourcemap: false
+  },
+  define: {
+    __DEV__: JSON.stringify(process.env.NODE_ENV === 'development')
   },
   build: {
     outDir: 'dist',
@@ -41,6 +47,10 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
   },
   optimizeDeps: {
-    exclude: ['three']
+    exclude: ['three'],
+    include: ['react', 'react-dom', 'react-feather']
+  },
+  esbuild: {
+    logOverride: { 'this-is-undefined-in-esm': 'silent' }
   }
 })

@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Environment, useGLTF } from '@react-three/drei'
+import * as THREE from 'three'
 
 interface CattleViewer3DProps {
   activeSection?: string
@@ -15,10 +16,20 @@ const CowModel: React.FC<any> = (props) => {
   // Clone the scene to avoid modifying the original
   const clonedScene = gltf.scene.clone()
   
-  // Apply color to all meshes in the scene
+  // Apply color to all meshes in the scene and handle material conversion
   clonedScene.traverse((child: any) => {
     if (child.isMesh) {
+      // Clone material to avoid modifying original
       child.material = child.material.clone()
+      
+      // Convert to MeshStandardMaterial if needed (handles KHR_materials_pbrSpecularGlossiness)
+      if (child.material.type !== 'MeshStandardMaterial') {
+        const standardMaterial = new THREE.MeshStandardMaterial()
+        standardMaterial.copy(child.material)
+        child.material = standardMaterial
+      }
+      
+      // Apply custom properties
       child.material.color.set(props.color || '#059669')
       child.material.roughness = 0.4
       child.material.metalness = 0.1
@@ -200,6 +211,35 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
         }}
         shadows
         style={{ width: '100%', height: '100%' }}
+            gl={{ 
+              antialias: true,
+              alpha: false,
+              powerPreference: "high-performance",
+              failIfMajorPerformanceCaveat: false,
+              premultipliedAlpha: false,
+              preserveDrawingBuffer: false,
+              depth: true,
+              stencil: false
+            }}
+            onCreated={({ gl }) => {
+              // Handle WebGL context loss
+              gl.domElement.addEventListener('webglcontextlost', (event) => {
+                console.warn('WebGL context lost, attempting recovery...')
+                event.preventDefault()
+                // Force a re-render after context restoration
+                setTimeout(() => {
+                  gl.domElement.dispatchEvent(new Event('webglcontextrestored'))
+                }, 100)
+              })
+              
+              gl.domElement.addEventListener('webglcontextrestored', () => {
+                console.log('WebGL context restored')
+                // Force canvas refresh
+                gl.domElement.style.display = 'none'
+                gl.domElement.offsetHeight // Trigger reflow
+                gl.domElement.style.display = ''
+              })
+            }}
       >
         <CattleScene {...props} />
         <OrbitControls 
