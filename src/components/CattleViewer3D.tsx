@@ -45,14 +45,14 @@ const CowModel: React.FC<any> = (props) => {
         console.warn('Material conversion failed, using fallback:', error)
         // Fallback to basic material
         child.material = new THREE.MeshStandardMaterial({
-          color: getModelColor(props.maliScore, props.isAnalyzing),
+          color: getModelColor(maliScore, isAnalyzing),
           roughness: 0.3,
           metalness: 0.1
         })
       }
       
       // Apply custom properties
-      child.material.color.set(props.color || getModelColor(props.maliScore, props.isAnalyzing))
+      child.material.color.set(props.color || getModelColor(maliScore, isAnalyzing))
       child.material.roughness = 0.4
       child.material.metalness = 0.1
       child.castShadow = true
@@ -112,7 +112,7 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
           <mesh position={[0, 0, 0]} castShadow receiveShadow>
             <boxGeometry args={[2, 1.2, 1]} />
             <meshStandardMaterial 
-              color={getModelColor(props.maliScore, props.isAnalyzing)}
+              color={getModelColor(maliScore, isAnalyzing)}
               roughness={0.3}
               metalness={0.1}
             />
@@ -121,7 +121,7 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
           <mesh position={[1.2, 0.3, 0]} castShadow receiveShadow>
             <boxGeometry args={[0.8, 0.8, 0.8]} />
             <meshStandardMaterial 
-              color={getModelColor(props.maliScore, props.isAnalyzing)}
+              color={getModelColor(maliScore, isAnalyzing)}
               roughness={0.3}
               metalness={0.1}
             />
@@ -130,7 +130,7 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
           <mesh position={[0.5, -0.8, 0.3]} castShadow receiveShadow>
             <boxGeometry args={[0.2, 0.8, 0.2]} />
             <meshStandardMaterial 
-              color={getModelColor(props.maliScore, props.isAnalyzing)}
+              color={getModelColor(maliScore, isAnalyzing)}
               roughness={0.3}
               metalness={0.1}
             />
@@ -138,7 +138,7 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
           <mesh position={[0.5, -0.8, -0.3]} castShadow receiveShadow>
             <boxGeometry args={[0.2, 0.8, 0.2]} />
             <meshStandardMaterial 
-              color={getModelColor(props.maliScore, props.isAnalyzing)}
+              color={getModelColor(maliScore, isAnalyzing)}
               roughness={0.3}
               metalness={0.1}
             />
@@ -146,7 +146,7 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
           <mesh position={[-0.5, -0.8, 0.3]} castShadow receiveShadow>
             <boxGeometry args={[0.2, 0.8, 0.2]} />
             <meshStandardMaterial 
-              color={getModelColor(props.maliScore, props.isAnalyzing)}
+              color={getModelColor(maliScore, isAnalyzing)}
               roughness={0.3}
               metalness={0.1}
             />
@@ -154,7 +154,7 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
           <mesh position={[-0.5, -0.8, -0.3]} castShadow receiveShadow>
             <boxGeometry args={[0.2, 0.8, 0.2]} />
             <meshStandardMaterial 
-              color={getModelColor(props.maliScore, props.isAnalyzing)}
+              color={getModelColor(maliScore, isAnalyzing)}
               roughness={0.3}
               metalness={0.1}
             />
@@ -165,7 +165,7 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
           position={[0, -0.8, 0]} 
           scale={[1.5, 1.5, 1.5]} 
           rotation={[0, Math.PI / 4, 0]}
-          color={getModelColor(props.maliScore, props.isAnalyzing)}
+          color={getModelColor(maliScore, isAnalyzing)}
           castShadow 
           receiveShadow
         />
@@ -280,40 +280,40 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
       </Canvas>
 
       {/* Enhanced Diagnostic Markers Overlay */}
-      {props.maliScore && props.activeSection === 'score' && (
+      {maliScore && props.activeSection === 'score' && (
         <div className="absolute inset-0 pointer-events-none">
           {/* Body Condition Marker */}
           <div 
             className="absolute w-5 h-5 bg-gradient-to-r from-green-400 to-green-600 rounded-full border-3 border-white shadow-xl animate-pulse"
             style={{ top: '40%', left: '50%', transform: 'translate(-50%, -50%)' }}
-            title={`Body Condition: ${props.maliScore.bodyCondition}`}
+            title={`Body Condition: ${maliScore.bodyCondition}`}
           />
           
           {/* Physical Health Marker */}
           <div 
             className="absolute w-4 h-4 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full border-3 border-white shadow-xl animate-pulse"
             style={{ top: '35%', left: '65%', transform: 'translate(-50%, -50%)' }}
-            title={`Physical Health: ${props.maliScore.physicalHealth}`}
+            title={`Physical Health: ${maliScore.physicalHealth}`}
           />
           
           {/* Conformation Marker */}
           <div 
             className="absolute w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full border-3 border-white shadow-xl animate-pulse"
             style={{ top: '35%', left: '35%', transform: 'translate(-50%, -50%)' }}
-            title={`Conformation: ${props.maliScore.conformation}`}
+            title={`Conformation: ${maliScore.conformation}`}
           />
           
           {/* Age Estimation Marker */}
           <div 
             className="absolute w-4 h-4 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full border-3 border-white shadow-xl animate-pulse"
             style={{ top: '25%', left: '50%', transform: 'translate(-50%, -50%)' }}
-            title={`Age Estimation: ${props.maliScore.ageEstimation}`}
+            title={`Age Estimation: ${maliScore.ageEstimation}`}
           />
         </div>
       )}
 
       {/* Enhanced Analysis Animation Overlay */}
-      {props.isAnalyzing && (
+      {isAnalyzing && (
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
           <div className="relative">
             <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-ping opacity-75"></div>
@@ -323,7 +323,7 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
       )}
 
       {/* Loading State */}
-      {!props.maliScore && (
+      {!maliScore && (
         <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-mali-green mx-auto mb-4"></div>
