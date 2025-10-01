@@ -45,14 +45,14 @@ const CowModel: React.FC<any> = (props) => {
         console.warn('Material conversion failed, using fallback:', error)
         // Fallback to basic material
         child.material = new THREE.MeshStandardMaterial({
-          color: getModelColor(maliScore, isAnalyzing),
+          color: getModelColor(maliScore, props.isAnalyzing),
           roughness: 0.3,
           metalness: 0.1
         })
       }
       
       // Apply custom properties
-      child.material.color.set(props.color || getModelColor(maliScore, isAnalyzing))
+      child.material.color.set(props.color || getModelColor(maliScore, props.isAnalyzing))
       child.material.roughness = 0.4
       child.material.metalness = 0.1
       child.castShadow = true
@@ -280,13 +280,13 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
       </Canvas>
 
       {/* Enhanced Diagnostic Markers Overlay */}
-      {maliScore && props.activeSection === 'score' && (
+      {props.maliScore && props.activeSection === 'score' && (
         <div className="absolute inset-0 pointer-events-none">
           {/* Body Condition Marker */}
           <div 
             className="absolute w-5 h-5 bg-gradient-to-r from-green-400 to-green-600 rounded-full border-3 border-white shadow-xl animate-pulse"
             style={{ top: '40%', left: '50%', transform: 'translate(-50%, -50%)' }}
-            title={`Body Condition: ${maliScore.bodyCondition}`}
+            title={`Body Condition: ${props.maliScore.bodyCondition}`}
           />
           
           {/* Physical Health Marker */}
