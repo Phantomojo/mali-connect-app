@@ -293,14 +293,14 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
           <div 
             className="absolute w-4 h-4 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full border-3 border-white shadow-xl animate-pulse"
             style={{ top: '35%', left: '65%', transform: 'translate(-50%, -50%)' }}
-            title={`Physical Health: ${maliScore.physicalHealth}`}
+            title={`Physical Health: ${props.maliScore.physicalHealth}`}
           />
           
           {/* Conformation Marker */}
           <div 
             className="absolute w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full border-3 border-white shadow-xl animate-pulse"
             style={{ top: '35%', left: '35%', transform: 'translate(-50%, -50%)' }}
-            title={`Conformation: ${maliScore.conformation}`}
+            title={`Conformation: ${props.maliScore.conformation}`}
           />
           
           {/* Age Estimation Marker */}
