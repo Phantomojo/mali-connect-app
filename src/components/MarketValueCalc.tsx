@@ -193,7 +193,8 @@ const MarketValueCalc: React.FC<MarketValueCalcProps> = ({
           <select
             value={marketData.locationMultiplier}
             onChange={(e) => updateMarketData('locationMultiplier', parseFloat(e.target.value))}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            className="w-full p-3 bg-white text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent appearance-none market-select"
+            style={{ backgroundColor: 'white', color: '#1f2937' }}
           >
             {locations.map((location, index) => (
               <option key={index} value={location.multiplier}>
@@ -212,7 +213,8 @@ const MarketValueCalc: React.FC<MarketValueCalcProps> = ({
           <select
             value={marketData.seasonalMultiplier}
             onChange={(e) => updateMarketData('seasonalMultiplier', parseFloat(e.target.value))}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            className="w-full p-3 bg-white text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent appearance-none market-select"
+            style={{ backgroundColor: 'white', color: '#1f2937' }}
           >
             {seasons.map((season, index) => (
               <option key={index} value={season.multiplier}>

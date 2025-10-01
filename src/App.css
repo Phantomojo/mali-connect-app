@@ -116,6 +116,38 @@
   transition-duration: 200ms;
 }
 
+/* Select element styling */
+select {
+  background-color: white !important;
+  color: #1f2937 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+select:focus {
+  outline: none !important;
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+select option {
+  background-color: white !important;
+  color: #1f2937 !important;
+  padding: 8px 12px !important;
+}
+
+/* Ensure dropdowns are always light */
+.market-select {
+  background-color: white !important;
+  color: #1f2937 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+.market-select:focus {
+  outline: none !important;
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
 /* Liquid Navigation Animations */
 @keyframes liquid-flow {
   0% { transform: translateX(-100%) rotate(0deg); }
