@@ -23,7 +23,8 @@ import {
 import { 
   africanData,
   getLocationsByType,
-  searchLocations
+  searchLocations,
+  type AfricanLocation
 } from '../data/africanData'
 import MapDataPanel from './MapDataPanel'
 import LayerPanel from './LayerPanel'
@@ -47,7 +48,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
       const [searchQuery, setSearchQuery] = useState('')
       const [userLocation, setUserLocation] = useState<{longitude: number, latitude: number} | null>(null)
       const [showUserLocation, setShowUserLocation] = useState(false)
-      const [searchSuggestions, setSearchSuggestions] = useState<any[]>([])
+      const [searchSuggestions, setSearchSuggestions] = useState<AfricanLocation[]>([])
       const [showSuggestions, setShowSuggestions] = useState(false)
   
   // Layer visibility toggles - All off by default
@@ -110,6 +111,21 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
       )
     } else {
       alert('Geolocation is not supported by this browser.')
+    }
+  }
+
+  // Convert AfricanLocation to GeoJSON format
+  const convertToGeoJSON = (locations: AfricanLocation[]) => {
+    return {
+      type: 'FeatureCollection',
+      features: locations.map(location => ({
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: location.coordinates
+        },
+        properties: location
+      }))
     }
   }
 
@@ -214,10 +230,10 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
                   ? 'bg-gray-800 border-gray-600' 
                   : 'bg-white border-gray-300'
               }`}>
-                {searchSuggestions.map((feature, index) => (
+                {searchSuggestions.map((location, index) => (
                   <button
                     key={index}
-                    onClick={() => handleSearchSelect(feature)}
+                    onClick={() => handleSearchSelect(location)}
                     className={`w-full px-4 py-3 text-left border-b last:border-b-0 flex items-center space-x-3 transition-colors duration-300 ${
                       isDarkMode 
                         ? 'hover:bg-gray-700 border-gray-700' 
@@ -227,13 +243,12 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
                     <div className="flex-shrink-0">
                       {location.type === 'water' && <Droplet className="w-4 h-4 text-blue-500" />}
                       {location.type === 'market' && <ShoppingCart className="w-4 h-4 text-purple-500" />}
-                      {location.type === 'clinic' && <Heart className="w-4 h-4 text-red-500" />}
-                      {location.type === 'hospital' && <Heart className="w-4 h-4 text-red-500" />}
+                      {location.type === 'veterinary' && <Heart className="w-4 h-4 text-red-500" />}
                       {location.type === 'weather' && <Cloud className="w-4 h-4 text-cyan-500" />}
                       {location.type === 'feed' && <Package className="w-4 h-4 text-orange-500" />}
-                      {location.type === 'transport' && <TransportIcon className="w-4 h-4 text-indigo-500" />}
-                      {location.type === 'processing' && <Settings className="w-4 h-4 text-gray-600" />}
-                      {location.quality && <Activity className="w-4 h-4 text-green-500" />}
+                      {location.type === 'transport' && <Truck className="w-4 h-4 text-indigo-500" />}
+                      {location.type === 'processing' && <Home className="w-4 h-4 text-green-500" />}
+                      {location.type === 'pasture' && <Activity className="w-4 h-4 text-green-500" />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className={`font-medium truncate transition-colors duration-300 ${
@@ -242,7 +257,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
                       <div className={`text-sm truncate transition-colors duration-300 ${
                         isDarkMode ? 'text-gray-400' : 'text-gray-500'
                       }`}>
-                        {location.country || location.area || location.type}
+                        {location.country} • {location.description} • {location.type}
                       </div>
                     </div>
                   </button>
@@ -556,7 +571,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
               <Source
                 id="pasture-quality"
                 type="geojson"
-                data={getLocationsByType('pasture')}
+                data={convertToGeoJSON(getLocationsByType('pasture'))}
               >
             <Layer
               id="pasture-quality-layer"
