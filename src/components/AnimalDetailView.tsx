@@ -186,8 +186,10 @@ const AnimalDetailView: React.FC<AnimalDetailViewProps> = ({
           </div>
         }>
           <AIAnalysis 
-            isAnalyzing={false}
-            onAnalysisComplete={() => {}}
+            analysis={null}
+            isLoading={false}
+            selectedImage={animal.photoUrl}
+            apiStatus={{ groq: false, huggingFace: false }}
           />
         </Suspense>
       </div>

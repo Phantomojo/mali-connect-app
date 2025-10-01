@@ -427,7 +427,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
         pixelRatio={Math.min(window.devicePixelRatio || 1, 3)} // Higher pixel ratio for better quality
         renderWorldCopies={false}
         interactiveLayerIds={['pasture-quality-layer']}
-        preserveDrawingBuffer={true} // Better rendering quality
+        // preserveDrawingBuffer={true} // Better rendering quality - removed as not supported
         onMouseEnter={(e) => {
           if (e.features && e.features.length > 0) {
             e.target.getCanvas().style.cursor = 'pointer'

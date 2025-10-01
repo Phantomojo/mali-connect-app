@@ -13,9 +13,20 @@ interface MaliScore {
 }
 
 interface AIImageAnalysis {
-  analysis: string
+  bodyCondition: number
+  physicalHealth: number
+  conformation: number
+  ageEstimation: number
+  totalScore: number
   confidence: number
-  recommendations: string[]
+  analysis: {
+    bodyConditionAnalysis: string
+    physicalHealthAnalysis: string
+    conformationAnalysis: string
+    ageEstimationAnalysis: string
+    overallAssessment: string
+    recommendations: string[]
+  }
 }
 
 interface MaliScoreDisplayProps {

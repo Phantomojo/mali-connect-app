@@ -13,9 +13,20 @@ interface AnalysisStep {
 }
 
 interface AIImageAnalysis {
-  analysis: string
+  bodyCondition: number
+  physicalHealth: number
+  conformation: number
+  ageEstimation: number
+  totalScore: number
   confidence: number
-  recommendations: string[]
+  analysis: {
+    bodyConditionAnalysis: string
+    physicalHealthAnalysis: string
+    conformationAnalysis: string
+    ageEstimationAnalysis: string
+    overallAssessment: string
+    recommendations: string[]
+  }
 }
 
 interface AIAnalysisProps {
@@ -127,13 +138,11 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ analysis, isLoading, selectedIm
     }
     
     // Analysis complete
-    if (onAnalysisComplete) {
-      onAnalysisComplete({
-        completed: true,
-        totalSteps: analysisSteps.length,
-        completedSteps: analysisSteps.length
-      })
-    }
+    console.log('Analysis completed:', {
+      completed: true,
+      totalSteps: analysisSteps.length,
+      completedSteps: analysisSteps.length
+    })
   }
 
   if (!isLoading) return null
