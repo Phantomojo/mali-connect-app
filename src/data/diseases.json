@@ -1,35 +1,286 @@
 {
-  "lumpy_skin_disease": {
-    "common_name": "Lumpy Skin Disease",
-    "key_symptoms": [
-      "Fever, lacrimation, nasal discharge, and hypersalivation",
-      "Well-circumscribed, round, slightly raised, firm, and painful skin nodules",
-      "Nodules may develop on the muzzle and within the nasal and buccal mucous membranes",
-      "Regional lymph nodes are swollen, and edema develops in the udder, brisket, and legs"
-    ],
-    "action_required": "Administration of antibiotics to control secondary infection and good nursing care are recommended. Vaccination with attenuated virus offers the most promising method of control.",
-    "source_url": "https://www.merckvetmanual.com/integumentary-system/pox-diseases/lumpy-skin-disease-in-cattle"
-  },
-  "ringworm": {
-    "common_name": "Ringworm (Dermatophytosis)",
-    "key_symptoms": [
-      "Circular, hairless patches with gray-white crusts",
-      "Lesions commonly occur on the head and neck",
-      "Mild inflammation and itching may be present",
-      "In severe cases, multiple lesions can coalesce"
-    ],
-    "action_required": "Topical antifungal treatments are commonly used. In more severe cases, systemic antifungal therapy may be necessary. Environmental decontamination is crucial to prevent reinfection.",
-    "source_url": "https://www.merckvetmanual.com/integumentary-system/fungal-skin-infections/dermatophytosis-in-animals"
-  },
-  "photosensitization": {
-    "common_name": "Photosensitization",
-    "key_symptoms": [
-      "Redness, swelling, and pain in unpigmented skin areas",
-      "Crusting, scaling, and ulceration of affected skin",
-      "Severe itching and rubbing behavior",
-      "Lesions typically occur on areas exposed to sunlight (ears, face, back)"
-    ],
-    "action_required": "Remove animals from sunlight immediately. Identify and eliminate the causative agent (plants, drugs, or liver dysfunction). Provide supportive care including anti-inflammatory drugs and wound management.",
-    "source_url": "https://www.merckvetmanual.com/integumentary-system/photosensitization/photosensitization-in-animals"
-  }
+  "diseases": [
+    {
+      "id": "DIS001",
+      "name": "Foot and Mouth Disease",
+      "scientificName": "Aphthovirus",
+      "category": "Viral",
+      "severity": "High",
+      "symptoms": [
+        "Fever",
+        "Blisters on mouth and feet",
+        "Excessive salivation",
+        "Lameness",
+        "Loss of appetite"
+      ],
+      "transmission": "Direct contact, contaminated feed/water",
+      "prevention": [
+        "Vaccination",
+        "Quarantine new animals",
+        "Disinfect equipment",
+        "Control movement"
+      ],
+      "treatment": "Supportive care, antibiotics for secondary infections",
+      "mortalityRate": "5-10%",
+      "recoveryTime": "2-3 weeks",
+      "vaccinationAvailable": true,
+      "zoonotic": false,
+      "affectedSpecies": ["Cattle", "Sheep", "Goats", "Pigs"],
+      "geographicDistribution": ["Africa", "Asia", "South America"],
+      "economicImpact": "High - trade restrictions, production losses"
+    },
+    {
+      "id": "DIS002",
+      "name": "Brucellosis",
+      "scientificName": "Brucella abortus",
+      "category": "Bacterial",
+      "severity": "High",
+      "symptoms": [
+        "Abortion in pregnant animals",
+        "Infertility",
+        "Reduced milk production",
+        "Joint swelling",
+        "Fever"
+      ],
+      "transmission": "Contact with infected animals, contaminated milk",
+      "prevention": [
+        "Vaccination",
+        "Test and cull infected animals",
+        "Pasteurize milk",
+        "Wear protective clothing"
+      ],
+      "treatment": "Antibiotics (long-term)",
+      "mortalityRate": "Low",
+      "recoveryTime": "Months to years",
+      "vaccinationAvailable": true,
+      "zoonotic": true,
+      "affectedSpecies": ["Cattle", "Sheep", "Goats", "Pigs"],
+      "geographicDistribution": ["Worldwide"],
+      "economicImpact": "High - reproductive losses, trade restrictions"
+    },
+    {
+      "id": "DIS003",
+      "name": "Mastitis",
+      "scientificName": "Various bacteria",
+      "category": "Bacterial",
+      "severity": "Medium",
+      "symptoms": [
+        "Swollen, painful udder",
+        "Abnormal milk (clots, blood)",
+        "Reduced milk production",
+        "Fever",
+        "Loss of appetite"
+      ],
+      "transmission": "Bacterial infection through teat canal",
+      "prevention": [
+        "Proper milking hygiene",
+        "Dry cow therapy",
+        "Clean bedding",
+        "Regular udder health checks"
+      ],
+      "treatment": "Antibiotics, anti-inflammatory drugs",
+      "mortalityRate": "Very low",
+      "recoveryTime": "1-2 weeks",
+      "vaccinationAvailable": false,
+      "zoonotic": false,
+      "affectedSpecies": ["Cattle", "Sheep", "Goats"],
+      "geographicDistribution": ["Worldwide"],
+      "economicImpact": "Medium - milk production losses, treatment costs"
+    },
+    {
+      "id": "DIS004",
+      "name": "Lumpy Skin Disease",
+      "scientificName": "Capripoxvirus",
+      "category": "Viral",
+      "severity": "High",
+      "symptoms": [
+        "Skin nodules and lesions",
+        "Fever",
+        "Loss of appetite",
+        "Reduced milk production",
+        "Lameness"
+      ],
+      "transmission": "Insect vectors, direct contact",
+      "prevention": [
+        "Vaccination",
+        "Vector control",
+        "Quarantine",
+        "Biosecurity measures"
+      ],
+      "treatment": "Supportive care, antibiotics for secondary infections",
+      "mortalityRate": "1-5%",
+      "recoveryTime": "2-4 weeks",
+      "vaccinationAvailable": true,
+      "zoonotic": false,
+      "affectedSpecies": ["Cattle", "Water Buffalo"],
+      "geographicDistribution": ["Africa", "Middle East", "Asia"],
+      "economicImpact": "High - trade restrictions, production losses"
+    },
+    {
+      "id": "DIS005",
+      "name": "East Coast Fever",
+      "scientificName": "Theileria parva",
+      "category": "Parasitic",
+      "severity": "High",
+      "symptoms": [
+        "High fever",
+        "Swollen lymph nodes",
+        "Difficulty breathing",
+        "Loss of appetite",
+        "Weakness"
+      ],
+      "transmission": "Tick vector (Rhipicephalus appendiculatus)",
+      "prevention": [
+        "Tick control",
+        "Vaccination",
+        "Acaricide treatment",
+        "Pasture management"
+      ],
+      "treatment": "Antiprotozoal drugs, supportive care",
+      "mortalityRate": "90-100% if untreated",
+      "recoveryTime": "1-2 weeks with treatment",
+      "vaccinationAvailable": true,
+      "zoonotic": false,
+      "affectedSpecies": ["Cattle"],
+      "geographicDistribution": ["East Africa"],
+      "economicImpact": "Very High - high mortality, treatment costs"
+    },
+    {
+      "id": "DIS006",
+      "name": "Anthrax",
+      "scientificName": "Bacillus anthracis",
+      "category": "Bacterial",
+      "severity": "Very High",
+      "symptoms": [
+        "Sudden death",
+        "High fever",
+        "Difficulty breathing",
+        "Bleeding from natural openings",
+        "Swelling"
+      ],
+      "transmission": "Spores in soil, contaminated feed/water",
+      "prevention": [
+        "Vaccination",
+        "Avoid grazing in contaminated areas",
+        "Proper carcass disposal",
+        "Quarantine"
+      ],
+      "treatment": "Antibiotics (early stage only)",
+      "mortalityRate": "80-100%",
+      "recoveryTime": "1-3 days if treated early",
+      "vaccinationAvailable": true,
+      "zoonotic": true,
+      "affectedSpecies": ["Cattle", "Sheep", "Goats", "Horses"],
+      "geographicDistribution": ["Worldwide"],
+      "economicImpact": "Very High - sudden death, trade restrictions"
+    },
+    {
+      "id": "DIS007",
+      "name": "Blackleg",
+      "scientificName": "Clostridium chauvoei",
+      "category": "Bacterial",
+      "severity": "High",
+      "symptoms": [
+        "Sudden death",
+        "Lameness",
+        "Swelling of affected muscles",
+        "Fever",
+        "Loss of appetite"
+      ],
+      "transmission": "Spores in soil, wounds",
+      "prevention": [
+        "Vaccination",
+        "Avoid deep wounds",
+        "Proper wound care",
+        "Soil management"
+      ],
+      "treatment": "Antibiotics (early stage), supportive care",
+      "mortalityRate": "90-100%",
+      "recoveryTime": "1-3 days if treated early",
+      "vaccinationAvailable": true,
+      "zoonotic": false,
+      "affectedSpecies": ["Cattle", "Sheep", "Goats"],
+      "geographicDistribution": ["Worldwide"],
+      "economicImpact": "High - sudden death, treatment costs"
+    },
+    {
+      "id": "DIS008",
+      "name": "Tuberculosis",
+      "scientificName": "Mycobacterium bovis",
+      "category": "Bacterial",
+      "severity": "High",
+      "symptoms": [
+        "Chronic weight loss",
+        "Coughing",
+        "Difficulty breathing",
+        "Enlarged lymph nodes",
+        "Reduced milk production"
+      ],
+      "transmission": "Aerosol, contaminated milk",
+      "prevention": [
+        "Test and cull infected animals",
+        "Pasteurize milk",
+        "Biosecurity measures",
+        "Regular testing"
+      ],
+      "treatment": "Long-term antibiotics (rarely used)",
+      "mortalityRate": "Low",
+      "recoveryTime": "Months to years",
+      "vaccinationAvailable": false,
+      "zoonotic": true,
+      "affectedSpecies": ["Cattle", "Sheep", "Goats", "Pigs"],
+      "geographicDistribution": ["Worldwide"],
+      "economicImpact": "High - trade restrictions, production losses"
+    }
+  ],
+  "preventionPrograms": [
+    {
+      "id": "PREV001",
+      "name": "Vaccination Schedule",
+      "description": "Comprehensive vaccination program for common livestock diseases",
+      "targetDiseases": ["Foot and Mouth Disease", "Brucellosis", "Lumpy Skin Disease", "East Coast Fever"],
+      "schedule": {
+        "calves": "6-8 weeks, 12-16 weeks, annual booster",
+        "adults": "Annual vaccination",
+        "pregnant": "Pre-breeding vaccination"
+      },
+      "cost": "500-1000 KES per animal per year",
+      "effectiveness": "85-95%"
+    },
+    {
+      "id": "PREV002",
+      "name": "Biosecurity Protocol",
+      "description": "Comprehensive biosecurity measures to prevent disease introduction",
+      "measures": [
+        "Quarantine new animals",
+        "Disinfect equipment and vehicles",
+        "Control visitor access",
+        "Proper waste disposal",
+        "Regular health monitoring"
+      ],
+      "implementation": "Ongoing",
+      "cost": "2000-5000 KES per month",
+      "effectiveness": "90-95%"
+    }
+  ],
+  "emergencyContacts": [
+    {
+      "id": "EMER001",
+      "name": "Kenya Veterinary Service",
+      "phone": "+254 20 2716900",
+      "email": "info@kvs.go.ke",
+      "services": ["Emergency Response", "Disease Investigation", "Vaccination Programs"],
+      "availability": "24/7",
+      "coverage": "National"
+    },
+    {
+      "id": "EMER002",
+      "name": "Nairobi Veterinary Hospital",
+      "phone": "+254 20 1234567",
+      "email": "emergency@nairobi-vet.co.ke",
+      "services": ["Emergency Treatment", "Surgery", "Diagnostics"],
+      "availability": "24/7",
+      "coverage": "Nairobi and surrounding areas"
+    }
+  ]
 }
