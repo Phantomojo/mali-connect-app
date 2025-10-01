@@ -82,6 +82,11 @@ class AIService {
       return this.parseAnalysisResponse(analysisText)
     } catch (error) {
       console.error('AI Analysis Error:', error)
+      console.error('Error details:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        groqApiKey: this.groqApiKey ? 'Present' : 'Missing'
+      })
       return this.getFallbackAnalysis()
     }
   }
@@ -131,6 +136,11 @@ class AIService {
       return this.parseMarketAnalysis(analysisText, maliScore)
     } catch (error) {
       console.error('Market Analysis Error:', error)
+      console.error('Error details:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        groqApiKey: this.groqApiKey ? 'Present' : 'Missing'
+      })
       return this.getFallbackMarketAnalysis(maliScore)
     }
   }
@@ -285,6 +295,11 @@ Provide your analysis in this exact JSON format:
       results.groq = groqResponse.ok
     } catch (error) {
       console.error('Groq API test failed:', error)
+      console.error('Groq API Error details:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        status: error instanceof Response ? error.status : 'N/A',
+        groqApiKey: this.groqApiKey ? 'Present' : 'Missing'
+      })
     }
 
     try {
@@ -297,6 +312,11 @@ Provide your analysis in this exact JSON format:
       results.huggingFace = hfResponse.ok
     } catch (error) {
       console.error('Hugging Face API test failed:', error)
+      console.error('Hugging Face API Error details:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        status: error instanceof Response ? error.status : 'N/A',
+        huggingFaceApiKey: this.huggingFaceApiKey ? 'Present' : 'Missing'
+      })
     }
 
     return results
