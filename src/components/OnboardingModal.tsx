@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { X, ChevronRight, ChevronLeft, CheckCircle, Zap, Users, Map, Sparkles } from 'react-feather'
+import { X, ChevronRight, ChevronLeft, CheckCircle, Zap, Users, Map, Star } from 'react-feather'
 import { useTheme } from '../contexts/ThemeContext'
 
 interface OnboardingModalProps {
@@ -43,7 +43,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
       id: 1,
       title: "Welcome to Mali-Connect",
       subtitle: "Next-Gen Livestock Intelligence",
-      icon: <Sparkles className="w-16 h-16 text-yellow-500" />,
+      icon: <Star className="w-16 h-16 text-yellow-500" />,
       content: (
         <div className="text-center space-y-6">
           <div className="w-32 h-32 mx-auto bg-gradient-to-br from-emerald-500 via-cyan-500 to-violet-500 rounded-full flex items-center justify-center mb-6">
