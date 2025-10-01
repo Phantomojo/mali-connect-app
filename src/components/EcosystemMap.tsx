@@ -117,11 +117,11 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
   // Convert AfricanLocation to GeoJSON format
   const convertToGeoJSON = (locations: AfricanLocation[]) => {
     return {
-      type: 'FeatureCollection',
+      type: 'FeatureCollection' as const,
       features: locations.map(location => ({
-        type: 'Feature',
+        type: 'Feature' as const,
         geometry: {
-          type: 'Point',
+          type: 'Point' as const,
           coordinates: location.coordinates
         },
         properties: location
@@ -448,12 +448,12 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
         onClick={(e) => {
           if (e.features && e.features.length > 0) {
             const feature = e.features[0]
-            if (location) {
+            if (feature.properties) {
               setPopupInfo({
                 longitude: e.lngLat.lng,
                 latitude: e.lngLat.lat,
-                name: location.name || 'Unknown Location',
-                properties: location
+                name: feature.properties.name || 'Unknown Location',
+                properties: feature.properties
               })
             }
           }
@@ -851,15 +851,15 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
         {layerVisibility.wind && windData.features.map((feature, index) => (
           <Marker
             key={`wind-${index}`}
-            longitude={location.coordinates[0]}
-            latitude={location.coordinates[1]}
+            longitude={feature.geometry.coordinates[0]}
+            latitude={feature.geometry.coordinates[1]}
             onClick={(e) => {
               e.originalEvent.stopPropagation()
               setPopupInfo({
-                longitude: location.coordinates[0],
-                latitude: location.coordinates[1],
+                longitude: feature.geometry.coordinates[0],
+                latitude: feature.geometry.coordinates[1],
                 name: `Wind Station ${index + 1}`,
-                properties: location
+                properties: feature.properties
               })
             }}
           >

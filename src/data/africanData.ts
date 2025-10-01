@@ -2,7 +2,7 @@ export interface AfricanLocation {
   id: string
   name: string
   country: string
-  type: 'water' | 'market' | 'veterinary' | 'pasture' | 'city' | 'region'
+  type: 'water' | 'market' | 'veterinary' | 'pasture' | 'city' | 'region' | 'weather' | 'feed' | 'transport' | 'processing'
   coordinates: [number, number]
   description: string
   quality?: 'Excellent' | 'Good' | 'Fair' | 'Poor'
