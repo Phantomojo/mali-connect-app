@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { CheckCircle, XCircle, Eye, Clock, User, MapPin, Calendar, AlertTriangle } from 'react-feather'
 import { useTheme } from '../contexts/ThemeContext'
-import type { Animal } from '../data/herdData'
+import { Animal, mockHerd } from '../data/herdData'
 
 interface IntakeDashboardProps {
   onAnimalSelect?: (animal: Animal) => void
@@ -17,72 +17,8 @@ const IntakeDashboard: React.FC<IntakeDashboardProps> = ({
   onReject 
 }) => {
   const { isDarkMode } = useTheme()
-  // Mock data - all pending animals from all herders
-  const pendingAnimals: Animal[] = [
-    {
-      id: 'ANI002',
-      herderId: 'herder01',
-      herderName: 'Jelani',
-      photoUrl: '/images/healthy/cattle-healthy-2.jpg',
-      maliScore: {
-        bodyCondition: 82,
-        physicalHealth: 78,
-        conformation: 85,
-        ageEstimation: 88,
-        totalScore: 82
-      },
-      submissionStatus: 'Pending',
-      submissionTime: '2024-01-16T14:20:00Z',
-      breed: 'Boran',
-      age: 4,
-      weight: 420,
-      location: 'Nairobi County',
-      healthNotes: 'Good health, minor weight concerns',
-      marketValue: 620
-    },
-    {
-      id: 'ANI004',
-      herderId: 'herder02',
-      herderName: 'Asha',
-      photoUrl: '/images/healthy/cattle-healthy-4.jpg',
-      maliScore: {
-        bodyCondition: 75,
-        physicalHealth: 80,
-        conformation: 78,
-        ageEstimation: 82,
-        totalScore: 78
-      },
-      submissionStatus: 'Pending',
-      submissionTime: '2024-01-16T16:45:00Z',
-      breed: 'Sahiwal',
-      age: 5,
-      weight: 400,
-      location: 'Mombasa County',
-      healthNotes: 'Fair condition, needs nutritional improvement',
-      marketValue: 580
-    },
-    {
-      id: 'ANI007',
-      herderId: 'herder01',
-      herderName: 'Jelani',
-      photoUrl: '/images/healthy/cattle-healthy-7.jpg',
-      maliScore: {
-        bodyCondition: 85,
-        physicalHealth: 82,
-        conformation: 88,
-        ageEstimation: 90,
-        totalScore: 85
-      },
-      submissionStatus: 'Pending',
-      submissionTime: '2024-01-17T08:00:00Z',
-      breed: 'Ankole',
-      age: 4,
-      weight: 460,
-      location: 'Nairobi County',
-      healthNotes: 'Good overall health, minor conformation issues',
-      marketValue: 640
-    }
-  ]
+  // Filter for pending animals from all herders
+  const pendingAnimals = mockHerd.filter(animal => animal.submissionStatus === 'Pending')
 
   const [processingAnimals, setProcessingAnimals] = useState<Set<string>>(new Set())
 

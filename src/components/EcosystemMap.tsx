@@ -21,14 +21,9 @@ import {
   droughtData
 } from '../data/mapData'
 import { 
-  africanWaterSourcesData,
-  africanLivestockMarketsData,
-  africanVeterinaryServicesData,
-  africanWeatherStationsData,
-  africanFeedSuppliersData,
-  africanTransportHubsData,
-  africanProcessingFacilitiesData,
-  africanPastureQualityData
+  africanData,
+  getLocationsByType,
+  searchLocations
 } from '../data/africanData'
 import MapDataPanel from './MapDataPanel'
 import LayerPanel from './LayerPanel'
@@ -119,16 +114,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
   }
 
   // Get all features for search
-  const getAllFeatures = () => [
-    ...africanWaterSourcesData.features,
-    ...africanLivestockMarketsData.features,
-    ...africanVeterinaryServicesData.features,
-    ...africanWeatherStationsData.features,
-    ...africanFeedSuppliersData.features,
-    ...africanTransportHubsData.features,
-    ...africanProcessingFacilitiesData.features,
-    ...africanPastureQualityData.features
-  ]
+  const getAllFeatures = () => africanData
 
   // Handle search input changes
   const handleSearchInputChange = (query: string) => {
@@ -140,26 +126,19 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
       return
     }
     
-    const allFeatures = getAllFeatures()
-    const suggestions = allFeatures
-      .filter(feature => 
-        (feature.properties as any).name?.toLowerCase().includes(query.toLowerCase()) ||
-        (feature.properties as any).country?.toLowerCase().includes(query.toLowerCase()) ||
-        (feature.properties as any).area?.toLowerCase().includes(query.toLowerCase())
-      )
-      .slice(0, 5) // Limit to 5 suggestions
+    const suggestions = searchLocations(query).slice(0, 5) // Limit to 5 suggestions
     
     setSearchSuggestions(suggestions)
     setShowSuggestions(suggestions.length > 0)
   }
 
   // Handle search selection
-  const handleSearchSelect = (feature: any) => {
-    setSearchQuery((feature.properties as any).name || 'Unknown')
+  const handleSearchSelect = (location: any) => {
+    setSearchQuery(location.name || 'Unknown')
     setShowSuggestions(false)
     
     if (mapRef) {
-      const [longitude, latitude] = feature.geometry.coordinates
+      const [longitude, latitude] = location.coordinates
       mapRef.flyTo({
         center: [longitude, latitude],
         zoom: 12,
@@ -169,8 +148,8 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
       setPopupInfo({
         longitude,
         latitude,
-        name: (feature.properties as any).name || 'Unknown',
-        properties: feature.properties
+        name: location.name || 'Unknown',
+        properties: location
       })
     }
   }
@@ -179,15 +158,10 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
   const handleSearch = (query: string) => {
     if (!query.trim()) return
     
-    const allFeatures = getAllFeatures()
-    const matchingFeature = allFeatures.find(feature => 
-      (feature.properties as any).name?.toLowerCase().includes(query.toLowerCase()) ||
-      (feature.properties as any).country?.toLowerCase().includes(query.toLowerCase()) ||
-      (feature.properties as any).area?.toLowerCase().includes(query.toLowerCase())
-    )
+    const matchingLocation = searchLocations(query)[0]
     
-    if (matchingFeature && mapRef) {
-      handleSearchSelect(matchingFeature)
+    if (matchingLocation && mapRef) {
+      handleSearchSelect(matchingLocation)
     }
   }
 
@@ -582,7 +556,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
               <Source
                 id="pasture-quality"
                 type="geojson"
-                data={africanPastureQualityData}
+                data={getLocationsByType('pasture')}
               >
             <Layer
               id="pasture-quality-layer"
@@ -634,11 +608,11 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
         )}
 
             {/* Water Sources Markers */}
-            {layerVisibility.waterSources && africanWaterSourcesData.features.map((feature, index) => (
+            {layerVisibility.waterSources && getLocationsByType('water').map((location, index) => (
           <Marker
             key={`water-${index}`}
-            longitude={feature.geometry.coordinates[0]}
-            latitude={feature.geometry.coordinates[1]}
+            longitude={location.coordinates[0]}
+            latitude={location.coordinates[1]}
             onClick={(e) => {
               e.originalEvent.stopPropagation()
               setPopupInfo({
@@ -656,7 +630,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
         ))}
 
             {/* Livestock Markets Markers */}
-            {layerVisibility.markets && africanLivestockMarketsData.features.map((feature, index) => (
+            {layerVisibility.markets && getLocationsByType('market').map((location, index) => (
           <Marker
             key={`market-${index}`}
             longitude={feature.geometry.coordinates[0]}

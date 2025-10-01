@@ -1,7 +1,7 @@
 import React from 'react'
 import { Eye, Calendar, MapPin, TrendingUp, AlertCircle, CheckCircle, Clock, XCircle } from 'react-feather'
 import { useTheme } from '../contexts/ThemeContext'
-import type { Animal } from '../data/herdData'
+import { Animal, mockHerd } from '../data/herdData'
 
 interface HerdDashboardProps {
   onAnimalSelect?: (animal: Animal) => void
@@ -10,93 +10,8 @@ interface HerdDashboardProps {
 
 const HerdDashboard: React.FC<HerdDashboardProps> = ({ onAnimalSelect, selectedAnimal }) => {
   const { isDarkMode } = useTheme()
-  // Mock data - in real app, this would come from props or context
-  const mockHerd: Animal[] = [
-    {
-      id: 'ANI001',
-      herderId: 'herder01',
-      herderName: 'Jelani',
-      photoUrl: '/images/healthy/cattle-healthy-1.jpg',
-      maliScore: {
-        bodyCondition: 88,
-        physicalHealth: 85,
-        conformation: 92,
-        ageEstimation: 90,
-        totalScore: 88
-      },
-      submissionStatus: 'Approved',
-      submissionTime: '2024-01-15T10:30:00Z',
-      breed: 'Ankole',
-      age: 3,
-      weight: 450,
-      location: 'Nairobi County',
-      healthNotes: 'Excellent condition, ideal for breeding',
-      marketValue: 680
-    },
-    {
-      id: 'ANI002',
-      herderId: 'herder01',
-      herderName: 'Jelani',
-      photoUrl: '/images/healthy/cattle-healthy-2.jpg',
-      maliScore: {
-        bodyCondition: 82,
-        physicalHealth: 78,
-        conformation: 85,
-        ageEstimation: 88,
-        totalScore: 82
-      },
-      submissionStatus: 'Pending',
-      submissionTime: '2024-01-16T14:20:00Z',
-      breed: 'Boran',
-      age: 4,
-      weight: 420,
-      location: 'Nairobi County',
-      healthNotes: 'Good health, minor weight concerns',
-      marketValue: 620
-    },
-    {
-      id: 'ANI003',
-      herderId: 'herder01',
-      herderName: 'Jelani',
-      photoUrl: '/images/healthy/cattle-healthy-3.jpg',
-      maliScore: {
-        bodyCondition: 95,
-        physicalHealth: 92,
-        conformation: 88,
-        ageEstimation: 85,
-        totalScore: 92
-      },
-      submissionStatus: 'Under Review',
-      submissionTime: '2024-01-17T09:15:00Z',
-      breed: 'Friesian',
-      age: 2,
-      weight: 380,
-      location: 'Nairobi County',
-      healthNotes: 'Premium quality, exceptional body condition',
-      marketValue: 750
-    },
-    {
-      id: 'ANI007',
-      herderId: 'herder01',
-      herderName: 'Jelani',
-      photoUrl: '/images/healthy/cattle-healthy-7.jpg',
-      maliScore: {
-        bodyCondition: 85,
-        physicalHealth: 82,
-        conformation: 88,
-        ageEstimation: 90,
-        totalScore: 85
-      },
-      submissionStatus: 'Pending',
-      submissionTime: '2024-01-17T08:00:00Z',
-      breed: 'Ankole',
-      age: 4,
-      weight: 460,
-      location: 'Nairobi County',
-      healthNotes: 'Good overall health, minor conformation issues',
-      marketValue: 640
-    }
-  ]
+  // Filter for herder01's animals
+  const herderAnimals = mockHerd.filter(animal => animal.herderId === 'herder01')
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -245,7 +160,7 @@ const HerdDashboard: React.FC<HerdDashboardProps> = ({ onAnimalSelect, selectedA
 
       {/* Animal Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockHerd.map((animal) => (
+        {herderAnimals.map((animal) => (
           <div
             key={animal.id}
             onClick={() => onAnimalSelect?.(animal)}
