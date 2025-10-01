@@ -154,4 +154,4 @@ For support and questions, please open an issue on GitHub.
 
 ---
 
-**Built with ❤️ for the livestock industry**
+**Built with ❤️ for the livestock industry**# Force Vercel rebuild - Wed Oct  1 06:09:18 PM EAT 2025
