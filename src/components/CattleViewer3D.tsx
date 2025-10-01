@@ -19,14 +19,24 @@ const CowModel: React.FC<any> = (props) => {
   // Apply color to all meshes in the scene and handle material conversion
   clonedScene.traverse((child: any) => {
     if (child.isMesh) {
-      // Clone material to avoid modifying original
-      child.material = child.material.clone()
-      
-      // Convert to MeshStandardMaterial if needed (handles KHR_materials_pbrSpecularGlossiness)
-      if (child.material.type !== 'MeshStandardMaterial') {
-        const standardMaterial = new THREE.MeshStandardMaterial()
-        standardMaterial.copy(child.material)
-        child.material = standardMaterial
+      try {
+        // Clone material to avoid modifying original
+        child.material = child.material.clone()
+        
+        // Convert to MeshStandardMaterial if needed (handles KHR_materials_pbrSpecularGlossiness)
+        if (child.material.type !== 'MeshStandardMaterial') {
+          const standardMaterial = new THREE.MeshStandardMaterial()
+          standardMaterial.copy(child.material)
+          child.material = standardMaterial
+        }
+      } catch (error) {
+        console.warn('Material conversion failed, using fallback:', error)
+        // Fallback to basic material
+        child.material = new THREE.MeshStandardMaterial({
+          color: getModelColor(),
+          roughness: 0.3,
+          metalness: 0.1
+        })
       }
       
       // Apply custom properties
@@ -219,26 +229,38 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
               premultipliedAlpha: true,
               preserveDrawingBuffer: false,
               depth: true,
-              stencil: false
+              stencil: false,
+              desynchronized: true
             }}
             onCreated={({ gl }) => {
-              // Handle WebGL context loss
-              gl.domElement.addEventListener('webglcontextlost', (event) => {
+              // Configure WebGL for better stability
+              gl.setClearColor(0x000000, 0)
+              gl.shadowMap.enabled = true
+              gl.shadowMap.type = THREE.PCFSoftShadowMap
+              
+              // Handle WebGL context loss more gracefully
+              const handleContextLost = (event: Event) => {
                 console.warn('WebGL context lost, attempting recovery...')
                 event.preventDefault()
-                // Force a re-render after context restoration
-                setTimeout(() => {
-                  gl.domElement.dispatchEvent(new Event('webglcontextrestored'))
-                }, 100)
-              })
+                // Don't force immediate recovery, let the browser handle it
+              }
               
-              gl.domElement.addEventListener('webglcontextrestored', () => {
+              const handleContextRestored = () => {
                 console.log('WebGL context restored')
-                // Force canvas refresh
-                gl.domElement.style.display = 'none'
-                gl.domElement.offsetHeight // Trigger reflow
-                gl.domElement.style.display = ''
-              })
+                // Re-initialize WebGL settings
+                gl.setClearColor(0x000000, 0)
+                gl.shadowMap.enabled = true
+                gl.shadowMap.type = THREE.PCFSoftShadowMap
+              }
+              
+              gl.domElement.addEventListener('webglcontextlost', handleContextLost)
+              gl.domElement.addEventListener('webglcontextrestored', handleContextRestored)
+              
+              // Cleanup listeners on unmount
+              return () => {
+                gl.domElement.removeEventListener('webglcontextlost', handleContextLost)
+                gl.domElement.removeEventListener('webglcontextrestored', handleContextRestored)
+              }
             }}
       >
         <CattleScene {...props} />

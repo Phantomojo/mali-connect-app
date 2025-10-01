@@ -463,7 +463,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
             <Source
               id="terrain-dem"
               type="raster-dem"
-              url="https://api.maptiler.com/tiles/terrain-rgb/{z}/{x}/{y}.png?key=bWaceUezT910NMn5AGhj"
+              url="https://api.maptiler.com/tiles/terrain-rgb-v2/{z}/{x}/{y}.png?key=bWaceUezT910NMn5AGhj"
               tileSize={256}
               maxzoom={14}
             />
@@ -472,7 +472,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
             <Source
               id="base-satellite"
               type="raster"
-              url="https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key=bWaceUezT910NMn5AGhj"
+              url="https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=bWaceUezT910NMn5AGhj"
               tileSize={256}
               minzoom={0}
               maxzoom={22}
@@ -495,7 +495,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
             <Source
               id="high-res-satellite"
               type="raster"
-              url="https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key=bWaceUezT910NMn5AGhj"
+              url="https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=bWaceUezT910NMn5AGhj"
               tileSize={512}
               minzoom={8}
               maxzoom={22}
@@ -506,8 +506,8 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
                 paint={{
                   'raster-opacity': 0.9,
                   'raster-hue-rotate': 0,
-                  'raster-saturation': 1.1,
-                  'raster-contrast': 1.1,
+                  'raster-saturation': 1.0,
+                  'raster-contrast': 1.0,
                   'raster-brightness-min': 0.1,
                   'raster-brightness-max': 0.9
                 }}
@@ -520,7 +520,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
             <Source
               id="ultra-high-res-satellite"
               type="raster"
-              url="https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key=bWaceUezT910NMn5AGhj"
+              url="https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=bWaceUezT910NMn5AGhj"
               tileSize={512}
               minzoom={14}
               maxzoom={22}
@@ -531,8 +531,8 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
                 paint={{
                   'raster-opacity': 1.0,
                   'raster-hue-rotate': 0,
-                  'raster-saturation': 1.2,
-                  'raster-contrast': 1.2,
+                  'raster-saturation': 1.0,
+                  'raster-contrast': 1.0,
                   'raster-brightness-min': 0.05,
                   'raster-brightness-max': 0.95
                 }}
@@ -545,7 +545,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
             <Source
               id="max-detail-satellite"
               type="raster"
-              url="https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key=bWaceUezT910NMn5AGhj"
+              url="https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=bWaceUezT910NMn5AGhj"
               tileSize={512}
               minzoom={18}
               maxzoom={22}
@@ -556,8 +556,8 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
                 paint={{
                   'raster-opacity': 1.0,
                   'raster-hue-rotate': 0,
-                  'raster-saturation': 1.3,
-                  'raster-contrast': 1.3,
+                  'raster-saturation': 1.0,
+                  'raster-contrast': 1.0,
                   'raster-brightness-min': 0.0,
                   'raster-brightness-max': 1.0
                 }}
