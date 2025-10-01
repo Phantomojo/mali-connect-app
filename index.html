@@ -26,6 +26,29 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Prevent FOUC -->
+    <style>
+      body { 
+        margin: 0; 
+        font-family: 'Inter', system-ui, sans-serif;
+        background: linear-gradient(135deg, #f0fdf4 0%, #f0f9ff 50%, #faf5ff 100%);
+        min-height: 100vh;
+      }
+      #root { 
+        min-height: 100vh; 
+        display: flex;
+        flex-direction: column;
+      }
+      .loading { 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        min-height: 100vh; 
+        font-size: 18px; 
+        color: #059669; 
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
