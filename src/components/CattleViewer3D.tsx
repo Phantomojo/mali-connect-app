@@ -45,14 +45,14 @@ const CowModel: React.FC<any> = (props) => {
         console.warn('Material conversion failed, using fallback:', error)
         // Fallback to basic material
         child.material = new THREE.MeshStandardMaterial({
-          color: getModelColor(maliScore, props.isAnalyzing),
+          color: getModelColor(props.maliScore, props.isAnalyzing),
           roughness: 0.3,
           metalness: 0.1
         })
       }
       
       // Apply custom properties
-      child.material.color.set(props.color || getModelColor(maliScore, props.isAnalyzing))
+      child.material.color.set(props.color || getModelColor(props.maliScore, props.isAnalyzing))
       child.material.roughness = 0.4
       child.material.metalness = 0.1
       child.castShadow = true
@@ -307,13 +307,13 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
           <div 
             className="absolute w-4 h-4 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full border-3 border-white shadow-xl animate-pulse"
             style={{ top: '25%', left: '50%', transform: 'translate(-50%, -50%)' }}
-            title={`Age Estimation: ${maliScore.ageEstimation}`}
+            title={`Age Estimation: ${props.maliScore.ageEstimation}`}
           />
         </div>
       )}
 
       {/* Enhanced Analysis Animation Overlay */}
-      {isAnalyzing && (
+      {props.isAnalyzing && (
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
           <div className="relative">
             <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-ping opacity-75"></div>
@@ -323,7 +323,7 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
       )}
 
       {/* Loading State */}
-      {!maliScore && (
+      {!props.maliScore && (
         <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-mali-green mx-auto mb-4"></div>
