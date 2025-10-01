@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { CreditCard, TrendingUp, Shield, BarChart, FileText, Clock, CheckCircle, AlertCircle } from 'react-feather'
+import { useTheme } from '../contexts/ThemeContext'
 import type { Animal } from '../data/herdData'
 
 interface FinancialServicesProps {
@@ -8,6 +9,7 @@ interface FinancialServicesProps {
 }
 
 const FinancialServices: React.FC<FinancialServicesProps> = ({ viewMode, selectedAnimal }) => {
+  const { isDarkMode } = useTheme()
   const [activeTab, setActiveTab] = useState('insurance')
   const [loanAmount, setLoanAmount] = useState(1000)
   const [loanTerm, setLoanTerm] = useState(12)
@@ -103,23 +105,35 @@ const FinancialServices: React.FC<FinancialServicesProps> = ({ viewMode, selecte
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-2xl shadow-xl p-6">
+      <div className={`rounded-2xl shadow-xl p-6 transition-colors duration-300 ${
+        isDarkMode ? 'bg-gray-800' : 'bg-white'
+      }`}>
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-gray-800">Financial Services</h2>
-            <p className="text-gray-600">Insurance, loans, and financial tools for livestock management</p>
+            <h2 className={`text-2xl font-bold transition-colors duration-300 ${
+              isDarkMode ? 'text-gray-100' : 'text-gray-800'
+            }`}>Financial Services</h2>
+            <p className={`transition-colors duration-300 ${
+              isDarkMode ? 'text-gray-300' : 'text-gray-600'
+            }`}>Insurance, loans, and financial tools for livestock management</p>
           </div>
           {selectedAnimal && (
             <div className="text-right">
-              <div className="text-sm text-gray-500">Selected Animal</div>
-              <div className="text-lg font-semibold text-gray-800">{selectedAnimal.id}</div>
+              <div className={`text-sm transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-400' : 'text-gray-500'
+              }`}>Selected Animal</div>
+              <div className={`text-lg font-semibold transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-100' : 'text-gray-800'
+              }`}>{selectedAnimal.id}</div>
               <div className="text-sm text-green-600">Mali-Score: {selectedAnimal.maliScore.totalScore}</div>
             </div>
           )}
         </div>
 
         {/* Tabs */}
-        <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+        <div className={`flex space-x-1 rounded-lg p-1 transition-colors duration-300 ${
+          isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
+        }`}>
           {tabs.map((tab) => {
             const IconComponent = tab.icon
             return (
@@ -128,8 +142,12 @@ const FinancialServices: React.FC<FinancialServicesProps> = ({ viewMode, selecte
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-md transition-all duration-200 ${
                   activeTab === tab.id
-                    ? 'bg-white text-green-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-800'
+                    ? isDarkMode 
+                      ? 'bg-gray-600 text-green-400 shadow-sm' 
+                      : 'bg-white text-green-600 shadow-sm'
+                    : isDarkMode 
+                      ? 'text-gray-300 hover:text-gray-100' 
+                      : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
                 <IconComponent className="w-4 h-4" />
@@ -145,7 +163,9 @@ const FinancialServices: React.FC<FinancialServicesProps> = ({ viewMode, selecte
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {insurancePlans.map((plan) => (
-              <div key={plan.id} className="bg-white rounded-2xl shadow-xl p-6 relative">
+              <div key={plan.id} className={`rounded-2xl shadow-xl p-6 relative transition-colors duration-300 ${
+                isDarkMode ? 'bg-gray-800' : 'bg-white'
+              }`}>
                 {plan.recommended && (
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <div className="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-medium">
@@ -155,35 +175,49 @@ const FinancialServices: React.FC<FinancialServicesProps> = ({ viewMode, selecte
                 )}
                 
                 <div className="text-center mb-6">
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">{plan.name}</h3>
-                  <p className="text-gray-600 text-sm">{plan.description}</p>
+                  <h3 className={`text-xl font-bold mb-2 transition-colors duration-300 ${
+                    isDarkMode ? 'text-gray-100' : 'text-gray-800'
+                  }`}>{plan.name}</h3>
+                  <p className={`text-sm transition-colors duration-300 ${
+                    isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                  }`}>{plan.description}</p>
                 </div>
 
                 <div className="text-center mb-6">
                   <div className="text-3xl font-bold text-green-600 mb-1">
                     ${plan.monthlyPremium}
-                    <span className="text-lg text-gray-500">/month</span>
+                    <span className={`text-lg transition-colors duration-300 ${
+                      isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                    }`}>/month</span>
                   </div>
-                  <div className="text-sm text-gray-500">Up to ${plan.coverage.toLocaleString()} coverage</div>
+                  <div className={`text-sm transition-colors duration-300 ${
+                    isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                  }`}>Up to ${plan.coverage.toLocaleString()} coverage</div>
                 </div>
 
                 <div className="space-y-3 mb-6">
                   {plan.features.map((feature, index) => (
                     <div key={index} className="flex items-center text-sm">
                       <CheckCircle className="w-4 h-4 text-green-500 mr-3" />
-                      <span className="text-gray-700">{feature}</span>
+                      <span className={`transition-colors duration-300 ${
+                        isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                      }`}>{feature}</span>
                     </div>
                   ))}
                 </div>
 
-                <div className="text-center text-sm text-gray-500 mb-4">
+                <div className={`text-center text-sm mb-4 transition-colors duration-300 ${
+                  isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                }`}>
                   Deductible: ${plan.deductible}
                 </div>
 
                 <button className={`w-full py-3 px-4 rounded-lg font-medium transition-colors duration-200 ${
                   plan.recommended
                     ? 'bg-green-600 text-white hover:bg-green-700'
-                    : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                    : isDarkMode 
+                      ? 'bg-gray-700 text-gray-200 hover:bg-gray-600' 
+                      : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                 }`}>
                   {viewMode === 'herder' ? 'Get Quote' : 'View Details'}
                 </button>

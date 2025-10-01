@@ -1,5 +1,6 @@
 import React from 'react'
 import { Users, Cpu } from 'react-feather'
+import { useTheme } from '../contexts/ThemeContext'
 
 interface ViewToggleProps {
   viewMode: 'herder' | 'processor'
@@ -7,9 +8,15 @@ interface ViewToggleProps {
 }
 
 const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChange }) => {
+  const { isDarkMode } = useTheme()
+  
   return (
     <div className="flex items-center justify-center mb-8">
-      <div className="bg-white rounded-2xl p-2 shadow-xl border border-gray-200/50">
+      <div className={`rounded-2xl p-2 shadow-xl border transition-colors duration-300 ${
+        isDarkMode 
+          ? 'bg-gray-800 border-gray-700/50' 
+          : 'bg-white border-gray-200/50'
+      }`}>
         <div className="flex space-x-2">
           {/* Herder View Button */}
           <button
@@ -17,7 +24,9 @@ const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChange }) =
             className={`flex items-center space-x-3 px-6 py-4 rounded-xl transition-all duration-300 ${
               viewMode === 'herder'
                 ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white shadow-lg scale-105'
-                : 'text-gray-600 hover:bg-gray-100 hover:scale-105'
+                : isDarkMode 
+                  ? 'text-gray-300 hover:bg-gray-700 hover:scale-105' 
+                  : 'text-gray-600 hover:bg-gray-100 hover:scale-105'
             }`}
           >
             <Users className="w-6 h-6" />
@@ -33,7 +42,9 @@ const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChange }) =
             className={`flex items-center space-x-3 px-6 py-4 rounded-xl transition-all duration-300 ${
               viewMode === 'processor'
                 ? 'bg-gradient-to-r from-blue-400 to-cyan-500 text-white shadow-lg scale-105'
-                : 'text-gray-600 hover:bg-gray-100 hover:scale-105'
+                : isDarkMode 
+                  ? 'text-gray-300 hover:bg-gray-700 hover:scale-105' 
+                  : 'text-gray-600 hover:bg-gray-100 hover:scale-105'
             }`}
           >
             <Cpu className="w-6 h-6" />

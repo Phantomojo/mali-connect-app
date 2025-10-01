@@ -12,6 +12,7 @@ interface CattleImage {
 }
 
 interface ImageSelectorProps {
+  isOpen: boolean
   onImageSelect: (image: CattleImage) => void
   selectedImage: CattleImage | null
   onClose: () => void
@@ -121,17 +122,31 @@ const cattleImages: CattleImage[] = [
     description: 'Another example of underweight cattle',
     healthIndicators: ['Thin appearance', 'Poor condition', 'Malnourished'],
     expectedScore: 42
+  },
+
+  // Real Cattle Photos from WhatsApp (Only Image 1)
+  {
+    id: 'real-unhealthy-1',
+    src: '/images/real-cattle/unhealthy-cattle-1.jpeg',
+    alt: 'Real Unhealthy Cattle 1',
+    category: 'disease',
+    description: 'Real cattle photo showing health issues - WhatsApp source',
+    healthIndicators: ['Real-world case', 'Field conditions', 'Actual health assessment needed'],
+    expectedScore: 30
   }
 ]
 
-const ImageSelector: React.FC<ImageSelectorProps> = ({ onImageSelect, selectedImage, onClose }) => {
+const ImageSelector: React.FC<ImageSelectorProps> = ({ isOpen, onImageSelect, selectedImage, onClose }) => {
+  if (!isOpen) return null
   const [currentIndex, setCurrentIndex] = useState(0)
   const [showDetails, setShowDetails] = useState(false)
-  const [filter, setFilter] = useState<'all' | 'healthy' | 'disease' | 'underweight'>('all')
+  const [filter, setFilter] = useState<'all' | 'healthy' | 'disease' | 'underweight' | 'real'>('all')
 
-  const filteredImages = cattleImages.filter(img => 
-    filter === 'all' || img.category === filter
-  )
+  const filteredImages = cattleImages.filter(img => {
+    if (filter === 'all') return true
+    if (filter === 'real') return img.id.startsWith('real-')
+    return img.category === filter
+  })
 
   const currentImage = filteredImages[currentIndex]
 
@@ -149,7 +164,8 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onImageSelect, selectedIm
     }
   }
 
-  const getCategoryColor = (category: string) => {
+  const getCategoryColor = (category: string, id: string) => {
+    if (id.startsWith('real-')) return 'bg-purple-100 text-purple-800 border-purple-200'
     switch (category) {
       case 'healthy': return 'bg-green-100 text-green-800 border-green-200'
       case 'disease': return 'bg-red-100 text-red-800 border-red-200'
@@ -189,7 +205,8 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onImageSelect, selectedIm
               { key: 'all', label: 'All Cases', count: cattleImages.length },
               { key: 'healthy', label: 'Healthy', count: cattleImages.filter(img => img.category === 'healthy').length },
               { key: 'disease', label: 'Disease', count: cattleImages.filter(img => img.category === 'disease').length },
-              { key: 'underweight', label: 'Underweight', count: cattleImages.filter(img => img.category === 'underweight').length }
+              { key: 'underweight', label: 'Underweight', count: cattleImages.filter(img => img.category === 'underweight').length },
+              { key: 'real', label: 'Real Cases', count: cattleImages.filter(img => img.id.startsWith('real-')).length }
             ].map(({ key, label, count }) => (
               <button
                 key={key}
@@ -269,8 +286,8 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ onImageSelect, selectedIm
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-xl font-bold text-gray-800">{currentImage.alt}</h3>
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getCategoryColor(currentImage.category)}`}>
-                        {currentImage.category.charAt(0).toUpperCase() + currentImage.category.slice(1)}
+                      <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getCategoryColor(currentImage.category, currentImage.id)}`}>
+                        {currentImage.id.startsWith('real-') ? 'Real Case' : currentImage.category.charAt(0).toUpperCase() + currentImage.category.slice(1)}
                       </span>
                     </div>
                     <p className="text-gray-600 mb-4">{currentImage.description}</p>

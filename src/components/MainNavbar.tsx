@@ -1,5 +1,6 @@
 import React from 'react'
-import { BarChart, Map, ShoppingCart, CreditCard } from 'react-feather'
+import { BarChart, Map, ShoppingCart, CreditCard, Activity } from 'react-feather'
+import { useTheme } from '../contexts/ThemeContext'
 
 interface MainNavbarProps {
   activeSection: string
@@ -7,12 +8,19 @@ interface MainNavbarProps {
 }
 
 const MainNavbar: React.FC<MainNavbarProps> = ({ activeSection, onSectionChange }) => {
+  const { isDarkMode } = useTheme()
   const navItems = [
     {
       id: 'dashboard',
       label: 'Dashboard',
       icon: BarChart,
       color: 'from-green-400 to-emerald-500'
+    },
+    {
+      id: 'assessment',
+      label: 'Assessment',
+      icon: Activity,
+      color: 'from-indigo-400 to-purple-500'
     },
     {
       id: 'ecosystem-map',
@@ -36,7 +44,11 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ activeSection, onSectionChange 
 
   return (
     <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-40 hidden lg:block">
-      <div className="bg-white rounded-2xl p-2 shadow-xl border border-gray-200/50">
+      <div className={`rounded-2xl p-2 shadow-xl border transition-colors duration-300 ${
+        isDarkMode 
+          ? 'bg-gray-800 border-gray-700/50' 
+          : 'bg-white border-gray-200/50'
+      }`}>
         <div className="flex flex-col space-y-2">
           {navItems.map((item) => {
             const IconComponent = item.icon
@@ -47,7 +59,9 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ activeSection, onSectionChange 
                 className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 group relative ${
                   activeSection === item.id
                     ? `bg-gradient-to-r ${item.color} text-white shadow-lg scale-105`
-                    : 'text-gray-600 hover:bg-gray-100 hover:scale-105'
+                    : isDarkMode 
+                      ? 'text-gray-300 hover:bg-gray-700 hover:scale-105' 
+                      : 'text-gray-600 hover:bg-gray-100 hover:scale-105'
                 }`}
               >
                 <IconComponent className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />

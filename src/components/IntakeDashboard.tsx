@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { CheckCircle, XCircle, Eye, Clock, User, MapPin, Calendar, AlertTriangle } from 'react-feather'
+import { useTheme } from '../contexts/ThemeContext'
 import type { Animal } from '../data/herdData'
 
 interface IntakeDashboardProps {
@@ -15,6 +16,7 @@ const IntakeDashboard: React.FC<IntakeDashboardProps> = ({
   onApprove, 
   onReject 
 }) => {
+  const { isDarkMode } = useTheme()
   // Mock data - all pending animals from all herders
   const pendingAnimals: Animal[] = [
     {
@@ -85,10 +87,10 @@ const IntakeDashboard: React.FC<IntakeDashboardProps> = ({
   const [processingAnimals, setProcessingAnimals] = useState<Set<string>>(new Set())
 
   const getScoreColor = (score: number) => {
-    if (score >= 85) return 'text-green-600 bg-green-50'
-    if (score >= 70) return 'text-blue-600 bg-blue-50'
-    if (score >= 55) return 'text-yellow-600 bg-yellow-50'
-    return 'text-red-600 bg-red-50'
+    if (score >= 85) return isDarkMode ? 'text-green-300 bg-green-900/30' : 'text-green-600 bg-green-50'
+    if (score >= 70) return isDarkMode ? 'text-blue-300 bg-blue-900/30' : 'text-blue-600 bg-blue-50'
+    if (score >= 55) return isDarkMode ? 'text-yellow-300 bg-yellow-900/30' : 'text-yellow-600 bg-yellow-50'
+    return isDarkMode ? 'text-red-300 bg-red-900/30' : 'text-red-600 bg-red-50'
   }
 
   const getScoreLabel = (score: number) => {
@@ -151,62 +153,94 @@ const IntakeDashboard: React.FC<IntakeDashboardProps> = ({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-2xl shadow-xl p-6">
+      <div className={`rounded-2xl shadow-xl p-6 transition-colors duration-300 ${
+        isDarkMode ? 'bg-gray-800' : 'bg-white'
+      }`}>
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-2xl font-bold text-gray-800">Animal Intake Dashboard</h2>
-            <p className="text-gray-600">Review and process pending livestock submissions</p>
+            <h2 className={`text-2xl font-bold transition-colors duration-300 ${
+              isDarkMode ? 'text-gray-100' : 'text-gray-800'
+            }`}>Animal Intake Dashboard</h2>
+            <p className={`transition-colors duration-300 ${
+              isDarkMode ? 'text-gray-300' : 'text-gray-600'
+            }`}>Review and process pending livestock submissions</p>
           </div>
           <div className="text-right">
             <div className="text-3xl font-bold text-yellow-600">{pendingAnimals.length}</div>
-            <div className="text-sm text-gray-500">Pending Reviews</div>
+            <div className={`text-sm transition-colors duration-300 ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-500'
+            }`}>Pending Reviews</div>
           </div>
         </div>
         
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-yellow-50 rounded-lg p-4">
+          <div className={`rounded-lg p-4 transition-colors duration-300 ${
+            isDarkMode ? 'bg-yellow-900/30' : 'bg-yellow-50'
+          }`}>
             <div className="flex items-center">
               <Clock className="w-5 h-5 text-yellow-500 mr-2" />
               <div>
-                <div className="text-lg font-semibold text-yellow-800">{pendingAnimals.length}</div>
-                <div className="text-sm text-yellow-600">Pending</div>
+                <div className={`text-lg font-semibold transition-colors duration-300 ${
+                  isDarkMode ? 'text-yellow-300' : 'text-yellow-800'
+                }`}>{pendingAnimals.length}</div>
+                <div className={`text-sm transition-colors duration-300 ${
+                  isDarkMode ? 'text-yellow-400' : 'text-yellow-600'
+                }`}>Pending</div>
               </div>
             </div>
           </div>
           
-          <div className="bg-green-50 rounded-lg p-4">
+          <div className={`rounded-lg p-4 transition-colors duration-300 ${
+            isDarkMode ? 'bg-green-900/30' : 'bg-green-50'
+          }`}>
             <div className="flex items-center">
               <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
               <div>
-                <div className="text-lg font-semibold text-green-800">
+                <div className={`text-lg font-semibold transition-colors duration-300 ${
+                  isDarkMode ? 'text-green-300' : 'text-green-800'
+                }`}>
                   {pendingAnimals.filter(a => a.maliScore.totalScore >= 80).length}
                 </div>
-                <div className="text-sm text-green-600">High Quality</div>
+                <div className={`text-sm transition-colors duration-300 ${
+                  isDarkMode ? 'text-green-400' : 'text-green-600'
+                }`}>High Quality</div>
               </div>
             </div>
           </div>
           
-          <div className="bg-blue-50 rounded-lg p-4">
+          <div className={`rounded-lg p-4 transition-colors duration-300 ${
+            isDarkMode ? 'bg-blue-900/30' : 'bg-blue-50'
+          }`}>
             <div className="flex items-center">
               <User className="w-5 h-5 text-blue-500 mr-2" />
               <div>
-                <div className="text-lg font-semibold text-blue-800">
+                <div className={`text-lg font-semibold transition-colors duration-300 ${
+                  isDarkMode ? 'text-blue-300' : 'text-blue-800'
+                }`}>
                   {new Set(pendingAnimals.map(a => a.herderId)).size}
                 </div>
-                <div className="text-sm text-blue-600">Active Herders</div>
+                <div className={`text-sm transition-colors duration-300 ${
+                  isDarkMode ? 'text-blue-400' : 'text-blue-600'
+                }`}>Active Herders</div>
               </div>
             </div>
           </div>
           
-          <div className="bg-purple-50 rounded-lg p-4">
+          <div className={`rounded-lg p-4 transition-colors duration-300 ${
+            isDarkMode ? 'bg-purple-900/30' : 'bg-purple-50'
+          }`}>
             <div className="flex items-center">
               <AlertTriangle className="w-5 h-5 text-purple-500 mr-2" />
               <div>
-                <div className="text-lg font-semibold text-purple-800">
+                <div className={`text-lg font-semibold transition-colors duration-300 ${
+                  isDarkMode ? 'text-purple-300' : 'text-purple-800'
+                }`}>
                   {pendingAnimals.filter(a => a.maliScore.totalScore < 70).length}
                 </div>
-                <div className="text-sm text-purple-600">Need Attention</div>
+                <div className={`text-sm transition-colors duration-300 ${
+                  isDarkMode ? 'text-purple-400' : 'text-purple-600'
+                }`}>Need Attention</div>
               </div>
             </div>
           </div>
@@ -214,43 +248,75 @@ const IntakeDashboard: React.FC<IntakeDashboardProps> = ({
       </div>
 
       {/* Pending Animals Table */}
-      <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-800">Pending Submissions</h3>
-          <p className="text-sm text-gray-600">Click on any row to view detailed assessment</p>
+      <div className={`rounded-2xl shadow-xl overflow-hidden transition-colors duration-300 ${
+        isDarkMode ? 'bg-gray-800' : 'bg-white'
+      }`}>
+        <div className={`px-6 py-4 border-b transition-colors duration-300 ${
+          isDarkMode ? 'border-gray-700' : 'border-gray-200'
+        }`}>
+          <h3 className={`text-lg font-semibold transition-colors duration-300 ${
+            isDarkMode ? 'text-gray-100' : 'text-gray-800'
+          }`}>Pending Submissions</h3>
+          <p className={`text-sm transition-colors duration-300 ${
+            isDarkMode ? 'text-gray-300' : 'text-gray-600'
+          }`}>Click on any row to view detailed assessment</p>
         </div>
         
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className={`transition-colors duration-300 ${
+              isDarkMode ? 'bg-gray-700' : 'bg-gray-50'
+            }`}>
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider transition-colors duration-300 ${
+                  isDarkMode ? 'text-gray-300' : 'text-gray-500'
+                }`}>
                   Animal
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider transition-colors duration-300 ${
+                  isDarkMode ? 'text-gray-300' : 'text-gray-500'
+                }`}>
                   Herder
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider transition-colors duration-300 ${
+                  isDarkMode ? 'text-gray-300' : 'text-gray-500'
+                }`}>
                   Mali-Score
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider transition-colors duration-300 ${
+                  isDarkMode ? 'text-gray-300' : 'text-gray-500'
+                }`}>
                   Submitted
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider transition-colors duration-300 ${
+                  isDarkMode ? 'text-gray-300' : 'text-gray-500'
+                }`}>
                   Location
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider transition-colors duration-300 ${
+                  isDarkMode ? 'text-gray-300' : 'text-gray-500'
+                }`}>
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className={`divide-y transition-colors duration-300 ${
+              isDarkMode ? 'bg-gray-800 divide-gray-700' : 'bg-white divide-gray-200'
+            }`}>
               {pendingAnimals.map((animal) => (
                 <tr
                   key={animal.id}
                   onClick={() => onAnimalSelect?.(animal)}
-                  className={`hover:bg-gray-50 cursor-pointer transition-colors duration-200 ${
-                    selectedAnimal?.id === animal.id ? 'bg-green-50' : ''
+                  className={`cursor-pointer transition-colors duration-200 ${
+                    isDarkMode 
+                      ? 'hover:bg-gray-700' 
+                      : 'hover:bg-gray-50'
+                  } ${
+                    selectedAnimal?.id === animal.id 
+                      ? isDarkMode 
+                        ? 'bg-green-900/30' 
+                        : 'bg-green-50' 
+                      : ''
                   }`}
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -266,18 +332,28 @@ const IntakeDashboard: React.FC<IntakeDashboardProps> = ({
                         />
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{animal.id}</div>
-                        <div className="text-sm text-gray-500">{animal.breed} • {animal.age}y • {animal.weight}kg</div>
+                        <div className={`text-sm font-medium transition-colors duration-300 ${
+                          isDarkMode ? 'text-gray-100' : 'text-gray-900'
+                        }`}>{animal.id}</div>
+                        <div className={`text-sm transition-colors duration-300 ${
+                          isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                        }`}>{animal.breed} • {animal.age}y • {animal.weight}kg</div>
                       </div>
                     </div>
                   </td>
                   
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <User className="w-4 h-4 text-gray-400 mr-2" />
+                      <User className={`w-4 h-4 mr-2 transition-colors duration-300 ${
+                        isDarkMode ? 'text-gray-500' : 'text-gray-400'
+                      }`} />
                       <div>
-                        <div className="text-sm font-medium text-gray-900">{animal.herderName}</div>
-                        <div className="text-sm text-gray-500">ID: {animal.herderId}</div>
+                        <div className={`text-sm font-medium transition-colors duration-300 ${
+                          isDarkMode ? 'text-gray-100' : 'text-gray-900'
+                        }`}>{animal.herderName}</div>
+                        <div className={`text-sm transition-colors duration-300 ${
+                          isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                        }`}>ID: {animal.herderId}</div>
                       </div>
                     </div>
                   </td>
@@ -290,17 +366,25 @@ const IntakeDashboard: React.FC<IntakeDashboardProps> = ({
                   </td>
                   
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center text-sm text-gray-900">
-                      <Calendar className="w-4 h-4 text-gray-400 mr-2" />
+                    <div className={`flex items-center text-sm transition-colors duration-300 ${
+                      isDarkMode ? 'text-gray-100' : 'text-gray-900'
+                    }`}>
+                      <Calendar className={`w-4 h-4 mr-2 transition-colors duration-300 ${
+                        isDarkMode ? 'text-gray-500' : 'text-gray-400'
+                      }`} />
                       <div>
                         <div>{formatDate(animal.submissionTime)}</div>
-                        <div className="text-xs text-gray-500">{getTimeAgo(animal.submissionTime)}</div>
+                        <div className={`text-xs transition-colors duration-300 ${
+                          isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                        }`}>{getTimeAgo(animal.submissionTime)}</div>
                       </div>
                     </div>
                   </td>
                   
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center text-sm text-gray-500">
+                    <div className={`flex items-center text-sm transition-colors duration-300 ${
+                      isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                    }`}>
                       <MapPin className="w-4 h-4 mr-1" />
                       {animal.location}
                     </div>
@@ -345,7 +429,11 @@ const IntakeDashboard: React.FC<IntakeDashboardProps> = ({
                           e.stopPropagation()
                           onAnimalSelect?.(animal)
                         }}
-                        className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        className={`inline-flex items-center px-3 py-1.5 border text-xs font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-300 ${
+                          isDarkMode 
+                            ? 'border-gray-600 text-gray-300 bg-gray-700 hover:bg-gray-600' 
+                            : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
+                        }`}
                       >
                         <Eye className="w-3 h-3 mr-1" />
                         View
@@ -361,13 +449,25 @@ const IntakeDashboard: React.FC<IntakeDashboardProps> = ({
 
       {/* Empty State */}
       {pendingAnimals.length === 0 && (
-        <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle className="w-8 h-8 text-gray-400" />
+        <div className={`rounded-2xl shadow-xl p-12 text-center transition-colors duration-300 ${
+          isDarkMode ? 'bg-gray-800' : 'bg-white'
+        }`}>
+          <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 transition-colors duration-300 ${
+            isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
+          }`}>
+            <CheckCircle className={`w-8 h-8 transition-colors duration-300 ${
+              isDarkMode ? 'text-gray-500' : 'text-gray-400'
+            }`} />
           </div>
-          <h3 className="text-xl font-semibold text-gray-800 mb-2">No Pending Submissions</h3>
-          <p className="text-gray-600 mb-6">All animal submissions have been processed. Great work!</p>
-          <div className="text-sm text-gray-500">
+          <h3 className={`text-xl font-semibold mb-2 transition-colors duration-300 ${
+            isDarkMode ? 'text-gray-100' : 'text-gray-800'
+          }`}>No Pending Submissions</h3>
+          <p className={`mb-6 transition-colors duration-300 ${
+            isDarkMode ? 'text-gray-300' : 'text-gray-600'
+          }`}>All animal submissions have been processed. Great work!</p>
+          <div className={`text-sm transition-colors duration-300 ${
+            isDarkMode ? 'text-gray-400' : 'text-gray-500'
+          }`}>
             New submissions will appear here as herders submit their animals for assessment.
           </div>
         </div>

@@ -216,7 +216,7 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
               alpha: false,
               powerPreference: "high-performance",
               failIfMajorPerformanceCaveat: false,
-              premultipliedAlpha: false,
+              premultipliedAlpha: true,
               preserveDrawingBuffer: false,
               depth: true,
               stencil: false

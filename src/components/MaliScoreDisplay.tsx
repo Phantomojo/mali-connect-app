@@ -1,6 +1,7 @@
 import React from 'react'
 import { TrendingUp, Activity, Shield, Clock } from 'react-feather'
 import Lottie from 'lottie-react'
+import { useTheme } from '../contexts/ThemeContext'
 import successAnimation from '../assets/animations/success-checkmark.json'
 
 interface MaliScore {
@@ -16,6 +17,7 @@ interface MaliScoreDisplayProps {
 }
 
 const MaliScoreDisplay: React.FC<MaliScoreDisplayProps> = ({ maliScore }) => {
+  const { isDarkMode } = useTheme()
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'score-excellent'
     if (score >= 60) return 'score-good'
@@ -37,7 +39,9 @@ const MaliScoreDisplay: React.FC<MaliScoreDisplayProps> = ({ maliScore }) => {
   }
 
   return (
-    <div className="card">
+    <div className={`card transition-colors duration-300 ${
+      isDarkMode ? 'bg-gray-800' : 'bg-white'
+    }`}>
       <div className="text-center mb-6">
         <div className="flex items-center justify-center mb-4">
           <Lottie
@@ -46,8 +50,12 @@ const MaliScoreDisplay: React.FC<MaliScoreDisplayProps> = ({ maliScore }) => {
             style={{ width: 60, height: 60 }}
           />
         </div>
-        <h2 className="text-3xl font-bold text-mali-dark mb-2">Mali-Score Generated</h2>
-        <p className="text-mali-gray">AI-powered livestock health assessment complete</p>
+        <h2 className={`text-3xl font-bold mb-2 transition-colors duration-300 ${
+          isDarkMode ? 'text-gray-100' : 'text-mali-dark'
+        }`}>Mali-Score Generated</h2>
+        <p className={`transition-colors duration-300 ${
+          isDarkMode ? 'text-gray-300' : 'text-mali-gray'
+        }`}>AI-powered livestock health assessment complete</p>
       </div>
 
       {/* Overall Score */}
@@ -65,49 +73,81 @@ const MaliScoreDisplay: React.FC<MaliScoreDisplayProps> = ({ maliScore }) => {
       {/* Detailed Breakdown */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+          <div className={`flex items-center justify-between p-3 rounded-lg transition-colors duration-300 ${
+            isDarkMode ? 'bg-gray-700' : 'bg-gray-50'
+          }`}>
             <div className="flex items-center">
               <Activity className="mr-3 text-mali-green" size={20} />
-              <span className="font-medium">Body Condition</span>
+              <span className={`font-medium transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-200' : 'text-gray-900'
+              }`}>Body Condition</span>
             </div>
             <div className="text-right">
-              <div className="font-bold text-lg">{maliScore.bodyCondition}</div>
-              <div className="text-sm text-mali-gray">40% weight</div>
+              <div className={`font-bold text-lg transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-100' : 'text-gray-900'
+              }`}>{maliScore.bodyCondition}</div>
+              <div className={`text-sm transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-400' : 'text-mali-gray'
+              }`}>40% weight</div>
             </div>
           </div>
 
-          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+          <div className={`flex items-center justify-between p-3 rounded-lg transition-colors duration-300 ${
+            isDarkMode ? 'bg-gray-700' : 'bg-gray-50'
+          }`}>
             <div className="flex items-center">
               <Shield className="mr-3 text-mali-blue" size={20} />
-              <span className="font-medium">Physical Health</span>
+              <span className={`font-medium transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-200' : 'text-gray-900'
+              }`}>Physical Health</span>
             </div>
             <div className="text-right">
-              <div className="font-bold text-lg">{maliScore.physicalHealth}</div>
-              <div className="text-sm text-mali-gray">25% weight</div>
+              <div className={`font-bold text-lg transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-100' : 'text-gray-900'
+              }`}>{maliScore.physicalHealth}</div>
+              <div className={`text-sm transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-400' : 'text-mali-gray'
+              }`}>25% weight</div>
             </div>
           </div>
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+          <div className={`flex items-center justify-between p-3 rounded-lg transition-colors duration-300 ${
+            isDarkMode ? 'bg-gray-700' : 'bg-gray-50'
+          }`}>
             <div className="flex items-center">
               <TrendingUp className="mr-3 text-mali-orange" size={20} />
-              <span className="font-medium">Conformation</span>
+              <span className={`font-medium transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-200' : 'text-gray-900'
+              }`}>Conformation</span>
             </div>
             <div className="text-right">
-              <div className="font-bold text-lg">{maliScore.conformation}</div>
-              <div className="text-sm text-mali-gray">20% weight</div>
+              <div className={`font-bold text-lg transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-100' : 'text-gray-900'
+              }`}>{maliScore.conformation}</div>
+              <div className={`text-sm transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-400' : 'text-mali-gray'
+              }`}>20% weight</div>
             </div>
           </div>
 
-          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+          <div className={`flex items-center justify-between p-3 rounded-lg transition-colors duration-300 ${
+            isDarkMode ? 'bg-gray-700' : 'bg-gray-50'
+          }`}>
             <div className="flex items-center">
               <Clock className="mr-3 text-mali-red" size={20} />
-              <span className="font-medium">Age Estimation</span>
+              <span className={`font-medium transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-200' : 'text-gray-900'
+              }`}>Age Estimation</span>
             </div>
             <div className="text-right">
-              <div className="font-bold text-lg">{maliScore.ageEstimation}</div>
-              <div className="text-sm text-mali-gray">15% weight</div>
+              <div className={`font-bold text-lg transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-100' : 'text-gray-900'
+              }`}>{maliScore.ageEstimation}</div>
+              <div className={`text-sm transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-400' : 'text-mali-gray'
+              }`}>15% weight</div>
             </div>
           </div>
         </div>
