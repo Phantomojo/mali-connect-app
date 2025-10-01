@@ -12,12 +12,23 @@ interface AnalysisStep {
   completed: boolean
 }
 
-interface AIAnalysisProps {
-  isAnalyzing: boolean
-  onAnalysisComplete?: (results: any) => void
+interface AIImageAnalysis {
+  analysis: string
+  confidence: number
+  recommendations: string[]
 }
 
-const AIAnalysis: React.FC<AIAnalysisProps> = ({ isAnalyzing, onAnalysisComplete }) => {
+interface AIAnalysisProps {
+  analysis: AIImageAnalysis | null
+  isLoading: boolean
+  selectedImage: string | null
+  apiStatus: {
+    groq: boolean
+    huggingFace: boolean
+  }
+}
+
+const AIAnalysis: React.FC<AIAnalysisProps> = ({ analysis, isLoading, selectedImage, apiStatus }) => {
   const [currentStep, setCurrentStep] = useState(0)
   const [progress, setProgress] = useState(0)
   const [steps, setSteps] = useState<AnalysisStep[]>([])
@@ -82,7 +93,7 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ isAnalyzing, onAnalysisComplete
   ]
 
   useEffect(() => {
-    if (isAnalyzing) {
+    if (isLoading) {
       setSteps(analysisSteps)
       setCurrentStep(0)
       setProgress(0)
@@ -92,7 +103,7 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ isAnalyzing, onAnalysisComplete
       setCurrentStep(0)
       setProgress(0)
     }
-  }, [isAnalyzing])
+  }, [isLoading])
 
   const startAnalysis = async () => {
     for (let i = 0; i < analysisSteps.length; i++) {
@@ -125,7 +136,7 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ isAnalyzing, onAnalysisComplete
     }
   }
 
-  if (!isAnalyzing) return null
+  if (!isLoading) return null
 
   return (
     <div className="card">

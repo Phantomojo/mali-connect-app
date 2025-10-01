@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 interface ThemeContextType {
   isDarkMode: boolean
   toggleDarkMode: () => void
-  theme: 'light' | 'dark'
+  theme: string
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)

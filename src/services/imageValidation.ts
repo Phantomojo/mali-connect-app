@@ -235,8 +235,8 @@ class ImageValidationService {
       const { createWorker } = await import('tesseract.js')
       const worker = await createWorker()
       
-      await worker.loadLanguage('eng')
-      await worker.initialize('eng')
+    await (worker as any).loadLanguage('eng')
+    await (worker as any).initialize('eng')
       
       const { data: { text } } = await worker.recognize(base64)
       await worker.terminate()

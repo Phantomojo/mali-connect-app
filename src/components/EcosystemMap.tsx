@@ -143,9 +143,9 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
     const allFeatures = getAllFeatures()
     const suggestions = allFeatures
       .filter(feature => 
-        feature.properties.name.toLowerCase().includes(query.toLowerCase()) ||
-        feature.properties.country?.toLowerCase().includes(query.toLowerCase()) ||
-        feature.properties.area?.toLowerCase().includes(query.toLowerCase())
+        (feature.properties as any).name?.toLowerCase().includes(query.toLowerCase()) ||
+        (feature.properties as any).country?.toLowerCase().includes(query.toLowerCase()) ||
+        (feature.properties as any).area?.toLowerCase().includes(query.toLowerCase())
       )
       .slice(0, 5) // Limit to 5 suggestions
     
@@ -155,7 +155,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
 
   // Handle search selection
   const handleSearchSelect = (feature: any) => {
-    setSearchQuery(feature.properties.name)
+    setSearchQuery((feature.properties as any).name || 'Unknown')
     setShowSuggestions(false)
     
     if (mapRef) {
@@ -169,7 +169,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
       setPopupInfo({
         longitude,
         latitude,
-        name: feature.properties.name,
+        name: (feature.properties as any).name || 'Unknown',
         properties: feature.properties
       })
     }
@@ -181,9 +181,9 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
     
     const allFeatures = getAllFeatures()
     const matchingFeature = allFeatures.find(feature => 
-      feature.properties.name.toLowerCase().includes(query.toLowerCase()) ||
-      feature.properties.country?.toLowerCase().includes(query.toLowerCase()) ||
-      feature.properties.area?.toLowerCase().includes(query.toLowerCase())
+      (feature.properties as any).name?.toLowerCase().includes(query.toLowerCase()) ||
+      (feature.properties as any).country?.toLowerCase().includes(query.toLowerCase()) ||
+      (feature.properties as any).area?.toLowerCase().includes(query.toLowerCase())
     )
     
     if (matchingFeature && mapRef) {
@@ -427,9 +427,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
         pixelRatio={Math.min(window.devicePixelRatio || 1, 3)} // Higher pixel ratio for better quality
         renderWorldCopies={false}
         interactiveLayerIds={['pasture-quality-layer']}
-        antialias={true} // Enable antialiasing for smoother graphics
         preserveDrawingBuffer={true} // Better rendering quality
-        optimizeForTerrain={true} // Optimize for terrain rendering
         onMouseEnter={(e) => {
           if (e.features && e.features.length > 0) {
             e.target.getCanvas().style.cursor = 'pointer'

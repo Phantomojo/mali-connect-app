@@ -12,11 +12,18 @@ interface MaliScore {
   totalScore: number
 }
 
-interface MaliScoreDisplayProps {
-  maliScore: MaliScore
+interface AIImageAnalysis {
+  analysis: string
+  confidence: number
+  recommendations: string[]
 }
 
-const MaliScoreDisplay: React.FC<MaliScoreDisplayProps> = ({ maliScore }) => {
+interface MaliScoreDisplayProps {
+  maliScore: MaliScore
+  analysis?: AIImageAnalysis | null
+}
+
+const MaliScoreDisplay: React.FC<MaliScoreDisplayProps> = ({ maliScore, analysis }) => {
   const { isDarkMode } = useTheme()
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'score-excellent'
