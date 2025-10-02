@@ -15,8 +15,12 @@ import HerdDashboard from './components/HerdDashboard'
 import IntakeDashboard from './components/IntakeDashboard'
 import AnimalDetailView from './components/AnimalDetailView'
 import Marketplace from './components/Marketplace'
+import FunctionalMarketplace from './components/FunctionalMarketplace'
 import FinancialServices from './components/FinancialServices'
+import EnhancedFinancialServices from './components/EnhancedFinancialServices'
 import EcosystemMap from './components/EcosystemMap'
+import SimpleEcosystemMap from './components/SimpleEcosystemMap'
+import Enhanced3DGlobe from './components/Enhanced3DGlobe'
 import OnboardingModal from './components/OnboardingModal'
 import DarkModeToggle from './components/DarkModeToggle'
 import type { Animal } from './data/herdData'
@@ -64,6 +68,10 @@ function AppContent() {
   // Navigation drawer state
   const [isNavOpen, setIsNavOpen] = useState(false)
   
+  // Enhanced features state
+  const [showEnhanced3DGlobe, setShowEnhanced3DGlobe] = useState(false)
+  const [selectedMarketHub, setSelectedMarketHub] = useState<any>(null)
+  
   // Onboarding state
   const [showOnboarding, setShowOnboarding] = useState(false)
   
@@ -96,16 +104,27 @@ function AppContent() {
     }
   }, [])
 
-  // Close navigation drawer on escape key
+  // Close navigation drawer on escape key and handle globe events
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isNavOpen) {
         setIsNavOpen(false)
       }
     }
+
+    const handleShowGlobe = (event: CustomEvent) => {
+      if (event.detail.show) {
+        setShowEnhanced3DGlobe(true)
+      }
+    }
     
     document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
+    window.addEventListener('showGlobe', handleShowGlobe as EventListener)
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+      window.removeEventListener('showGlobe', handleShowGlobe as EventListener)
+    }
   }, [isNavOpen])
 
   // Test API connectivity on component mount
@@ -324,18 +343,30 @@ function AppContent() {
               )}
               
               {activeSection === 'marketplace' && (
-                <Marketplace viewMode={viewMode} />
+                <FunctionalMarketplace viewMode={viewMode} />
               )}
               
               {activeSection === 'financial-services' && (
-                <FinancialServices 
+                <EnhancedFinancialServices 
                   viewMode={viewMode} 
                   selectedAnimal={selectedAnimal}
                 />
               )}
               
               {activeSection === 'ecosystem-map' && (
-                <EcosystemMap onClose={() => setActiveSection('dashboard')} />
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-2xl font-bold">Resource Management</h2>
+                    <button
+                      onClick={() => setShowEnhanced3DGlobe(true)}
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
+                    >
+                      <span>🌍</span>
+                      <span>View 3D Globe</span>
+                    </button>
+                  </div>
+                  <EcosystemMap onClose={() => setActiveSection('dashboard')} />
+                </div>
               )}
 
               {activeSection === 'assessment' && (
@@ -469,6 +500,17 @@ function AppContent() {
             </div>
           )}
         </Suspense>
+
+        {/* Enhanced 3D Globe Modal */}
+        {showEnhanced3DGlobe && (
+          <Enhanced3DGlobe
+            isGlobeMode={true}
+            onToggleMode={() => {}}
+            selectedMarket={selectedMarketHub}
+            onMarketSelect={setSelectedMarketHub}
+            onClose={() => setShowEnhanced3DGlobe(false)}
+          />
+        )}
 
         {/* Onboarding Modal */}
         <OnboardingModal 

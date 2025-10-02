@@ -1,7 +1,8 @@
-import React, { Suspense, useRef, useMemo } from 'react'
+import React, { Suspense, useRef, useMemo, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Environment, useGLTF, useTexture, Sparkles, Float } from '@react-three/drei'
 import * as THREE from 'three'
+import PerformanceMonitor from './PerformanceMonitor'
 
 interface CattleViewer3DProps {
   activeSection?: string
@@ -222,10 +223,10 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
             </mesh>
             {/* Legs with better shape */}
             {[
-              [0.4, -0.8, 0.4],
-              [0.4, -0.8, -0.4],
-              [-0.4, -0.8, 0.4],
-              [-0.4, -0.8, -0.4]
+              [0.4, -0.8, 0.4] as [number, number, number],
+              [0.4, -0.8, -0.4] as [number, number, number],
+              [-0.4, -0.8, 0.4] as [number, number, number],
+              [-0.4, -0.8, -0.4] as [number, number, number]
             ].map((pos, i) => (
               <mesh key={i} position={pos} castShadow receiveShadow>
                 <capsuleGeometry args={[0.1, 0.8, 4, 8]} />
@@ -263,45 +264,39 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
         />
       </mesh>
       
-      {/* Animated grass patches */}
-      {Array.from({ length: 30 }, (_, i) => {
-        const angle = (i / 30) * Math.PI * 2
-        const radius = 3 + Math.random() * 6
-        const x = Math.cos(angle) * radius + (Math.random() - 0.5) * 2
-        const z = Math.sin(angle) * radius + (Math.random() - 0.5) * 2
+      {/* Simplified grass patches - reduced count for performance */}
+      {Array.from({ length: 12 }, (_, i) => {
+        const angle = (i / 12) * Math.PI * 2
+        const radius = 4 + Math.random() * 4
+        const x = Math.cos(angle) * radius
+        const z = Math.sin(angle) * radius
         
         return (
-          <Float
+          <mesh
             key={i}
-            speed={0.2 + Math.random() * 0.3}
-            rotationIntensity={0.1}
-            floatIntensity={0.05}
+            position={[x, -0.98, z]}
+            rotation={[-Math.PI / 2, 0, Math.random() * Math.PI]}
+            scale={[0.6, 0.6, 1]}
           >
-            <mesh
-              position={[x, -0.98, z]}
-              rotation={[-Math.PI / 2, 0, Math.random() * Math.PI]}
-              scale={[0.5 + Math.random() * 0.5, 0.5 + Math.random() * 0.5, 1]}
-            >
-              <planeGeometry args={[0.3, 0.3]} />
-              <meshStandardMaterial 
-                color={['#90EE90', '#98FB98', '#00FF7F', '#32CD32'][Math.floor(Math.random() * 4)]}
-                transparent
-                opacity={0.8}
-                side={THREE.DoubleSide}
-              />
-            </mesh>
-          </Float>
+            <planeGeometry args={[0.4, 0.4]} />
+            <meshStandardMaterial 
+              color={i % 2 === 0 ? '#90EE90' : '#98FB98'}
+              transparent
+              opacity={0.7}
+              side={THREE.DoubleSide}
+            />
+          </mesh>
         )
       })}
 
-      {/* Subtle particles for atmosphere */}
+      {/* Reduced particles for better performance */}
       <Sparkles
-        count={25}
-        scale={15}
-        size={1}
-        speed={0.1}
+        count={8}
+        scale={12}
+        size={0.8}
+        speed={0.05}
         color="#ffffff"
-        opacity={0.3}
+        opacity={0.2}
       />
 
       {/* Enhanced Environment */}
@@ -311,6 +306,13 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
 }
 
 const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
+  const [performanceMode, setPerformanceMode] = useState<'normal' | 'reduced'>('normal')
+
+  const handlePerformanceIssue = () => {
+    console.log('Switching to reduced performance mode')
+    setPerformanceMode('reduced')
+  }
+
   return (
     <div className="w-full h-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 rounded-lg overflow-hidden relative shadow-xl border border-gray-200">
       <Canvas
@@ -323,26 +325,29 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
         shadows
         style={{ width: '100%', height: '100%' }}
             gl={{ 
-              antialias: true,
+              antialias: false, // Disable for better performance
               alpha: false,
-              powerPreference: "high-performance",
-              failIfMajorPerformanceCaveat: false,
-              premultipliedAlpha: true,
+              powerPreference: "default", // Use default instead of high-performance
+              failIfMajorPerformanceCaveat: true, // Fail gracefully on low-end devices
+              premultipliedAlpha: false, // Disable to reduce WebGL warnings
               preserveDrawingBuffer: false,
               depth: true,
               stencil: false
             }}
+            dpr={[1, 2]} // Limit device pixel ratio for performance
             onCreated={({ gl }) => {
-              // Configure WebGL for better stability
+              // Configure WebGL for better stability and performance
               gl.setClearColor(0x000000, 0)
               gl.shadowMap.enabled = true
               gl.shadowMap.type = THREE.PCFSoftShadowMap
+              
+              // Optimize WebGL settings for better performance
+              gl.setPixelRatio(Math.min(window.devicePixelRatio, 2))
               
               // Handle WebGL context loss more gracefully
               const handleContextLost = (event: Event) => {
                 console.warn('WebGL context lost, attempting recovery...')
                 event.preventDefault()
-                // Don't force immediate recovery, let the browser handle it
               }
               
               const handleContextRestored = () => {
@@ -351,6 +356,7 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
                 gl.setClearColor(0x000000, 0)
                 gl.shadowMap.enabled = true
                 gl.shadowMap.type = THREE.PCFSoftShadowMap
+                gl.setPixelRatio(Math.min(window.devicePixelRatio, 2))
               }
               
               gl.domElement.addEventListener('webglcontextlost', handleContextLost)
@@ -363,7 +369,8 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
               }
             }}
       >
-        <CattleScene {...props} />
+        <PerformanceMonitor onPerformanceIssue={handlePerformanceIssue} />
+        <CattleScene {...props} performanceMode={performanceMode} />
         <OrbitControls 
           enablePan={true}
           enableZoom={true}
@@ -450,6 +457,16 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
                 <span className="text-white text-sm font-medium">AI Analysis in Progress...</span>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Performance Mode Indicator */}
+      {performanceMode === 'reduced' && (
+        <div className="absolute top-4 left-4 bg-yellow-100 border border-yellow-300 rounded-lg px-3 py-2 text-sm">
+          <div className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
+            <span className="text-yellow-800 font-medium">Performance Mode</span>
           </div>
         </div>
       )}

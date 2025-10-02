@@ -383,6 +383,29 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
           <MapPin className="w-4 h-4" />
         </button>
 
+        {/* 3D Globe Button */}
+        <button
+          onClick={() => {
+            // We'll pass this up to the parent component
+            if (onClose) {
+              onClose()
+              // Trigger the 3D globe view
+              setTimeout(() => {
+                const globeEvent = new CustomEvent('showGlobe', { detail: { show: true } })
+                window.dispatchEvent(globeEvent)
+              }, 100)
+            }
+          }}
+          className={`w-10 h-10 rounded-lg shadow-lg border flex items-center justify-center transition-colors duration-200 group ${
+            isDarkMode 
+              ? 'bg-blue-800 hover:bg-blue-700 text-blue-300 border-blue-600' 
+              : 'bg-blue-500 hover:bg-blue-600 text-white border-blue-400'
+          }`}
+          title="Switch to 3D Globe"
+        >
+          <Globe className="w-4 h-4" />
+        </button>
+
         {/* Close Button */}
         {onClose && (
           <button
@@ -405,7 +428,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
           latitude: 0.0,
           zoom: 2 // Start with a wider view
         }}
-        mapStyle="https://api.maptiler.com/maps/hybrid/style.json?key=bWaceUezT910NMn5AGhj"
+        mapStyle="https://api.maptiler.com/maps/hybrid/style.json?key=0EfDvZ6OhNPaaT3X24Cm"
         style={{ width: '100%', height: '100%' }}
         terrain={{
           source: 'terrain-dem',
@@ -416,7 +439,6 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
         pixelRatio={Math.min(window.devicePixelRatio || 1, 3)} // Higher pixel ratio for better quality
         renderWorldCopies={false}
         interactiveLayerIds={['pasture-quality-layer']}
-        // preserveDrawingBuffer={true} // Better rendering quality - removed as not supported
         onMouseEnter={(e) => {
           if (e.features && e.features.length > 0) {
             e.target.getCanvas().style.cursor = 'pointer'
@@ -459,20 +481,12 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
           }
         }}
       >
-            {/* Terrain Data Source */}
-            <Source
-              id="terrain-dem"
-              type="raster-dem"
-              url="https://api.maptiler.com/tiles/terrain-rgb-v2/{z}/{x}/{y}.png?key=bWaceUezT910NMn5AGhj"
-              tileSize={256}
-              maxzoom={14}
-            />
 
             {/* Base Satellite Layer - Global Coverage */}
             <Source
               id="base-satellite"
               type="raster"
-              url="https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=bWaceUezT910NMn5AGhj"
+              url="https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=0EfDvZ6OhNPaaT3X24Cm"
               tileSize={256}
               minzoom={0}
               maxzoom={22}
@@ -495,7 +509,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
             <Source
               id="high-res-satellite"
               type="raster"
-              url="https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=bWaceUezT910NMn5AGhj"
+              url="https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=0EfDvZ6OhNPaaT3X24Cm"
               tileSize={512}
               minzoom={8}
               maxzoom={22}
@@ -520,7 +534,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
             <Source
               id="ultra-high-res-satellite"
               type="raster"
-              url="https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=bWaceUezT910NMn5AGhj"
+              url="https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=0EfDvZ6OhNPaaT3X24Cm"
               tileSize={512}
               minzoom={14}
               maxzoom={22}
@@ -545,7 +559,7 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
             <Source
               id="max-detail-satellite"
               type="raster"
-              url="https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=bWaceUezT910NMn5AGhj"
+              url="https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=0EfDvZ6OhNPaaT3X24Cm"
               tileSize={512}
               minzoom={18}
               maxzoom={22}
@@ -565,6 +579,14 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
                 maxzoom={22}
               />
             </Source>
+
+            {/* Terrain DEM Source for 3D terrain */}
+            <Source 
+              id="terrain-dem" 
+              type="raster-dem" 
+              tiles={["https://api.maptiler.com/tiles/terrain-rgb-v2/{z}/{x}/{y}.png?key=0EfDvZ6OhNPaaT3X24Cm"]} 
+              tileSize={256}
+            />
 
             {/* Pasture Quality Layer */}
             {layerVisibility.pasture && (
