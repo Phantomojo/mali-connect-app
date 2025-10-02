@@ -149,11 +149,11 @@ const AnimalDetailView: React.FC<AnimalDetailViewProps> = ({
       </div>
 
       {/* 3D Model and Enhanced Score Display */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* 3D Model Viewer */}
-        <div className="bg-white rounded-2xl shadow-xl p-6">
+        <div className="xl:col-span-2 bg-white rounded-2xl shadow-xl p-6">
           <h3 className="text-xl font-bold text-gray-800 mb-4">3D Health Visualization</h3>
-          <div className="h-96">
+          <div className="h-[500px] lg:h-[600px]">
             <AdaptiveCattleViewer 
               activeSection="score"
               maliScore={animal.maliScore}
@@ -163,7 +163,7 @@ const AnimalDetailView: React.FC<AnimalDetailViewProps> = ({
         </div>
 
         {/* Enhanced Mali Score Display */}
-        <div>
+        <div className="xl:col-span-1">
           <EnhancedMaliScoreDisplay 
             maliScore={animal.maliScore}
             animalId={animal.id}
