@@ -373,6 +373,24 @@ const Enhanced3DGlobe: React.FC<Enhanced3DGlobeProps> = ({
         </div>
         
         {/* Close button */}
+        {/* Back to Map Button */}
+        <button
+          onClick={() => {
+            if (onClose) {
+              onClose()
+              // Trigger the map view
+              setTimeout(() => {
+                const mapEvent = new CustomEvent('showMap', { detail: { show: true } })
+                window.dispatchEvent(mapEvent)
+              }, 100)
+            }
+          }}
+          className="absolute top-4 left-4 z-10 p-3 rounded-full bg-green-500 text-white hover:bg-green-600 transition-all duration-200 group"
+          title="Back to 2D Map"
+        >
+          <MapPin className="w-6 h-6 group-hover:scale-110 transition-transform duration-200" />
+        </button>
+
         {onClose && (
           <button
             onClick={onClose}

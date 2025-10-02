@@ -117,13 +117,21 @@ function AppContent() {
         setShowEnhanced3DGlobe(true)
       }
     }
+
+    const handleShowMap = (event: CustomEvent) => {
+      if (event.detail.show) {
+        setActiveSection('ecosystem-map')
+      }
+    }
     
     document.addEventListener('keydown', handleEscape)
     window.addEventListener('showGlobe', handleShowGlobe as EventListener)
+    window.addEventListener('showMap', handleShowMap as EventListener)
     
     return () => {
       document.removeEventListener('keydown', handleEscape)
       window.removeEventListener('showGlobe', handleShowGlobe as EventListener)
+      window.removeEventListener('showMap', handleShowMap as EventListener)
     }
   }, [isNavOpen])
 

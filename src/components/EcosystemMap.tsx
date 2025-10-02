@@ -396,14 +396,15 @@ const EcosystemMap: React.FC<EcosystemMapProps> = ({ onClose }) => {
               }, 100)
             }
           }}
-          className={`w-10 h-10 rounded-lg shadow-lg border flex items-center justify-center transition-colors duration-200 group ${
+          className={`w-10 h-10 rounded-lg shadow-lg border flex items-center justify-center transition-all duration-200 group relative overflow-hidden ${
             isDarkMode 
               ? 'bg-blue-800 hover:bg-blue-700 text-blue-300 border-blue-600' 
               : 'bg-blue-500 hover:bg-blue-600 text-white border-blue-400'
           }`}
-          title="Switch to 3D Globe"
+          title="Switch to 3D Globe View"
         >
-          <Globe className="w-4 h-4" />
+          <Globe className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
         </button>
 
         {/* Close Button */}
