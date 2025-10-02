@@ -1,19 +1,8 @@
 import { useState, Suspense, lazy, useEffect } from 'react'
 import { 
-  Folder, 
-  Search, 
-  BarChart, 
-  Cpu, 
-  Globe, 
   Camera, 
   MessageCircle,
-  Grid,
-  Activity,
   Shield,
-  TrendingUp,
-  Users,
-  ShoppingCart,
-  CreditCard,
   Upload,
   X
 } from 'react-feather'
@@ -72,6 +61,9 @@ function AppContent() {
   const [showDetailView, setShowDetailView] = useState(false)
   const [showChat, setShowChat] = useState(false)
   
+  // Navigation drawer state
+  const [isNavOpen, setIsNavOpen] = useState(false)
+  
   // Onboarding state
   const [showOnboarding, setShowOnboarding] = useState(false)
   
@@ -103,6 +95,18 @@ function AppContent() {
       setShowOnboarding(true)
     }
   }, [])
+
+  // Close navigation drawer on escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isNavOpen) {
+        setIsNavOpen(false)
+      }
+    }
+    
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [isNavOpen])
 
   // Test API connectivity on component mount
   useEffect(() => {
@@ -228,7 +232,7 @@ function AppContent() {
         ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' 
         : 'bg-gradient-to-br from-green-50 via-blue-50 to-purple-50'
     }`}>
-      <div className="w-full max-w-7xl mx-auto px-4 py-8 pb-20 md:pb-8 flex-1">
+      <div className="w-full max-w-7xl mx-auto px-4 py-8 flex-1">
         {/* Header with Dark Mode Toggle */}
         <div className="flex justify-between items-center mb-8">
           <div className="flex-1"></div>
@@ -282,12 +286,17 @@ function AppContent() {
         {/* View Toggle */}
         <ViewToggle viewMode={viewMode} onViewModeChange={setViewMode} />
 
-        {/* Main Navigation - Desktop (Right Side) */}
-        <MainNavbar activeSection={activeSection} onSectionChange={setActiveSection} />
+        {/* Main Navigation - Slide-out Drawer */}
+        <MainNavbar 
+          activeSection={activeSection} 
+          onSectionChange={setActiveSection}
+          isOpen={isNavOpen}
+          onToggle={() => setIsNavOpen(!isNavOpen)}
+        />
 
 
         {/* Main Content Area */}
-        <div className="main-content mt-8 pb-20 lg:pb-8">
+        <div className="main-content mt-8 pb-8">
           {showDetailView && selectedAnimal ? (
             <AnimalDetailView 
               animal={selectedAnimal}
@@ -407,43 +416,6 @@ function AppContent() {
           </button>
         </div>
 
-        {/* Mobile Chat Button - Integrated into bottom nav */}
-        <div className={`fixed bottom-0 left-0 right-0 backdrop-blur-xl shadow-2xl border-t z-50 lg:hidden transition-colors duration-300 ${
-          isDarkMode 
-            ? 'bg-gray-900/95 border-gray-700/50' 
-            : 'bg-white/95 border-gray-200/50'
-        }`}>
-          <div className="flex justify-around py-2">
-            {[
-              { id: 'dashboard', icon: BarChart, label: 'Dashboard' },
-              { id: 'assessment', icon: Activity, label: 'Assessment' },
-              { id: 'marketplace', icon: ShoppingCart, label: 'Marketplace' },
-              { id: 'financial-services', icon: CreditCard, label: 'Financial' },
-              { id: 'ecosystem-map', icon: Globe, label: 'Map' },
-              { id: 'chat', icon: MessageCircle, label: 'Chat', isSpecial: true },
-            ].map((item) => {
-              const IconComponent = item.icon;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => item.id === 'chat' ? setShowChat(true) : setActiveSection(item.id)}
-                  className={`flex flex-col items-center p-2 rounded-lg transition-all duration-300 ${
-                    item.isSpecial
-                      ? 'bg-gradient-to-br from-pink-400 to-rose-500 text-white shadow-lg'
-                      : activeSection === item.id
-                      ? 'bg-gradient-to-br from-green-400 to-blue-500 text-white shadow-lg'
-                      : isDarkMode 
-                        ? 'text-gray-300 hover:bg-gray-800' 
-                        : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  <IconComponent className="w-5 h-5 mb-1" />
-                  <div className="text-xs font-medium">{item.label}</div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
 
         {/* AI Chat Modal */}
         <Suspense fallback={null}>
