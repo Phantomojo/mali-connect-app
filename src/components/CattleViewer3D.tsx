@@ -1,6 +1,6 @@
-import React, { Suspense } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Environment, useGLTF } from '@react-three/drei'
+import React, { Suspense, useRef, useMemo } from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { OrbitControls, Environment, useGLTF, useTexture, Sparkles, Float } from '@react-three/drei'
 import * as THREE from 'three'
 
 interface CattleViewer3DProps {
@@ -9,60 +9,124 @@ interface CattleViewer3DProps {
   isAnalyzing?: boolean
 }
 
-// Helper function for model color
-const getModelColor = (maliScore?: any, isAnalyzing?: boolean) => {
-  if (isAnalyzing) return '#8B5CF6' // Purple during analysis
-  if (!maliScore) return '#059669' // Darker green - Default
+// Enhanced helper function for model appearance
+const getModelAppearance = (maliScore?: any, isAnalyzing?: boolean) => {
+  if (isAnalyzing) return {
+    baseColor: '#8B5CF6',
+    spotColor: '#A78BFA',
+    emissive: '#4C1D95',
+    roughness: 0.3,
+    metalness: 0.0,
+    glow: true
+  }
   
-  // Color based on Mali-Score with more vibrant colors
-  if (maliScore.totalScore >= 80) return '#059669' // Dark Green - Excellent
-  if (maliScore.totalScore >= 60) return '#2563EB' // Dark Blue - Good
-  if (maliScore.totalScore >= 40) return '#D97706' // Dark Orange - Fair
-  return '#DC2626' // Dark Red - Poor
+  if (!maliScore) return {
+    baseColor: '#8B4513', // Saddle brown - realistic cattle color
+    spotColor: '#A0522D', // Sienna spots
+    emissive: '#000000',
+    roughness: 0.7,
+    metalness: 0.0,
+    glow: false
+  }
+  
+  // Appearance based on Mali-Score with realistic cattle colors
+  if (maliScore.totalScore >= 80) return {
+    baseColor: '#8B4513', // Healthy brown
+    spotColor: '#F4A460', // Sandy brown spots
+    emissive: '#004d00', // Subtle green glow for excellent health
+    roughness: 0.6,
+    metalness: 0.0,
+    glow: true
+  }
+  if (maliScore.totalScore >= 60) return {
+    baseColor: '#A0522D', // Sienna
+    spotColor: '#CD853F', // Peru spots
+    emissive: '#000080', // Blue glow for good health
+    roughness: 0.7,
+    metalness: 0.0,
+    glow: false
+  }
+  if (maliScore.totalScore >= 40) return {
+    baseColor: '#8B4513', // Darker brown
+    spotColor: '#696969', // Dim gray spots
+    emissive: '#8B4500', // Orange glow for fair health
+    roughness: 0.8,
+    metalness: 0.0,
+    glow: false
+  }
+  return {
+    baseColor: '#654321', // Dark brown
+    spotColor: '#2F4F4F', // Dark slate gray
+    emissive: '#8B0000', // Red glow for poor health
+    roughness: 0.9,
+    metalness: 0.0,
+    glow: false
+  }
 }
 
-// Direct GLB loading component with color override
-const CowModel: React.FC<any> = (props) => {
+// Enhanced animated cow model with realistic materials
+const EnhancedCowModel: React.FC<any> = (props) => {
   const gltf = useGLTF('/models/low-poly_cow_-_neutral_pose.glb')
+  const groupRef = useRef<THREE.Group>(null)
   
-  // Clone the scene to avoid modifying the original
-  const clonedScene = gltf.scene.clone()
+  // Get appearance settings based on health score
+  const appearance = useMemo(() => getModelAppearance(props.maliScore, props.isAnalyzing), [props.maliScore, props.isAnalyzing])
   
-  // Apply color to all meshes in the scene and handle material conversion
-  clonedScene.traverse((child: any) => {
-    if (child.isMesh) {
-      try {
-        // Clone material to avoid modifying original
-        child.material = child.material.clone()
-        
-        // Convert to MeshStandardMaterial if needed (handles KHR_materials_pbrSpecularGlossiness)
-        if (child.material.type !== 'MeshStandardMaterial') {
-          const standardMaterial = new THREE.MeshStandardMaterial()
-          standardMaterial.copy(child.material)
-          child.material = standardMaterial
-        }
-      } catch (error) {
-        console.warn('Material conversion failed, using fallback:', error)
-        // Fallback to basic material
-        child.material = new THREE.MeshStandardMaterial({
-          color: getModelColor(props.maliScore, props.isAnalyzing),
-          roughness: 0.3,
-          metalness: 0.1
-        })
-      }
+  // Subtle breathing animation
+  useFrame((state) => {
+    if (groupRef.current && !props.isAnalyzing) {
+      // Gentle breathing motion
+      const breathingScale = 1 + Math.sin(state.clock.elapsedTime * 1.5) * 0.02
+      groupRef.current.scale.y = 1.5 * breathingScale
       
-      // Apply custom properties
-      child.material.color.set(props.color || getModelColor(props.maliScore, props.isAnalyzing))
-      child.material.roughness = 0.4
-      child.material.metalness = 0.1
-      child.castShadow = true
-      child.receiveShadow = true
+      // Very subtle idle sway
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.05
     }
   })
   
+  // Clone the scene to avoid modifying the original
+  const clonedScene = useMemo(() => {
+    const scene = gltf.scene.clone()
+    
+    // Apply enhanced materials to all meshes
+    scene.traverse((child: any) => {
+      if (child.isMesh) {
+        // Create enhanced material with realistic cattle appearance
+        const enhancedMaterial = new THREE.MeshStandardMaterial({
+          color: appearance.baseColor,
+          roughness: appearance.roughness,
+          metalness: appearance.metalness,
+          emissive: appearance.emissive,
+          emissiveIntensity: appearance.glow ? 0.1 : 0,
+        })
+        
+        // Add subtle normal mapping effect for texture
+        enhancedMaterial.bumpScale = 0.1
+        
+        child.material = enhancedMaterial
+        child.castShadow = true
+        child.receiveShadow = true
+      }
+    })
+    
+    return scene
+  }, [appearance])
+  
   return (
-    <group {...props} dispose={null} scale={[1.5, 1.5, 1.5]} position={[0, -0.5, 0]}>
+    <group ref={groupRef} {...props} dispose={null} scale={[1.5, 1.5, 1.5]} position={[0, -0.5, 0]}>
       <primitive object={clonedScene} />
+      
+      {/* Health glow effect for excellent health */}
+      {appearance.glow && (
+        <Sparkles
+          count={15}
+          scale={3}
+          size={2}
+          speed={0.3}
+          color={appearance.emissive}
+          opacity={0.6}
+        />
+      )}
     </group>
   )
 }
@@ -72,151 +136,176 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
   isAnalyzing 
 }: any) => {
 
+  // Get appearance for lighting adjustments
+  const appearance = useMemo(() => getModelAppearance(maliScore, isAnalyzing), [maliScore, isAnalyzing])
+
   return (
     <>
-      {/* Enhanced Lighting for Better Visibility */}
-      <ambientLight intensity={1.2} color="#ffffff" />
+      {/* Enhanced Natural Lighting Setup */}
+      <ambientLight intensity={0.4} color="#f0f9ff" />
+      
+      {/* Main sun light */}
       <directionalLight 
-        position={[5, 10, 5]} 
-        intensity={2.0} 
-        color="#ffffff"
+        position={[8, 12, 6]} 
+        intensity={1.5} 
+        color="#fff8dc"
         castShadow
-        shadow-mapSize-width={4096}
-        shadow-mapSize-height={4096}
-        shadow-camera-far={30}
-        shadow-camera-left={-15}
-        shadow-camera-right={15}
-        shadow-camera-top={15}
-        shadow-camera-bottom={-15}
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+        shadow-camera-far={50}
+        shadow-camera-left={-20}
+        shadow-camera-right={20}
+        shadow-camera-top={20}
+        shadow-camera-bottom={-20}
+        shadow-bias={-0.0001}
       />
+      
+      {/* Fill light for softer shadows */}
       <directionalLight 
-        position={[-5, 8, 5]} 
-        intensity={1.0} 
-        color="#ffffff"
+        position={[-4, 6, 8]} 
+        intensity={0.6} 
+        color="#e6f3ff"
       />
+      
+      {/* Rim light for better definition */}
       <directionalLight 
-        position={[0, 10, -5]} 
-        intensity={0.8} 
-        color="#ffffff"
+        position={[0, 8, -10]} 
+        intensity={0.4} 
+        color="#fff5ee"
       />
+      
+      {/* Natural hemisphere lighting */}
       <hemisphereLight 
-        intensity={0.8} 
-        color="#ffffff" 
-        groundColor="#f8fafc" 
+        intensity={0.6} 
+        color="#87ceeb" 
+        groundColor="#8fbc8f" 
       />
-
-      {/* Real 3D Cow Model */}
-      <Suspense fallback={
-        <group position={[0, -0.8, 0]} rotation={[0, Math.PI / 4, 0]}>
-          {/* Body */}
-          <mesh position={[0, 0, 0]} castShadow receiveShadow>
-            <boxGeometry args={[2, 1.2, 1]} />
-            <meshStandardMaterial 
-              color={getModelColor(maliScore, isAnalyzing)}
-              roughness={0.3}
-              metalness={0.1}
-            />
-          </mesh>
-          {/* Head */}
-          <mesh position={[1.2, 0.3, 0]} castShadow receiveShadow>
-            <boxGeometry args={[0.8, 0.8, 0.8]} />
-            <meshStandardMaterial 
-              color={getModelColor(maliScore, isAnalyzing)}
-              roughness={0.3}
-              metalness={0.1}
-            />
-          </mesh>
-          {/* Legs */}
-          <mesh position={[0.5, -0.8, 0.3]} castShadow receiveShadow>
-            <boxGeometry args={[0.2, 0.8, 0.2]} />
-            <meshStandardMaterial 
-              color={getModelColor(maliScore, isAnalyzing)}
-              roughness={0.3}
-              metalness={0.1}
-            />
-          </mesh>
-          <mesh position={[0.5, -0.8, -0.3]} castShadow receiveShadow>
-            <boxGeometry args={[0.2, 0.8, 0.2]} />
-            <meshStandardMaterial 
-              color={getModelColor(maliScore, isAnalyzing)}
-              roughness={0.3}
-              metalness={0.1}
-            />
-          </mesh>
-          <mesh position={[-0.5, -0.8, 0.3]} castShadow receiveShadow>
-            <boxGeometry args={[0.2, 0.8, 0.2]} />
-            <meshStandardMaterial 
-              color={getModelColor(maliScore, isAnalyzing)}
-              roughness={0.3}
-              metalness={0.1}
-            />
-          </mesh>
-          <mesh position={[-0.5, -0.8, -0.3]} castShadow receiveShadow>
-            <boxGeometry args={[0.2, 0.8, 0.2]} />
-            <meshStandardMaterial 
-              color={getModelColor(maliScore, isAnalyzing)}
-              roughness={0.3}
-              metalness={0.1}
-            />
-          </mesh>
-        </group>
-      }>
-        <CowModel 
-          position={[0, -0.8, 0]} 
-          scale={[1.5, 1.5, 1.5]} 
-          rotation={[0, Math.PI / 4, 0]}
-          color={getModelColor(maliScore, isAnalyzing)}
-          castShadow 
-          receiveShadow
+      
+      {/* Analysis mode special lighting */}
+      {isAnalyzing && (
+        <pointLight
+          position={[0, 5, 0]}
+          intensity={1.0}
+          color="#8B5CF6"
+          distance={15}
+          decay={2}
         />
-      </Suspense>
+      )}
 
-      {/* Natural Ground plane */}
+      {/* Enhanced 3D Cow Model with Animation */}
+      <Float
+        speed={0.5}
+        rotationIntensity={0.1}
+        floatIntensity={0.1}
+        floatingRange={[0, 0.1]}
+      >
+        <Suspense fallback={
+          <group position={[0, -0.8, 0]} rotation={[0, Math.PI / 4, 0]}>
+            {/* Enhanced fallback model with better proportions */}
+            <mesh position={[0, 0, 0]} castShadow receiveShadow>
+              <capsuleGeometry args={[0.8, 1.6, 4, 8]} />
+              <meshStandardMaterial 
+                color={appearance.baseColor}
+                roughness={appearance.roughness}
+                metalness={appearance.metalness}
+                emissive={appearance.emissive}
+              />
+            </mesh>
+            {/* Head */}
+            <mesh position={[1.4, 0.4, 0]} castShadow receiveShadow>
+              <capsuleGeometry args={[0.4, 0.6, 4, 8]} />
+              <meshStandardMaterial 
+                color={appearance.baseColor}
+                roughness={appearance.roughness}
+                metalness={appearance.metalness}
+              />
+            </mesh>
+            {/* Legs with better shape */}
+            {[
+              [0.4, -0.8, 0.4],
+              [0.4, -0.8, -0.4],
+              [-0.4, -0.8, 0.4],
+              [-0.4, -0.8, -0.4]
+            ].map((pos, i) => (
+              <mesh key={i} position={pos} castShadow receiveShadow>
+                <capsuleGeometry args={[0.1, 0.8, 4, 8]} />
+                <meshStandardMaterial 
+                  color={appearance.baseColor}
+                  roughness={appearance.roughness}
+                  metalness={appearance.metalness}
+                />
+              </mesh>
+            ))}
+          </group>
+        }>
+          <EnhancedCowModel 
+            position={[0, -0.8, 0]} 
+            rotation={[0, Math.PI / 4, 0]}
+            maliScore={maliScore}
+            isAnalyzing={isAnalyzing}
+            castShadow 
+            receiveShadow
+          />
+        </Suspense>
+      </Float>
+
+      {/* Enhanced Natural Ground */}
       <mesh 
-        position={[0, -1, 0]} 
+        position={[0, -1.01, 0]} 
         rotation={[-Math.PI / 2, 0, 0]} 
         receiveShadow
       >
-        <planeGeometry args={[20, 20]} />
+        <circleGeometry args={[12, 32]} />
         <meshStandardMaterial 
-          color="#e8f5e8" 
-          roughness={0.9}
+          color="#8fbc8f" 
+          roughness={0.95}
           metalness={0.0}
         />
       </mesh>
       
-      {/* Grass patches for more natural look */}
-      {Array.from({ length: 20 }, (_, i) => (
-        <mesh
-          key={i}
-          position={[
-            (Math.random() - 0.5) * 15,
-            -0.95,
-            (Math.random() - 0.5) * 15
-          ]}
-          rotation={[-Math.PI / 2, 0, 0]}
-        >
-          <planeGeometry args={[0.5, 0.5]} />
-          <meshStandardMaterial 
-            color={i % 3 === 0 ? "#a7f3d0" : i % 3 === 1 ? "#86efac" : "#6ee7b7"}
-            transparent
-            opacity={0.7}
-          />
-        </mesh>
-      ))}
+      {/* Animated grass patches */}
+      {Array.from({ length: 30 }, (_, i) => {
+        const angle = (i / 30) * Math.PI * 2
+        const radius = 3 + Math.random() * 6
+        const x = Math.cos(angle) * radius + (Math.random() - 0.5) * 2
+        const z = Math.sin(angle) * radius + (Math.random() - 0.5) * 2
+        
+        return (
+          <Float
+            key={i}
+            speed={0.2 + Math.random() * 0.3}
+            rotationIntensity={0.1}
+            floatIntensity={0.05}
+          >
+            <mesh
+              position={[x, -0.98, z]}
+              rotation={[-Math.PI / 2, 0, Math.random() * Math.PI]}
+              scale={[0.5 + Math.random() * 0.5, 0.5 + Math.random() * 0.5, 1]}
+            >
+              <planeGeometry args={[0.3, 0.3]} />
+              <meshStandardMaterial 
+                color={['#90EE90', '#98FB98', '#00FF7F', '#32CD32'][Math.floor(Math.random() * 4)]}
+                transparent
+                opacity={0.8}
+                side={THREE.DoubleSide}
+              />
+            </mesh>
+          </Float>
+        )
+      })}
 
-      {/* Ground Plane for Better Context */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]} receiveShadow>
-        <planeGeometry args={[20, 20]} />
-        <meshStandardMaterial 
-          color="#f8fafc" 
-          roughness={0.8}
-          metalness={0.1}
-        />
-      </mesh>
+      {/* Subtle particles for atmosphere */}
+      <Sparkles
+        count={25}
+        scale={15}
+        size={1}
+        speed={0.1}
+        color="#ffffff"
+        opacity={0.3}
+      />
 
-      {/* Environment */}
-      <Environment preset="studio" />
+      {/* Enhanced Environment */}
+      <Environment preset="park" background={false} />
     </>
   )
 }
@@ -229,7 +318,7 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
           position: [6, 4, 6], 
           fov: 60,
           near: 0.1,
-          far: 100
+          far: 150
         }}
         shadows
         style={{ width: '100%', height: '100%' }}
@@ -281,13 +370,14 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
           enableRotate={true}
           minPolarAngle={Math.PI / 8}
           maxPolarAngle={Math.PI - Math.PI / 8}
-          minDistance={3}
-          maxDistance={15}
+          minDistance={2}
+          maxDistance={35}
           target={[0, 0, 0]}
           enableDamping={true}
           dampingFactor={0.05}
           autoRotate={false}
           autoRotateSpeed={0.5}
+          zoomSpeed={1.2}
         />
       </Canvas>
 
@@ -326,10 +416,40 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
 
       {/* Enhanced Analysis Animation Overlay */}
       {props.isAnalyzing && (
-        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-          <div className="relative">
-            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-ping opacity-75"></div>
-            <div className="absolute inset-0 w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Central analysis indicator */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="relative">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-ping opacity-60"></div>
+              <div className="absolute inset-0 w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
+              <div className="absolute inset-2 w-12 h-12 bg-gradient-to-r from-violet-400 to-purple-600 rounded-full animate-spin"></div>
+            </div>
+          </div>
+          
+          {/* Scanning lines */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute w-full h-0.5 bg-gradient-to-r from-transparent via-purple-400 to-transparent animate-pulse"
+                 style={{ 
+                   top: '30%',
+                   animation: 'scan-vertical 2s ease-in-out infinite'
+                 }}>
+            </div>
+            <div className="absolute w-0.5 h-full bg-gradient-to-b from-transparent via-blue-400 to-transparent animate-pulse"
+                 style={{ 
+                   left: '60%',
+                   animation: 'scan-horizontal 2.5s ease-in-out infinite'
+                 }}>
+            </div>
+          </div>
+          
+          {/* Analysis progress text */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+            <div className="bg-black/70 backdrop-blur-sm rounded-lg px-4 py-2">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                <span className="text-white text-sm font-medium">AI Analysis in Progress...</span>
+              </div>
+            </div>
           </div>
         </div>
       )}

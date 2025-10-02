@@ -131,7 +131,7 @@ const MobileCattleViewer3D: React.FC<CattleViewer3DProps> = (props) => {
           position: [6, 4, 6], 
           fov: 60,
           near: 0.1,
-          far: 50
+          far: 80
         }}
         shadows
         dpr={[1, 2]} // Limit pixel ratio for mobile
@@ -147,12 +147,13 @@ const MobileCattleViewer3D: React.FC<CattleViewer3DProps> = (props) => {
           enablePan={false}
           enableZoom={true}
           enableRotate={true}
-          minDistance={3}
-          maxDistance={12}
+          minDistance={2}
+          maxDistance={25}
           minPolarAngle={Math.PI / 6}
           maxPolarAngle={Math.PI - Math.PI / 6}
           dampingFactor={0.05}
           enableDamping={true}
+          zoomSpeed={1.0}
         />
       </Canvas>
       
