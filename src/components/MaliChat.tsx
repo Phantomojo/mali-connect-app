@@ -24,7 +24,7 @@ const MaliChat: React.FC<MaliChatProps> = ({ maliScore, selectedImage, isOpen, o
   const [inputMessage, setInputMessage] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const { analyzeImage, getMarketAnalysis } = useAI()
+  const { analyzeImage, getMarketAnalysis, chatWithAI } = useAI()
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {

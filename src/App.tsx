@@ -7,9 +7,9 @@ import {
   X,
   ArrowLeft,
   Play,
-  Bot,
   Activity,
-  ShoppingCart
+  ShoppingCart,
+  Zap
 } from 'react-feather'
 import './App.css'
 import useAI from './hooks/useAI'
@@ -577,7 +577,7 @@ function AppContent() {
                     }`}>
                       <div className="flex items-center space-x-3 mb-4">
                         <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center">
-                          <Bot className="w-6 h-6 text-white" />
+                          <Zap className="w-6 h-6 text-white" />
                         </div>
                         <div>
                           <h3 className={`text-lg font-semibold transition-colors duration-300 ${
