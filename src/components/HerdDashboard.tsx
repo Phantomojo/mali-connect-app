@@ -349,7 +349,7 @@ const HerdDashboard: React.FC<HerdDashboardProps> = ({ onAnimalSelect, selectedA
       </div>
 
       {/* Empty State */}
-      {mockHerd.length === 0 && (
+      {herderAnimals.length === 0 && (
         <div className={`rounded-2xl shadow-xl p-12 text-center transition-colors duration-300 ${
           isDarkMode ? 'bg-gray-800' : 'bg-white'
         }`}>
