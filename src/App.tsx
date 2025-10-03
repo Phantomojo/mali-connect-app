@@ -512,7 +512,15 @@ function AppContent() {
               )}
 
               {activeSection === 'assessment' && (
-                <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <div className="space-y-8">
+                  <Suspense fallback={<div>Loading Case Selection...</div>}>
+                    <CaseSelection onCaseSelect={(caseData) => {
+                      console.log('Selected case:', caseData)
+                      // Handle case selection logic here
+                    }} />
+                  </Suspense>
+                  
+                  <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
                   <div className="xl:col-span-2">
                     <div className="h-[600px] lg:h-[700px]">
                       <Suspense fallback={<div>Loading 3D Viewer...</div>}>
@@ -567,6 +575,7 @@ function AppContent() {
                       </button>
                     </div>
                   </div>
+                </div>
                 </div>
               )}
                 </>
