@@ -6,105 +6,125 @@
 **Objective:** Establish technical foundation and basic 3D visualization
 
 #### Technical Setup
-- [ ] Initialize React + Vite + TypeScript project
-- [ ] Install and configure Three.js + react-three-fiber
-- [ ] Set up Tailwind CSS for styling
-- [ ] Create basic project structure and routing
+- [x] Initialize React + Vite + TypeScript project
+- [x] Install and configure Three.js + react-three-fiber
+- [x] Set up Tailwind CSS for styling
+- [x] Create basic project structure and routing
 
 #### 3D Visualization Foundation
-- [ ] Create basic 3D scene with camera controls
-- [ ] Implement lighting setup for optimal viewing
-- [ ] Add basic 3D model loading capability
-- [ ] Create responsive 3D viewer component
+- [x] Create basic 3D scene with camera controls
+- [x] Implement lighting setup for optimal viewing
+- [x] Add basic 3D model loading capability
+- [x] Create responsive 3D viewer component
 
 #### Image Selection Interface
-- [ ] Design and implement image gallery component
-- [ ] Create pre-defined cattle image dataset
-- [ ] Add image selection state management
-- [ ] Implement mobile-optimized touch interface
+- [x] Design and implement image gallery component
+- [x] Create pre-defined cattle image dataset
+- [x] Add image selection state management
+- [x] Implement mobile-optimized touch interface
 
 **Deliverables:**
 - Working 3D scene with basic model loading
 - Image selection interface
 - Mobile-responsive design foundation
 
-### Week 3-4: AI Simulation & Assessment System
-**Objective:** Build AI analysis simulation and Mali-Score calculation
+### Week 3-4: AI Integration & Assessment System
+**Objective:** Build real AI analysis and Mali-Score calculation
 
-#### AI Analysis Animation
-- [ ] Create realistic analysis progress animation
-- [ ] Implement step-by-step analysis simulation
-- [ ] Add loading states and transitions
-- [ ] Design progress indicators and feedback
+#### AI Integration
+- [x] Integrate Groq API with Llama 3.1 70B model
+- [x] Create AI service layer with fallback system
+- [x] Implement real-time AI analysis pipeline
+- [x] Add error handling and offline capabilities
+
+#### Disease Detection System
+- [x] Create comprehensive livestock disease database
+- [x] Implement AI-powered disease detection
+- [x] Add symptom analysis and treatment recommendations
+- [x] Create disease visualization components
 
 #### Mali-Score System
-- [ ] Implement Mali-Score calculation algorithm
-- [ ] Create score breakdown visualization
-- [ ] Add metric weighting system (40%, 25%, 20%, 15%)
-- [ ] Design score display components
+- [x] Implement enhanced Mali-Score calculation algorithm
+- [x] Create score breakdown visualization with disease impact
+- [x] Add metric weighting system (40%, 25%, 20%, 15%)
+- [x] Design score display components with AI insights
 
 #### 3D Model Enhancement
-- [ ] Create multiple cattle model variations
-- [ ] Implement diagnostic marker system
-- [ ] Add marker overlay functionality
-- [ ] Create interactive marker highlighting
+- [x] Create multiple cattle model variations
+- [x] Implement diagnostic marker system
+- [x] Add marker overlay functionality
+- [x] Create interactive marker highlighting
 
 **Deliverables:**
-- Complete AI analysis simulation
-- Working Mali-Score calculation and display
+- Complete AI analysis integration
+- Working disease detection system
+- Enhanced Mali-Score calculation and display
 - 3D models with diagnostic markers
 
-### Week 5-6: Ecosystem Integration
+### Week 5-6: AI Chat & Communication Tools
+**Objective:** Add AI chat, SMS simulator, and local language support
+
+#### AI Chat System
+- [x] Create interactive AI chat interface
+- [x] Implement context-aware AI responses
+- [x] Add livestock expertise integration
+- [x] Create mobile-optimized chat UI
+
+#### SMS Simulator
+- [x] Build SMS interface for farmers without smartphones
+- [x] Implement local language support (Swahili, Kikuyu, Luhya)
+- [x] Add quick command system
+- [x] Create disease information lookup via SMS
+
+#### Financial Services Integration
+- [x] Add agricultural loan information
+- [x] Implement insurance product details
+- [x] Create market analysis integration
+- [x] Add financial planning tools
+
+**Deliverables:**
+- Complete AI chat system
+- SMS simulator with local language support
+- Financial services integration
+
+### Week 7-8: Ecosystem Integration & Polish
 **Objective:** Add marketplace, insurance, and resource management features
 
 #### Market Value System
-- [ ] Implement market value calculation
-- [ ] Create dynamic pricing display
-- [ ] Add market demand multipliers
-- [ ] Design price visualization components
+- [x] Implement enhanced market value calculation with disease impact
+- [x] Create dynamic pricing display
+- [x] Add market demand multipliers
+- [x] Design price visualization components
 
 #### Ecosystem Panel
-- [ ] Build "What's Next?" action panel
-- [ ] Create marketplace, insurance, and credit options
-- [ ] Add hover tooltips and explanations
-- [ ] Implement action button interactions
+- [x] Build "What's Next?" action panel
+- [x] Create marketplace, insurance, and credit options
+- [x] Add hover tooltips and explanations
+- [x] Implement action button interactions
 
 #### Resource Management Map
-- [ ] Integrate 3D globe component (leveraging ORUN.IO expertise)
-- [ ] Add satellite vegetation data overlay
-- [ ] Implement market hub markers
-- [ ] Create price variation visualization
+- [x] Integrate 3D globe component
+- [x] Add satellite vegetation data overlay
+- [x] Implement market hub markers
+- [x] Create price variation visualization
+
+#### Performance Optimization
+- [x] Optimize 3D model loading and rendering
+- [x] Implement LOD (Level of Detail) system
+- [x] Add asset compression and caching
+- [x] Optimize for mobile performance
+
+#### Visual Polish
+- [x] Add smooth transitions and animations
+- [x] Implement micro-interactions
+- [x] Enhance visual feedback and states
+- [x] Create compelling visual storytelling flow
 
 **Deliverables:**
 - Complete ecosystem integration
 - Interactive resource management map
 - Market value calculation system
-
-### Week 7-8: Polish & Presentation
-**Objective:** Optimize performance, add animations, and prepare for demo
-
-#### Performance Optimization
-- [ ] Optimize 3D model loading and rendering
-- [ ] Implement LOD (Level of Detail) system
-- [ ] Add asset compression and caching
-- [ ] Optimize for mobile performance
-
-#### Visual Polish
-- [ ] Add smooth transitions and animations
-- [ ] Implement micro-interactions
-- [ ] Enhance visual feedback and states
-- [ ] Create compelling visual storytelling flow
-
-#### Demo Preparation
-- [ ] Create demo script and flow
-- [ ] Test on multiple devices and networks
-- [ ] Prepare backup plans and fallbacks
-- [ ] Deploy to Vercel/Netlify for easy access
-
-**Deliverables:**
 - Production-ready demo application
-- Optimized performance and visual quality
-- Complete demo presentation materials
 
 ## 🛠️ Technical Implementation Details
 
@@ -124,6 +144,9 @@ npm install @types/three
 # Install styling and utilities
 npm install tailwindcss postcss autoprefixer
 npm install clsx tailwind-merge
+
+# Install AI dependencies
+npm install groq-sdk
 ```
 
 #### Component Structure
@@ -132,10 +155,21 @@ src/
 ├── components/
 │   ├── CattleViewer3D.tsx
 │   ├── ImageSelector.tsx
+│   ├── AIAnalysis.tsx
+│   ├── MaliChat.tsx
+│   ├── SmsSimulator.tsx
 │   └── Scene.tsx
 ├── hooks/
 │   ├── useThreeScene.ts
-│   └── useModelLoader.ts
+│   ├── useModelLoader.ts
+│   └── useAI.ts
+├── services/
+│   ├── aiService.ts
+│   └── apiService.ts
+├── data/
+│   ├── livestockDiseases.ts
+│   ├── herdData.ts
+│   └── marketData.ts
 ├── utils/
 │   ├── threeUtils.ts
 │   └── modelUtils.ts
@@ -149,100 +183,229 @@ src/
 - **Responsive Design:** Mobile-first approach
 - **Touch Controls:** Pinch, zoom, and pan gestures
 
-### Phase 2: AI Simulation & Assessment (Weeks 3-4)
+### Phase 2: AI Integration & Assessment (Weeks 3-4)
 
-#### AI Analysis Component
+#### AI Service Integration
 ```typescript
-interface AIAnalysisProps {
-  isAnalyzing: boolean;
-  progress: number;
-  currentStep: string;
-  onComplete: (score: MaliScore) => void;
-}
+// AI Service Configuration
+const AI_SERVICE_CONFIG = {
+  groq: {
+    apiKey: process.env.VITE_GROQ_API_KEY,
+    model: 'llama-3.1-70b-versatile',
+    maxTokens: 1000,
+    temperature: 0.7
+  },
+  fallback: {
+    enabled: true,
+    responseDelay: 2000
+  }
+};
 
-const AIAnalysisSim: React.FC<AIAnalysisProps> = ({
-  isAnalyzing,
-  progress,
-  currentStep,
-  onComplete
-}) => {
-  // Analysis simulation logic
-  // Progress animation
-  // Step-by-step feedback
+// AI Analysis Pipeline
+const analyzeImage = async (imageUrl: string, description: string) => {
+  try {
+    const response = await groq.chat.completions.create({
+      model: 'llama-3.1-70b-versatile',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a livestock health expert...'
+        },
+        {
+          role: 'user',
+          content: `Analyze this cattle image: ${description}`
+        }
+      ]
+    });
+    
+    return parseAIResponse(response.choices[0].message.content);
+  } catch (error) {
+    return getFallbackAnalysis();
+  }
 };
 ```
 
-#### Mali-Score Calculation
+#### Disease Detection System
 ```typescript
-const calculateMaliScore = (metrics: AssessmentMetrics): MaliScore => {
+interface LivestockDisease {
+  id: string;
+  name: string;
+  localName: string;
+  scientificName: string;
+  symptoms: string[];
+  causes: string[];
+  prevention: string[];
+  treatment: string[];
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  contagious: boolean;
+  mortalityRate: string;
+  economicImpact: string;
+  commonIn: string[];
+  seasonality: string[];
+  imagePath: string;
+  maliScoreImpact: number;
+}
+
+const detectDiseases = (analysis: string, imageData: any) => {
+  const detectedDiseases = [];
+  
+  for (const disease of livestockDiseases) {
+    const matchScore = calculateDiseaseMatch(analysis, disease);
+    if (matchScore > 0.7) {
+      detectedDiseases.push({
+        name: disease.name,
+        confidence: matchScore,
+        severity: disease.severity,
+        recommendations: disease.treatment
+      });
+    }
+  }
+  
+  return {
+    detected: detectedDiseases.length > 0,
+    diseases: detectedDiseases,
+    confidence: 0.85,
+    recommendations: generateRecommendations(detectedDiseases)
+  };
+};
+```
+
+#### Enhanced Mali-Score Calculation
+```typescript
+const calculateMaliScore = (metrics: AssessmentMetrics, diseaseImpact: number = 0): MaliScore => {
   const bodyCondition = metrics.bodyCondition * 0.4;
   const physicalHealth = metrics.physicalHealth * 0.25;
   const conformation = metrics.conformation * 0.2;
   const ageEstimation = metrics.ageEstimation * 0.15;
   
   const totalScore = bodyCondition + physicalHealth + conformation + ageEstimation;
+  const diseasePenalty = diseaseImpact * 0.1; // 10% penalty per disease
   
   return {
     bodyCondition: { score: metrics.bodyCondition, weight: 0.4 },
     physicalHealth: { score: metrics.physicalHealth, weight: 0.25 },
     conformation: { score: metrics.conformation, weight: 0.2 },
     ageEstimation: { score: metrics.ageEstimation, weight: 0.15 },
-    totalScore: Math.round(totalScore),
-    grade: getGrade(totalScore)
+    totalScore: Math.round(totalScore * (1 - diseasePenalty)),
+    grade: getGrade(totalScore * (1 - diseasePenalty))
   };
 };
 ```
 
-#### 3D Diagnostic Markers
-```typescript
-interface DiagnosticMarker {
-  id: string;
-  position: Vector3;
-  type: 'bodyCondition' | 'physicalHealth' | 'conformation' | 'ageEstimation';
-  description: string;
-  severity: 'low' | 'medium' | 'high';
-  color: string;
-}
+### Phase 3: AI Chat & Communication (Weeks 5-6)
 
-const DiagnosticMarkers: React.FC<{ markers: DiagnosticMarker[] }> = ({ markers }) => {
-  return (
-    <group>
-      {markers.map(marker => (
-        <Marker
-          key={marker.id}
-          position={marker.position}
-          type={marker.type}
-          description={marker.description}
-          severity={marker.severity}
-          color={marker.color}
-        />
-      ))}
-    </group>
-  );
+#### AI Chat System
+```typescript
+const CHAT_SYSTEM_PROMPT = `
+You are Mali AI, an expert livestock assistant specializing in:
+- Livestock health assessment and disease diagnosis
+- Market analysis and pricing information
+- Farming best practices and recommendations
+- Financial services for farmers
+- Local language support for East African farmers
+
+Provide helpful, accurate, and practical advice for livestock farmers.
+`;
+
+const chatWithAI = async (message: string, context: any) => {
+  try {
+    const response = await groq.chat.completions.create({
+      model: 'llama-3.1-70b-versatile',
+      messages: [
+        { role: 'system', content: CHAT_SYSTEM_PROMPT },
+        { role: 'user', content: message }
+      ],
+      max_tokens: 1000,
+      temperature: 0.7
+    });
+    
+    return response.choices[0].message.content;
+  } catch (error) {
+    return generateFallbackResponse(message);
+  }
 };
 ```
 
-### Phase 3: Ecosystem Integration (Weeks 5-6)
+#### SMS Simulator with Local Language Support
+```typescript
+const SUPPORTED_LANGUAGES = [
+  { code: 'en', name: 'English', region: 'Global' },
+  { code: 'sw', name: 'Swahili', region: 'East Africa' },
+  { code: 'ki', name: 'Kikuyu', region: 'Kenya' },
+  { code: 'lu', name: 'Luhya', region: 'Kenya' }
+];
 
-#### Market Value Calculation
+const SMS_COMMANDS = {
+  'HEALTH': 'Get health information',
+  'DISEASES': 'List common diseases',
+  'LOANS': 'Financial services information',
+  'MARKET': 'Current market prices',
+  'HELP': 'Available commands'
+};
+
+const processSMSCommand = (command: string, language: string) => {
+  const translatedCommand = translate(command, language);
+  const response = generateSMSResponse(translatedCommand, language);
+  return response;
+};
+```
+
+#### Financial Services Integration
+```typescript
+interface FinancialService {
+  id: string;
+  name: string;
+  localName: string;
+  type: 'loan' | 'insurance';
+  description: string;
+  interestRate?: string;
+  requirements: string[];
+  benefits: string[];
+  providers: string[];
+  contact: string;
+}
+
+const financialServices: FinancialService[] = [
+  {
+    id: 'agricultural-loan-1',
+    name: 'Agricultural Development Loan',
+    localName: 'Mkopo wa Kilimo',
+    type: 'loan',
+    description: 'Low-interest loan for livestock investment',
+    interestRate: '8% per annum',
+    requirements: ['Valid ID', 'Land ownership proof', 'Livestock health certificate'],
+    benefits: ['Low interest rate', 'Flexible repayment', 'Technical support'],
+    providers: ['Kenya Commercial Bank', 'Cooperative Bank'],
+    contact: 'Call 0700-000-000'
+  }
+  // ... more services
+];
+```
+
+### Phase 4: Ecosystem Integration & Polish (Weeks 7-8)
+
+#### Enhanced Market Value Calculation
 ```typescript
 const calculateMarketValue = (
   maliScore: number,
+  diseaseImpact: number = 0,
   basePrice: number = 500,
   marketDemand: number = 1.1,
   locationFactor: number = 1.0
 ): number => {
   const scoreMultiplier = maliScore / 100;
-  const finalPrice = basePrice * scoreMultiplier * marketDemand * locationFactor;
+  const diseasePenalty = diseaseImpact * 0.1; // 10% penalty per disease
+  const finalPrice = basePrice * scoreMultiplier * (1 - diseasePenalty) * marketDemand * locationFactor;
   return Math.round(finalPrice);
 };
 ```
 
-#### Ecosystem Panel
+#### Enhanced Ecosystem Panel
 ```typescript
-const EcosystemPanel: React.FC<{ maliScore: number; marketValue: number }> = ({
+const EcosystemPanel: React.FC<{ maliScore: number; marketValue: number; diseases: string[] }> = ({
   maliScore,
-  marketValue
+  marketValue,
+  diseases
 }) => {
   return (
     <div className="ecosystem-panel">
@@ -252,6 +415,7 @@ const EcosystemPanel: React.FC<{ maliScore: number; marketValue: number }> = ({
           title="List on Marketplace"
           value={`$${marketValue}`}
           description="Get fair market price"
+          disabled={diseases.length > 0}
         />
         <ActionButton
           title="Apply for Insurance"
@@ -263,35 +427,19 @@ const EcosystemPanel: React.FC<{ maliScore: number; marketValue: number }> = ({
           value={`Credit: $${Math.round(marketValue * 0.7)}`}
           description="Access credit facilities"
         />
+        {diseases.length > 0 && (
+          <ActionButton
+            title="Get Treatment"
+            value="Urgent"
+            description="Address health issues first"
+            priority="high"
+          />
+        )}
       </div>
     </div>
   );
 };
 ```
-
-#### Resource Management Map
-```typescript
-const ResourceMap: React.FC<{ vegetationData: VegetationData[]; marketHubs: MarketHub[] }> = ({
-  vegetationData,
-  marketHubs
-}) => {
-  return (
-    <div className="resource-map">
-      <Globe
-        width={400}
-        height={300}
-        backgroundColor="transparent"
-      >
-        <VegetationOverlay data={vegetationData} />
-        <MarketHubMarkers hubs={marketHubs} />
-        <PriceVariations hubs={marketHubs} />
-      </Globe>
-    </div>
-  );
-};
-```
-
-### Phase 4: Polish & Presentation (Weeks 7-8)
 
 #### Performance Optimization
 ```typescript
@@ -311,21 +459,20 @@ const ModelLOD: React.FC<{ model: GLTFModel; distance: number }> = ({ model, dis
     </LOD>
   );
 };
-```
 
-#### Animation System
-```typescript
-const useAnimations = () => {
-  const [isAnimating, setIsAnimating] = useState(false);
+// AI Response Caching
+const useAICache = () => {
+  const cache = useRef(new Map());
   
-  const animateScore = useCallback((targetScore: number) => {
-    setIsAnimating(true);
-    // Animate score counter from 0 to target
-    // Add easing and timing
-    setIsAnimating(false);
-  }, []);
-
-  return { isAnimating, animateScore };
+  const getCachedResponse = (query: string) => {
+    return cache.current.get(query);
+  };
+  
+  const setCachedResponse = (query: string, response: string) => {
+    cache.current.set(query, response);
+  };
+  
+  return { getCachedResponse, setCachedResponse };
 };
 ```
 
@@ -337,12 +484,14 @@ const useAnimations = () => {
 - **Integration Tests:** Complete user flows
 - **Performance Tests:** Load time and frame rate
 - **Mobile Tests:** Various devices and screen sizes
+- **AI Tests:** Mock API responses and fallback testing
 
 ### Performance Targets
 - **Initial Load:** <3 seconds on 3G
 - **3D Rendering:** 60fps on mid-range devices
 - **Memory Usage:** <100MB peak
 - **Battery Impact:** Minimal during assessment
+- **AI Response Time:** <2 seconds for chat responses
 
 ### Browser Compatibility
 - **Chrome:** 90+ (Android, Desktop)
@@ -377,12 +526,14 @@ const useAnimations = () => {
 - **Performance:** 60fps 3D rendering
 - **Compatibility:** Works on 95%+ of target devices
 - **Reliability:** 99%+ uptime
+- **AI Response Time:** <2 seconds average
 
 ### User Experience Metrics
 - **Engagement:** 5+ minutes average session
 - **Completion:** 90%+ assessment completion rate
 - **Satisfaction:** 4.5+ star rating
 - **Retention:** 70%+ return usage
+- **AI Usage:** 80%+ users try AI chat
 
 ### Business Metrics
 - **Demo Impact:** Judges show strong interest
@@ -397,6 +548,7 @@ const useAnimations = () => {
 - **Mobile Compatibility:** Extensive testing on devices
 - **Network Issues:** Offline mode and caching
 - **Browser Support:** Progressive enhancement
+- **AI Service Downtime:** Robust fallback system
 
 ### Timeline Risks
 - **Scope Creep:** Stick to demo-first approach
@@ -410,8 +562,22 @@ const useAnimations = () => {
 - **Device Compatibility:** Test on multiple devices
 - **Time Constraints:** Practice and time management
 
+## 🔒 Security Considerations
+
+### API Security
+- **API Key Protection:** Environment variables only
+- **Rate Limiting:** Prevent API abuse
+- **Input Validation:** Sanitize user inputs
+- **Error Handling:** Secure error messages
+
+### Data Privacy
+- **Image Processing:** No permanent storage of user images
+- **Chat History:** Local storage only
+- **Personal Data:** Minimal data collection
+- **GDPR Compliance:** User consent and data rights
+
 ---
 
-**Implementation plan for Mali-Connect 3D Livestock Assessment Platform**
+**Implementation plan for Mali-Connect AI Livestock Assessment Platform**
 
-*Building the future of livestock assessment, one 3D model at a time*
+*Building the future of livestock assessment with AI, one 3D model at a time*
