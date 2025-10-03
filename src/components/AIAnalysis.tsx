@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Activity, Cpu, Eye, CheckCircle } from 'react-feather'
+import { Activity, Cpu, Eye, CheckCircle, AlertTriangle, Shield } from 'react-feather'
 import Lottie from 'lottie-react'
 import loadingAnimation from '../assets/animations/loading-analysis.json'
+import { livestockDiseases, LivestockDisease } from '../data/livestockDiseases'
 
 interface AnalysisStep {
   id: string
@@ -19,6 +20,16 @@ interface AIImageAnalysis {
   ageEstimation: number
   totalScore: number
   confidence: number
+  diseaseDetection: {
+    detectedDiseases: Array<{
+      disease: LivestockDisease
+      confidence: number
+      severity: 'low' | 'medium' | 'high' | 'critical'
+      symptoms: string[]
+    }>
+    healthStatus: 'healthy' | 'suspicious' | 'diseased' | 'critical'
+    recommendations: string[]
+  }
   analysis: {
     bodyConditionAnalysis: string
     physicalHealthAnalysis: string
@@ -242,6 +253,35 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ analysis, isLoading, selectedIm
           <p>• Using computer vision to analyze 3D model geometry</p>
           <p>• Machine learning algorithms trained on 10,000+ cattle images</p>
           <p>• Real-time health assessment with 95% accuracy</p>
+          <p>• Disease detection using East African livestock database</p>
+        </div>
+      </div>
+
+      {/* Disease Detection Section */}
+      <div className="mt-4 p-3 bg-orange-50 rounded-lg">
+        <h4 className="font-medium text-orange-800 mb-2 text-sm flex items-center">
+          <AlertTriangle className="w-4 h-4 mr-2" />
+          Disease Detection
+        </h4>
+        <div className="text-xs text-orange-700 space-y-2">
+          <p>• Scanning for common East African livestock diseases</p>
+          <p>• Checking symptoms: fever, lesions, behavioral changes</p>
+          <p>• Cross-referencing with local disease database</p>
+          <p>• Providing treatment recommendations in local languages</p>
+        </div>
+      </div>
+
+      {/* Financial Services Section */}
+      <div className="mt-4 p-3 bg-green-50 rounded-lg">
+        <h4 className="font-medium text-green-800 mb-2 text-sm flex items-center">
+          <Shield className="w-4 h-4 mr-2" />
+          Financial Services
+        </h4>
+        <div className="text-xs text-green-700 space-y-1">
+          <p>• Livestock collateral loans (8-12% interest)</p>
+          <p>• Livestock insurance against disease and theft</p>
+          <p>• Market price analysis and selling recommendations</p>
+          <p>• Credit building through Mali-Score verification</p>
         </div>
       </div>
     </div>

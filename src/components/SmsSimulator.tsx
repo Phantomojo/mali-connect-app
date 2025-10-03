@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Send, ArrowLeft, MessageSquare, Phone, User } from 'react-feather'
+import { Send, ArrowLeft, MessageSquare, Phone, User, Globe } from 'react-feather'
 import { useTheme } from '../contexts/ThemeContext'
+import { localLanguages, livestockDiseases, financialServices } from '../data/livestockDiseases'
 
 interface Message {
   id: string
@@ -28,6 +29,8 @@ const SmsSimulator: React.FC = () => {
   const [inputText, setInputText] = useState('')
   const [herdData, setHerdData] = useState<HerdData[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [selectedLanguage, setSelectedLanguage] = useState('sw') // Default to Swahili
+  const [showLanguageMenu, setShowLanguageMenu] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Load herd data on component mount
@@ -111,6 +114,32 @@ const SmsSimulator: React.FC = () => {
     }, 1000)
   }
 
+  // Get current language
+  const currentLanguage = localLanguages.find(lang => lang.code === selectedLanguage) || localLanguages[0]
+
+  // Translate text to current language
+  const translate = (text: string): string => {
+    const phrases = currentLanguage.commonPhrases
+    const livestockTerms = currentLanguage.livestockTerms
+    
+    // Simple translation mapping
+    let translatedText = text
+    
+    // Translate common phrases
+    Object.entries(phrases).forEach(([key, value]) => {
+      const regex = new RegExp(`\\b${key}\\b`, 'gi')
+      translatedText = translatedText.replace(regex, value)
+    })
+    
+    // Translate livestock terms
+    Object.entries(livestockTerms).forEach(([key, value]) => {
+      const regex = new RegExp(`\\b${key}\\b`, 'gi')
+      translatedText = translatedText.replace(regex, value)
+    })
+    
+    return translatedText
+  }
+
   const generateSystemResponse = (input: string): string => {
     if (input.includes('show') && (input.includes('cattle') || input.includes('herd'))) {
       return `Here's your herd summary:\n\n${herdData.slice(0, 5).map(animal => 
@@ -176,7 +205,19 @@ const SmsSimulator: React.FC = () => {
     }
     
     if (input.includes('help') || input.includes('dispute') || input.includes('complaint')) {
-      return `Support & Dispute Resolution:\n\n🆘 For assistance or to dispute a valuation, text your query to our agent network.\n\n⏰ An agent will contact you within 24 hours.\n\n📍 You can also visit your nearest Mali-Connect agent point.\n\nAvailable Commands:\n• "Show me my cattle" - View herd summary\n• "Health status" - Check animal health\n• "Market prices" - Get market information\n• "Location report" - See where animals are\n• "Fees" - View fee structure\n• "Help" - Show this menu`
+      return `Support & Dispute Resolution:\n\n🆘 For assistance or to dispute a valuation, text your query to our agent network.\n\n⏰ An agent will contact you within 24 hours.\n\n📍 You can also visit your nearest Mali-Connect agent point.\n\nAvailable Commands:\n• "Show me my cattle" - View herd summary\n• "Health status" - Check animal health\n• "Market prices" - Get market information\n• "Location report" - See where animals are\n• "Fees" - View fee structure\n• "Diseases" - Get disease information\n• "Loans" - Financial services info\n• "Help" - Show this menu`
+    }
+
+    if (input.includes('disease') || input.includes('sick') || input.includes('ugonjwa')) {
+      const commonDiseases = livestockDiseases.slice(0, 3)
+      return `Common Livestock Diseases in East Africa:\n\n${commonDiseases.map(disease => 
+        `🦠 ${disease.name} (${disease.localName})\n   Symptoms: ${disease.symptoms.slice(0, 3).join(', ')}\n   Prevention: ${disease.prevention[0]}\n   Severity: ${disease.severity.toUpperCase()}`
+      ).join('\n\n')}\n\nFor specific disease info, text the disease name.`
+    }
+
+    if (input.includes('loan') || input.includes('mkopo') || input.includes('financial')) {
+      const loanService = financialServices[0]
+      return `Financial Services Available:\n\n💰 ${loanService.name} (${loanService.localName})\n   Interest Rate: ${loanService.interestRate}\n   Requirements: ${loanService.requirements.slice(0, 3).join(', ')}\n   Benefits: ${loanService.benefits.slice(0, 2).join(', ')}\n\n📞 Contact your nearest bank or SACCO for application.`
     }
     
     // Default response
@@ -230,13 +271,57 @@ const SmsSimulator: React.FC = () => {
             </p>
           </div>
         </div>
-        <div className="flex items-center space-x-2">
-          <Phone className={`w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`} />
-          <span className={`text-sm font-medium ${
-            isDarkMode ? 'text-gray-300' : 'text-gray-700'
-          }`}>
-            +254 700 000 000
-          </span>
+        <div className="flex items-center space-x-4">
+          {/* Language Selector */}
+          <div className="relative">
+            <button
+              onClick={() => setShowLanguageMenu(!showLanguageMenu)}
+              className={`flex items-center space-x-2 px-3 py-2 rounded-lg border transition-colors ${
+                isDarkMode 
+                  ? 'bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600' 
+                  : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              <Globe className="w-4 h-4" />
+              <span className="text-sm font-medium">
+                {currentLanguage.name}
+              </span>
+            </button>
+            
+            {showLanguageMenu && (
+              <div className={`absolute top-full right-0 mt-2 w-48 rounded-lg shadow-lg border z-10 ${
+                isDarkMode 
+                  ? 'bg-gray-800 border-gray-700' 
+                  : 'bg-white border-gray-200'
+              }`}>
+                {localLanguages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      setSelectedLanguage(lang.code)
+                      setShowLanguageMenu(false)
+                    }}
+                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg ${
+                      selectedLanguage === lang.code 
+                        ? 'bg-mali-green text-white' 
+                        : isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                    }`}
+                  >
+                    {lang.name} ({lang.region})
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <Phone className={`w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`} />
+            <span className={`text-sm font-medium ${
+              isDarkMode ? 'text-gray-300' : 'text-gray-700'
+            }`}>
+              +254 700 000 000
+            </span>
+          </div>
         </div>
       </div>
 
@@ -312,7 +397,8 @@ const SmsSimulator: React.FC = () => {
             'Show me my cattle',
             'Health status',
             'Market prices',
-            'Location report',
+            'Diseases',
+            'Loans',
             'Fees',
             'Help'
           ].map((command) => (
