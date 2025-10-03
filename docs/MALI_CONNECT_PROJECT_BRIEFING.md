@@ -17,6 +17,14 @@ What if you could determine the true value of any physical asset with just a sma
 
 ## 3. The Problem We Solve
 
+### Official Agriculture Problem Statement
+
+The CHAI Hackathon's official Agriculture Problem Statement directly addresses the challenges we solve: *"Pastoralist families in Kenya's drylands depend on livestock but face unpredictable weather, rough roads and scattered markets. Their livestock often earn low prices far from home, and climate shocks can wipe out years of wealth in a season. How might innovators empower these herders to get better prices and support for their animals, diversify income during droughts, and connect to finance and markets without losing their nomadic ways?"*
+
+Mali-Connect directly answers each component of this problem statement. Our solution empowers herders to get better prices through transparent, AI-powered valuation that eliminates information asymmetry. We provide support for their animals through health assessment and early disease detection. We enable income diversification during droughts by creating verifiable digital assets that can be used as collateral for credit. We connect them to finance and markets through our integrated ecosystem while preserving their nomadic lifestyle through mobile-first, offline-capable technology.
+
+### Core Challenges Addressed
+
 Pastoralist herders' wealth is invisible to the formal economy. Their livestock—their primary asset—cannot be easily verified, valued, or insured. This leads to:
 
 - **Exploitation by middlemen** offering low prices due to information asymmetry
@@ -62,7 +70,31 @@ Live Market Value = Base Price × (Mali-Score / 100) × Market Demand Multiplier
 $500 × 0.88 × 1.1 = $484
 ```
 
-## 6. The Ecosystem (The "So What?")
+## 6. Alignment with Hackathon Objectives
+
+### Trust-Building Elements
+
+Mali-Connect prioritizes trust-building through multiple mechanisms that address the unique challenges of remote pastoralist communities. Our agent network plays a crucial role in initial trust-building and verification, particularly during the scanning process and initial herd registration. These local agents, often respected community members, provide the human element essential for building confidence in remote areas where technology adoption requires personal relationships and local credibility.
+
+The Mali-Score calculation is completely transparent, based on clear, auditable metrics that users can understand and verify. All associated fees, including the 2% marketplace commission and any assessment costs, are communicated upfront with no hidden charges. This transparency builds trust and ensures pastoralists understand exactly what they're paying for and what value they receive in return.
+
+We provide a rapid, accessible complaints mechanism through our SMS interface, ensuring that any disputes or concerns can be raised and addressed quickly. Users can text "HELP" or "DISPUTE" to receive immediate assistance, with guaranteed response within 24 hours from our agent network.
+
+### Deployment Details & Costs
+
+Mali-Connect is designed for deployment in challenging environments with limited infrastructure. Our agent devices are optimized for low-power consumption, using energy-efficient processors and solar charging capabilities where grid power is unavailable. The cloud backend is optimized for minimal energy footprint, reducing operational costs and environmental impact while ensuring reliable service delivery.
+
+The SMS interface provides full off-grid capability for end-users, functioning completely without internet connectivity. This resilience ensures that pastoralists can access core functionality even in the most remote areas with limited connectivity, maintaining service continuity during network outages or infrastructure challenges.
+
+### Regulatory Context
+
+Mali-Connect is committed to adhering to local data protection and financial regulations in Mali and other deployment regions. We recognize the necessity of partnering with local authorities, licensed mobile network operators, and financial institutions to ensure full regulatory compliance. Our data handling practices prioritize user privacy while enabling the transparency necessary for financial services integration.
+
+### Measuring Impact
+
+Mali-Connect will track key performance indicators to measure its impact on pastoralist communities. These include: increase in access to credit for pastoralists (targeting 25% improvement within 12 months), reduction in post-harvest and pre-sale losses through better timing and pricing (targeting 30% reduction), improved market prices for livestock through transparent valuation (targeting 20% price improvement), and number of animals digitally verified (targeting 10,000+ animals in first year). Additional metrics include agent network growth, user satisfaction scores, and financial inclusion indicators.
+
+### The Ecosystem (The "So What?")
 
 The demo will show how the Mali-Score unlocks a wider ecosystem by presenting three (mock) calls-to-action:
 

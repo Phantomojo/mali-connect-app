@@ -3,6 +3,7 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Responsi
 import { TrendingUp, Activity, Shield, Clock, Star, Award } from 'react-feather'
 import Lottie from 'lottie-react'
 import successAnimation from '../assets/animations/success-checkmark.json'
+import { useTheme } from '../contexts/ThemeContext'
 
 interface MaliScore {
   bodyCondition: number
@@ -23,11 +24,13 @@ const EnhancedMaliScoreDisplay: React.FC<EnhancedMaliScoreDisplayProps> = ({
   animalId,
   animalName 
 }) => {
+  const { isDarkMode } = useTheme()
+  
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-600'
-    if (score >= 60) return 'text-blue-600'
-    if (score >= 40) return 'text-yellow-600'
-    return 'text-red-600'
+    if (score >= 80) return isDarkMode ? 'text-green-400' : 'text-green-600'
+    if (score >= 60) return isDarkMode ? 'text-blue-400' : 'text-blue-600'
+    if (score >= 40) return isDarkMode ? 'text-yellow-400' : 'text-yellow-600'
+    return isDarkMode ? 'text-red-400' : 'text-red-600'
   }
 
   const getScoreLabel = (score: number) => {
@@ -83,7 +86,9 @@ const EnhancedMaliScoreDisplay: React.FC<EnhancedMaliScoreDisplayProps> = ({
   const valueGradient = getScoreGradient(maliScore.totalScore)
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8">
+    <div className={`rounded-2xl shadow-xl p-8 transition-colors duration-300 ${
+      isDarkMode ? 'bg-gray-800' : 'bg-white'
+    }`}>
       {/* Header */}
       <div className="text-center mb-8">
         <div className="flex items-center justify-center mb-4">
@@ -93,20 +98,28 @@ const EnhancedMaliScoreDisplay: React.FC<EnhancedMaliScoreDisplayProps> = ({
             style={{ width: 60, height: 60 }}
           />
         </div>
-        <h2 className="text-3xl font-bold text-gray-800 mb-2">Mali-Score Assessment</h2>
+        <h2 className={`text-3xl font-bold mb-2 transition-colors duration-300 ${
+          isDarkMode ? 'text-white' : 'text-gray-800'
+        }`}>Mali-Score Assessment</h2>
         {animalId && (
-          <p className="text-lg text-gray-600 mb-2">
+          <p className={`text-lg mb-2 transition-colors duration-300 ${
+            isDarkMode ? 'text-gray-300' : 'text-gray-600'
+          }`}>
             {animalName || `Animal ${animalId}`}
           </p>
         )}
-        <p className="text-gray-500">AI-powered livestock health assessment complete</p>
+        <p className={`transition-colors duration-300 ${
+          isDarkMode ? 'text-gray-400' : 'text-gray-500'
+        }`}>AI-powered livestock health assessment complete</p>
       </div>
 
       {/* Overall Score Display */}
       <div className="text-center mb-8">
         <div className="relative inline-flex items-center justify-center">
           {/* Outer Ring */}
-          <div className="relative w-40 h-40 rounded-full bg-gray-100 flex items-center justify-center">
+          <div className={`relative w-40 h-40 rounded-full flex items-center justify-center transition-colors duration-300 ${
+            isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
+          }`}>
             {/* Progress Ring */}
             <svg className="absolute inset-0 w-40 h-40 transform -rotate-90" viewBox="0 0 100 100">
               <circle
@@ -116,7 +129,9 @@ const EnhancedMaliScoreDisplay: React.FC<EnhancedMaliScoreDisplayProps> = ({
                 stroke="currentColor"
                 strokeWidth="8"
                 fill="none"
-                className="text-gray-200"
+                className={`transition-colors duration-300 ${
+                  isDarkMode ? 'text-gray-600' : 'text-gray-200'
+                }`}
               />
               <circle
                 cx="50"
@@ -140,7 +155,9 @@ const EnhancedMaliScoreDisplay: React.FC<EnhancedMaliScoreDisplayProps> = ({
               <div className={`text-4xl font-bold ${valueColor}`}>
                 {maliScore.totalScore}
               </div>
-              <div className="text-sm text-gray-500">/ 100</div>
+              <div className={`text-sm transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-400' : 'text-gray-500'
+              }`}>/ 100</div>
             </div>
           </div>
         </div>
@@ -155,25 +172,27 @@ const EnhancedMaliScoreDisplay: React.FC<EnhancedMaliScoreDisplayProps> = ({
 
       {/* Radar Chart */}
       <div className="mb-8">
-        <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">Health Metrics Breakdown</h3>
+        <h3 className={`text-xl font-bold mb-4 text-center transition-colors duration-300 ${
+          isDarkMode ? 'text-white' : 'text-gray-800'
+        }`}>Health Metrics Breakdown</h3>
         <div className="h-80 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <RadarChart data={radarData} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
               <PolarGrid 
                 gridType="polygon" 
                 radialLines={false}
-                stroke="#e5e7eb"
+                stroke={isDarkMode ? '#4b5563' : '#e5e7eb'}
                 strokeWidth={1}
               />
               <PolarAngleAxis 
                 dataKey="metric" 
-                tick={{ fontSize: 12, fill: '#6b7280' }}
+                tick={{ fontSize: 12, fill: isDarkMode ? '#9ca3af' : '#6b7280' }}
                 axisLine={false}
               />
               <PolarRadiusAxis 
                 angle={0} 
                 domain={[0, 100]} 
-                tick={{ fontSize: 10, fill: '#9ca3af' }}
+                tick={{ fontSize: 10, fill: isDarkMode ? '#6b7280' : '#9ca3af' }}
                 axisLine={false}
                 tickLine={false}
               />
@@ -194,24 +213,36 @@ const EnhancedMaliScoreDisplay: React.FC<EnhancedMaliScoreDisplayProps> = ({
       {/* Detailed Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         {radarData.map((metric, index) => (
-          <div key={metric.metric} className="bg-gray-50 rounded-xl p-4">
+          <div key={metric.metric} className={`rounded-xl p-4 transition-colors duration-300 ${
+            isDarkMode ? 'bg-gray-700' : 'bg-gray-50'
+          }`}>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center">
-                <div className={`p-2 rounded-lg bg-${valueColor.split('-')[1]}-100 mr-3`}>
+                <div className={`p-2 rounded-lg mr-3 transition-colors duration-300 ${
+                  isDarkMode 
+                    ? `bg-${valueColor.split('-')[1]}-900/30` 
+                    : `bg-${valueColor.split('-')[1]}-100`
+                }`}>
                   {metric.icon}
                 </div>
-                <span className="font-medium text-gray-800">{metric.metric}</span>
+                <span className={`font-medium transition-colors duration-300 ${
+                  isDarkMode ? 'text-white' : 'text-gray-800'
+                }`}>{metric.metric}</span>
               </div>
               <div className="text-right">
                 <div className={`text-2xl font-bold ${valueColor}`}>
                   {metric.score}
                 </div>
-                <div className="text-sm text-gray-500">/ 100</div>
+                <div className={`text-sm transition-colors duration-300 ${
+                  isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                }`}>/ 100</div>
               </div>
             </div>
             
             {/* Progress Bar */}
-            <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className={`w-full rounded-full h-2 transition-colors duration-300 ${
+              isDarkMode ? 'bg-gray-600' : 'bg-gray-200'
+            }`}>
               <div
                 className={`bg-gradient-to-r ${valueGradient} h-2 rounded-full transition-all duration-1000 ease-out`}
                 style={{ width: `${metric.score}%` }}
@@ -219,7 +250,9 @@ const EnhancedMaliScoreDisplay: React.FC<EnhancedMaliScoreDisplayProps> = ({
             </div>
             
             {/* Weight Indicator */}
-            <div className="mt-2 text-xs text-gray-500">
+            <div className={`mt-2 text-xs transition-colors duration-300 ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-500'
+            }`}>
               Weight: {index === 0 ? '40%' : index === 1 ? '25%' : index === 2 ? '20%' : '15%'}
             </div>
           </div>
@@ -227,26 +260,42 @@ const EnhancedMaliScoreDisplay: React.FC<EnhancedMaliScoreDisplayProps> = ({
       </div>
 
       {/* Market Value Display */}
-      <div className="text-center p-6 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-green-200">
+      <div className={`text-center p-6 rounded-xl border transition-colors duration-300 ${
+        isDarkMode 
+          ? 'bg-gradient-to-r from-green-900/20 to-blue-900/20 border-green-700' 
+          : 'bg-gradient-to-r from-green-50 to-blue-50 border-green-200'
+      }`}>
         <div className="flex items-center justify-center mb-2">
           <Star className="w-6 h-6 text-green-500 mr-2" />
-          <span className="text-lg font-semibold text-gray-800">Estimated Market Value</span>
+          <span className={`text-lg font-semibold transition-colors duration-300 ${
+            isDarkMode ? 'text-white' : 'text-gray-800'
+          }`}>Estimated Market Value</span>
         </div>
-        <div className="text-4xl font-bold text-green-600 mb-2">
+        <div className={`text-4xl font-bold mb-2 transition-colors duration-300 ${
+          isDarkMode ? 'text-green-400' : 'text-green-600'
+        }`}>
           ${calculateMarketValue(maliScore.totalScore).toLocaleString()}
         </div>
-        <div className="text-sm text-gray-600">
+        <div className={`text-sm transition-colors duration-300 ${
+          isDarkMode ? 'text-gray-300' : 'text-gray-600'
+        }`}>
           Based on Mali-Score assessment and current market conditions
         </div>
       </div>
 
       {/* Health Insights */}
-      <div className="mt-6 p-4 bg-blue-50 rounded-xl">
-        <h4 className="font-semibold text-blue-800 mb-2 flex items-center">
+      <div className={`mt-6 p-4 rounded-xl transition-colors duration-300 ${
+        isDarkMode ? 'bg-blue-900/20' : 'bg-blue-50'
+      }`}>
+        <h4 className={`font-semibold mb-2 flex items-center transition-colors duration-300 ${
+          isDarkMode ? 'text-blue-300' : 'text-blue-800'
+        }`}>
           <Activity className="w-4 h-4 mr-2" />
           Health Insights
         </h4>
-        <div className="text-sm text-blue-700 space-y-1">
+        <div className={`text-sm space-y-1 transition-colors duration-300 ${
+          isDarkMode ? 'text-blue-200' : 'text-blue-700'
+        }`}>
           {maliScore.totalScore >= 85 && (
             <>
               <p>• Exceptional health condition - ideal for premium markets</p>

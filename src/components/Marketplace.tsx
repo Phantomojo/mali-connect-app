@@ -137,7 +137,9 @@ const Marketplace: React.FC<MarketplaceProps> = ({ viewMode }) => {
             }`}>Buy and sell verified livestock with Mali-Score assessments</p>
           </div>
           <div className="text-right">
-            <div className="text-3xl font-bold text-green-600">{marketplaceItems.length}</div>
+            <div className={`text-3xl font-bold transition-colors duration-300 ${
+              isDarkMode ? 'text-green-400' : 'text-green-600'
+            }`}>{marketplaceItems.length}</div>
             <div className={`text-sm transition-colors duration-300 ${
               isDarkMode ? 'text-gray-400' : 'text-gray-500'
             }`}>Active Listings</div>

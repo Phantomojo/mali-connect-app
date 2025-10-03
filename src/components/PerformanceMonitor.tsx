@@ -10,11 +10,21 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({ onPerformanceIs
   const [frameCount, setFrameCount] = useState(0)
   const [lastTime, setLastTime] = useState(performance.now())
   const [fps, setFps] = useState(60)
+  const [isInitialized, setIsInitialized] = useState(false)
 
   useFrame(() => {
     const now = performance.now()
     const newFrameCount = frameCount + 1
     setFrameCount(newFrameCount)
+
+    // Wait for initialization before monitoring performance
+    if (newFrameCount < 120) { // Wait for 2 seconds at 60fps
+      return
+    }
+    
+    if (!isInitialized) {
+      setIsInitialized(true)
+    }
 
     // Calculate FPS every 60 frames
     if (newFrameCount % 60 === 0) {
@@ -22,8 +32,8 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({ onPerformanceIs
       setFps(currentFps)
       setLastTime(now)
 
-      // If FPS drops below 20, trigger performance issue callback
-      if (currentFps < 20 && onPerformanceIssue) {
+      // If FPS drops below 15, trigger performance issue callback (less aggressive)
+      if (currentFps < 15 && onPerformanceIssue && isInitialized) {
         onPerformanceIssue()
       }
     }

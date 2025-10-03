@@ -267,11 +267,20 @@ const EnhancedFinancialServices: React.FC<EnhancedFinancialServicesProps> = ({
   }
 
   const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'approved': case 'active': return 'bg-green-100 text-green-800'
-      case 'under-review': case 'pending': return 'bg-yellow-100 text-yellow-800'
-      case 'rejected': case 'expired': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+    if (isDarkMode) {
+      switch (status) {
+        case 'approved': case 'active': return 'bg-green-900/30 text-green-300'
+        case 'under-review': case 'pending': return 'bg-yellow-900/30 text-yellow-300'
+        case 'rejected': case 'expired': return 'bg-red-900/30 text-red-300'
+        default: return 'bg-gray-700 text-gray-300'
+      }
+    } else {
+      switch (status) {
+        case 'approved': case 'active': return 'bg-green-100 text-green-800'
+        case 'under-review': case 'pending': return 'bg-yellow-100 text-yellow-800'
+        case 'rejected': case 'expired': return 'bg-red-100 text-red-800'
+        default: return 'bg-gray-100 text-gray-800'
+      }
     }
   }
 

@@ -4,7 +4,9 @@ import {
   MessageCircle,
   Shield,
   Upload,
-  X
+  X,
+  ArrowLeft,
+  Play
 } from 'react-feather'
 import './App.css'
 import useAI from './hooks/useAI'
@@ -37,6 +39,8 @@ const ImageValidationDashboard = lazy(() => import('./components/ImageValidation
 const MarketValueCalc = lazy(() => import('./components/MarketValueCalc'))
 const MaliAI = lazy(() => import('./components/MaliAI'))
 const MaliChat = lazy(() => import('./components/MaliChat'))
+const SmsSimulator = lazy(() => import('./components/SmsSimulator'))
+const InteractiveWalkthrough = lazy(() => import('./components/InteractiveWalkthrough'))
 
 interface AssessmentCase {
   id: string
@@ -61,6 +65,11 @@ function AppContent() {
   // New dual-view state
   const [viewMode, setViewMode] = useState<'herder' | 'processor'>('herder')
   const [activeSection, setActiveSection] = useState('dashboard')
+  
+  // Debug logging
+  useEffect(() => {
+    console.log('Active section changed to:', activeSection)
+  }, [activeSection])
   const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null)
   const [showDetailView, setShowDetailView] = useState(false)
   const [showChat, setShowChat] = useState(false)
@@ -74,6 +83,9 @@ function AppContent() {
   
   // Onboarding state
   const [showOnboarding, setShowOnboarding] = useState(false)
+  
+  // Master demo flow state
+  const [demoStep, setDemoStep] = useState<'intro' | 'scan' | 'sms' | null>(null)
   
   // Existing state
   const [isAnalyzing, setIsAnalyzing] = useState(false)
@@ -262,7 +274,16 @@ function AppContent() {
       <div className="w-full max-w-7xl mx-auto px-4 py-8 flex-1">
         {/* Header with Dark Mode Toggle */}
         <div className="flex justify-between items-center mb-8">
-          <div className="flex-1"></div>
+          <div className="flex-1">
+            {/* Interactive Walkthrough Button */}
+            <button
+              onClick={() => setDemoStep('intro')}
+              className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg font-medium hover:from-purple-600 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+            >
+              <Play className="w-4 h-4" />
+              <span>Interactive Demo</span>
+            </button>
+          </div>
           <div className="text-center flex-1">
             <div className="relative">
               <h1 className="text-6xl md:text-7xl font-black bg-gradient-to-r from-emerald-500 via-cyan-500 to-violet-500 bg-clip-text text-transparent mb-4 tracking-tight">
@@ -324,15 +345,122 @@ function AppContent() {
 
         {/* Main Content Area */}
         <div className="main-content mt-8 pb-8">
-          {showDetailView && selectedAnimal ? (
-            <AnimalDetailView 
-              animal={selectedAnimal}
-              onBack={handleBackToDashboard}
-              viewMode={viewMode}
-            />
-          ) : (
+          {/* Master Demo Flow */}
+          {demoStep === 'intro' && (
+            <Suspense fallback={<div className="flex items-center justify-center h-96 text-lg">Loading Interactive Walkthrough...</div>}>
+              <InteractiveWalkthrough
+                onSelectSmartphone={() => setDemoStep('scan')}
+                onSelectSms={() => setDemoStep('sms')}
+                onBackToApp={() => setDemoStep(null)}
+              />
+            </Suspense>
+          )}
+          
+          {demoStep === 'scan' && (
+            <div className="space-y-8">
+              {/* Back to App Button */}
+              <div className="flex justify-start">
+                <button
+                  onClick={() => setDemoStep(null)}
+                  className="flex items-center space-x-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>Back to App</span>
+                </button>
+              </div>
+              
+              {/* 3D Demo Content */}
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <div className="xl:col-span-2">
+                  <div className="h-[600px] lg:h-[700px]">
+                    <Suspense fallback={<div>Loading 3D Viewer...</div>}>
+                      <AdaptiveCattleViewer 
+                        activeSection="assessment"
+                        maliScore={currentMaliScore}
+                        isAnalyzing={isAnalyzing}
+                      />
+                    </Suspense>
+                  </div>
+                </div>
+                <div className="xl:col-span-1 flex flex-col space-y-8">
+                  <Suspense fallback={<div>Loading AI Analysis...</div>}>
+                    <AIAnalysis 
+                      analysis={aiAnalysis} 
+                      isLoading={isAnalyzing} 
+                      selectedImage={selectedImage}
+                      apiStatus={apiStatus}
+                    />
+                  </Suspense>
+                  <Suspense fallback={<div>Loading Score Display...</div>}>
+                    <MaliScoreDisplay 
+                      maliScore={currentMaliScore} 
+                      analysis={aiAnalysis}
+                    />
+                  </Suspense>
+                  
+                  {/* Image Selection Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button
+                      onClick={() => setShowImageSelector(true)}
+                      className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:from-indigo-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center space-x-2"
+                    >
+                      <Camera className="w-5 h-5" />
+                      <span>Select from Gallery</span>
+                    </button>
+                    
+                    <button
+                      onClick={() => setShowImageUpload(true)}
+                      className="bg-gradient-to-r from-green-500 to-teal-600 text-white px-6 py-3 rounded-lg font-medium hover:from-green-600 hover:to-teal-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center space-x-2"
+                    >
+                      <Upload className="w-5 h-5" />
+                      <span>Upload New Image</span>
+                    </button>
+                    
+                    <button
+                      onClick={() => setShowValidationDashboard(true)}
+                      className="bg-gradient-to-r from-orange-500 to-red-600 text-white px-6 py-3 rounded-lg font-medium hover:from-orange-600 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center space-x-2"
+                    >
+                      <Shield className="w-5 h-5" />
+                      <span>Validate Images</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {demoStep === 'sms' && (
+            <div className="space-y-8">
+              {/* Back to App Button */}
+              <div className="flex justify-start">
+                <button
+                  onClick={() => setDemoStep(null)}
+                  className="flex items-center space-x-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>Back to App</span>
+                </button>
+              </div>
+              
+              {/* SMS Simulator */}
+              <Suspense fallback={<div className="flex items-center justify-center h-96 text-lg">Loading SMS Simulator...</div>}>
+                <SmsSimulator />
+              </Suspense>
+            </div>
+          )}
+
+          {/* Original App Content (when not in demo flow) */}
+          {demoStep === null && (
             <>
-              {activeSection === 'dashboard' && (
+              {showDetailView && selectedAnimal ? (
+                <AnimalDetailView 
+                  animal={selectedAnimal}
+                  onBack={handleBackToDashboard}
+                  viewMode={viewMode}
+                />
+              ) : (
+                <>
+                  {activeSection === 'dashboard' && (
                 <>
                   {viewMode === 'herder' ? (
                     <HerdDashboard 
@@ -359,6 +487,12 @@ function AppContent() {
                   viewMode={viewMode} 
                   selectedAnimal={selectedAnimal}
                 />
+              )}
+              
+              {activeSection === 'sms-simulator' && (
+                <Suspense fallback={<div className="flex items-center justify-center h-96 text-lg">Loading SMS Simulator...</div>}>
+                  <SmsSimulator />
+                </Suspense>
               )}
               
               {activeSection === 'ecosystem-map' && (
@@ -435,6 +569,8 @@ function AppContent() {
                   </div>
                 </div>
               )}
+                </>
+              )}
             </>
           )}
         </div>
@@ -491,12 +627,20 @@ function AppContent() {
         <Suspense fallback={null}>
           {showValidationDashboard && (
             <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-              <div className="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden">
-                <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                  <h2 className="text-2xl font-bold text-gray-800">Image Validation Dashboard</h2>
+              <div className={`rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden transition-colors duration-300 ${
+                isDarkMode ? 'bg-gray-800' : 'bg-white'
+              }`}>
+                <div className={`flex items-center justify-between p-6 border-b transition-colors duration-300 ${
+                  isDarkMode ? 'border-gray-700' : 'border-gray-200'
+                }`}>
+                  <h2 className={`text-2xl font-bold transition-colors duration-300 ${
+                    isDarkMode ? 'text-white' : 'text-gray-800'
+                  }`}>Image Validation Dashboard</h2>
                   <button
                     onClick={() => setShowValidationDashboard(false)}
-                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                    className={`p-2 rounded-full transition-colors ${
+                      isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
+                    }`}
                   >
                     <X className="w-6 h-6" />
                   </button>

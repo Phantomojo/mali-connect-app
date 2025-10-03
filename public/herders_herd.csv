@@ -1,0 +1,11 @@
+id,name,breed,age,weight,health,location,owner,lastCheckup,notes
+1,Bella,Angus,3,450,Healthy,North Pasture,John Mwangi,2024-01-15,Excellent condition
+2,Thunder,Hereford,5,520,Healthy,South Field,Sarah Kimani,2024-01-10,Strong and active
+3,Storm,Simmental,2,380,Healthy,East Meadow,Peter Otieno,2024-01-12,Young and growing well
+4,Lightning,Charolais,4,480,Sick,West Pasture,Mary Wanjiku,2024-01-08,Needs veterinary attention
+5,Thunderbolt,Angus,6,550,Healthy,Central Field,James Kiprotich,2024-01-14,Prime breeding age
+6,Flash,Hereford,1,280,Healthy,North Pasture,John Mwangi,2024-01-16,Young calf
+7,Spark,Simmental,3,420,Healthy,South Field,Sarah Kimani,2024-01-11,Good temperament
+8,Bolt,Charolais,4,460,Healthy,East Meadow,Peter Otieno,2024-01-13,Strong build
+9,Strike,Angus,2,350,Healthy,West Pasture,Mary Wanjiku,2024-01-09,Active and alert
+10,Power,Hereford,5,510,Healthy,Central Field,James Kiprotich,2024-01-15,Excellent health

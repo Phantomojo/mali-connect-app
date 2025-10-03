@@ -30,25 +30,40 @@ const HerdDashboard: React.FC<HerdDashboardProps> = ({ onAnimalSelect, selectedA
   }
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Approved':
-        return 'bg-green-100 text-green-800 border-green-200'
-      case 'Pending':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200'
-      case 'Under Review':
-        return 'bg-blue-100 text-blue-800 border-blue-200'
-      case 'Rejected':
-        return 'bg-red-100 text-red-800 border-red-200'
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200'
+    if (isDarkMode) {
+      switch (status) {
+        case 'Approved':
+          return 'bg-green-900/30 text-green-300 border-green-700'
+        case 'Pending':
+          return 'bg-yellow-900/30 text-yellow-300 border-yellow-700'
+        case 'Under Review':
+          return 'bg-blue-900/30 text-blue-300 border-blue-700'
+        case 'Rejected':
+          return 'bg-red-900/30 text-red-300 border-red-700'
+        default:
+          return 'bg-gray-700 text-gray-300 border-gray-600'
+      }
+    } else {
+      switch (status) {
+        case 'Approved':
+          return 'bg-green-100 text-green-800 border-green-200'
+        case 'Pending':
+          return 'bg-yellow-100 text-yellow-800 border-yellow-200'
+        case 'Under Review':
+          return 'bg-blue-100 text-blue-800 border-blue-200'
+        case 'Rejected':
+          return 'bg-red-100 text-red-800 border-red-200'
+        default:
+          return 'bg-gray-100 text-gray-800 border-gray-200'
+      }
     }
   }
 
   const getScoreColor = (score: number) => {
-    if (score >= 85) return 'text-green-600'
-    if (score >= 70) return 'text-blue-600'
-    if (score >= 55) return 'text-yellow-600'
-    return 'text-red-600'
+    if (score >= 85) return isDarkMode ? 'text-green-400' : 'text-green-600'
+    if (score >= 70) return isDarkMode ? 'text-blue-400' : 'text-blue-600'
+    if (score >= 55) return isDarkMode ? 'text-yellow-400' : 'text-yellow-600'
+    return isDarkMode ? 'text-red-400' : 'text-red-600'
   }
 
   const formatDate = (dateString: string) => {
@@ -196,7 +211,9 @@ const HerdDashboard: React.FC<HerdDashboardProps> = ({ onAnimalSelect, selectedA
               
               {/* Mali Score Badge */}
               <div className="absolute top-4 left-4">
-                <div className="bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-bold">
+                <div className={`backdrop-blur-sm rounded-full px-3 py-1 text-sm font-bold ${
+                  isDarkMode ? 'bg-gray-800/90' : 'bg-white/90'
+                }`}>
                   <span className={getScoreColor(animal.maliScore.totalScore)}>
                     {animal.maliScore.totalScore}
                   </span>

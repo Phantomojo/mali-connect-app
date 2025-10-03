@@ -2,7 +2,6 @@ import React, { Suspense, useRef, useMemo, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Environment, useGLTF, useTexture, Sparkles, Float } from '@react-three/drei'
 import * as THREE from 'three'
-import PerformanceMonitor from './PerformanceMonitor'
 
 interface CattleViewer3DProps {
   activeSection?: string
@@ -306,12 +305,6 @@ const CattleScene: React.FC<CattleViewer3DProps> = ({
 }
 
 const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
-  const [performanceMode, setPerformanceMode] = useState<'normal' | 'reduced'>('normal')
-
-  const handlePerformanceIssue = () => {
-    console.log('Switching to reduced performance mode')
-    setPerformanceMode('reduced')
-  }
 
   return (
     <div className="w-full h-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 rounded-lg overflow-hidden relative shadow-xl border border-gray-200">
@@ -369,8 +362,7 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
               }
             }}
       >
-        <PerformanceMonitor onPerformanceIssue={handlePerformanceIssue} />
-        <CattleScene {...props} performanceMode={performanceMode} />
+        <CattleScene {...props} />
         <OrbitControls 
           enablePan={true}
           enableZoom={true}
@@ -461,15 +453,6 @@ const CattleViewer3D: React.FC<CattleViewer3DProps> = (props: any) => {
         </div>
       )}
 
-      {/* Performance Mode Indicator */}
-      {performanceMode === 'reduced' && (
-        <div className="absolute top-4 left-4 bg-yellow-100 border border-yellow-300 rounded-lg px-3 py-2 text-sm">
-          <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
-            <span className="text-yellow-800 font-medium">Performance Mode</span>
-          </div>
-        </div>
-      )}
 
       {/* Loading State */}
       {!props.maliScore && (

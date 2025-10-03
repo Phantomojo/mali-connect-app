@@ -1,5 +1,5 @@
 import React from 'react'
-import { BarChart, Map, ShoppingCart, CreditCard, Activity, Menu, X } from 'react-feather'
+import { BarChart, Map, ShoppingCart, CreditCard, Activity, Menu, X, MessageSquare } from 'react-feather'
 import { useTheme } from '../contexts/ThemeContext'
 
 interface MainNavbarProps {
@@ -41,6 +41,12 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ activeSection, onSectionChange,
       label: 'Financial Services',
       icon: CreditCard,
       color: 'from-orange-400 to-red-500'
+    },
+    {
+      id: 'sms-simulator',
+      label: 'SMS Simulator',
+      icon: MessageSquare,
+      color: 'from-teal-400 to-cyan-500'
     }
   ]
 
@@ -133,6 +139,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ activeSection, onSectionChange,
                     {item.id === 'ecosystem-map' && 'Explore the network'}
                     {item.id === 'marketplace' && 'Buy and sell livestock'}
                     {item.id === 'financial-services' && 'Banking and loans'}
+                    {item.id === 'sms-simulator' && 'Interactive SMS simulation'}
                   </span>
                 </div>
                 {activeSection === item.id && (
