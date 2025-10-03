@@ -326,6 +326,109 @@ Provide your analysis in this exact JSON format:
     }
   }
 
+  // AI Chat - General livestock conversation
+  async chatWithAI(message: string, context?: {
+    maliScore?: number
+    selectedImage?: any
+    animalData?: any
+    location?: string
+  }): Promise<string> {
+    if (!GROQ_API_KEY) {
+      return this.generateFallbackResponse(message, context)
+    }
+
+    try {
+      const systemPrompt = `You are Mali AI, an expert livestock intelligence assistant specializing in East African cattle farming. You provide:
+
+1. Health Analysis: Disease detection, treatment recommendations, nutrition advice
+2. Market Insights: Current prices, selling strategies, market timing
+3. Breeding Advice: Reproduction management, genetic improvement
+4. Care Management: Daily care, seasonal management, best practices
+5. Financial Guidance: Cost analysis, investment recommendations
+
+Context: ${context ? JSON.stringify(context) : 'No specific context'}
+Location: East Africa (Kenya, Tanzania, Uganda)
+Languages: English, Swahili, local dialects
+
+Always provide practical, actionable advice based on local conditions and resources. Be encouraging and supportive while being scientifically accurate.`
+
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${GROQ_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'llama-3.1-70b-versatile',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: message }
+          ],
+          max_tokens: 1000,
+          temperature: 0.7
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error(`Groq API error: ${response.status}`)
+      }
+
+      const data = await response.json()
+      return data.choices[0]?.message?.content || this.generateFallbackResponse(message, context)
+    } catch (error) {
+      console.error('AI Chat error:', error)
+      return this.generateFallbackResponse(message, context)
+    }
+  }
+
+  // Generate fallback response when AI is unavailable
+  private generateFallbackResponse(message: string, context?: any): string {
+    const input = message.toLowerCase()
+    
+    // Health-related questions
+    if (input.includes('health') || input.includes('sick') || input.includes('disease')) {
+      return `I can help with livestock health! For disease prevention, ensure:
+• Regular vaccination schedules
+• Clean water and proper nutrition
+• Quarantine new animals for 2-3 weeks
+• Regular veterinary checkups
+• Proper sanitation and hygiene
+
+For specific symptoms, consult a local veterinarian immediately.`
+    }
+    
+    // Market questions
+    if (input.includes('price') || input.includes('market') || input.includes('sell')) {
+      return `Market insights for your livestock:
+• Current cattle prices vary by breed, age, and health
+• Peak selling seasons: End of dry season, before major holidays
+• Factors affecting price: Health status, breed quality, market demand
+• Consider Mali-Score for premium pricing
+• Local markets: Check with nearby livestock markets for current rates`
+    }
+    
+    // Nutrition questions
+    if (input.includes('feed') || input.includes('nutrition') || input.includes('food')) {
+      return `Nutrition recommendations:
+• Provide clean, fresh water daily
+• Balanced diet: Grass, hay, concentrates
+• Mineral supplements for healthy growth
+• Avoid sudden diet changes
+• Monitor body condition regularly
+• Seasonal adjustments for dry/wet periods`
+    }
+    
+    // General response
+    return `I'm here to help with your livestock questions! I can assist with:
+• Health analysis and disease prevention
+• Market prices and selling strategies  
+• Nutrition and feeding advice
+• Breeding and reproduction management
+• Daily care and best practices
+
+What specific aspect of livestock management would you like to know about?`
+  }
+
   // Test API connectivity
   async testConnectivity(): Promise<{ groq: boolean; huggingFace: boolean }> {
     const results = { groq: false, huggingFace: false }

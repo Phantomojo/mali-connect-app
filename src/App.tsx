@@ -6,7 +6,10 @@ import {
   Upload,
   X,
   ArrowLeft,
-  Play
+  Play,
+  Bot,
+  Activity,
+  ShoppingCart
 } from 'react-feather'
 import './App.css'
 import useAI from './hooks/useAI'
@@ -489,6 +492,155 @@ function AppContent() {
                 />
               )}
               
+              {activeSection === 'ai-chat' && (
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h2 className={`text-2xl font-bold transition-colors duration-300 ${
+                        isDarkMode ? 'text-white' : 'text-gray-800'
+                      }`}>
+                        AI Assistant
+                      </h2>
+                      <p className={`text-sm transition-colors duration-300 ${
+                        isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                      }`}>
+                        Chat with Mali AI for livestock insights, health analysis, and expert recommendations
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setShowChat(true)}
+                      className="px-6 py-3 bg-gradient-to-r from-pink-400 to-rose-500 text-white rounded-lg hover:from-pink-500 hover:to-rose-600 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center space-x-2"
+                    >
+                      <MessageCircle className="w-5 h-5" />
+                      <span>Open Chat</span>
+                    </button>
+                  </div>
+                  
+                  {/* AI Features Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className={`rounded-xl shadow-lg p-6 transition-colors duration-300 ${
+                      isDarkMode ? 'bg-gray-800' : 'bg-white'
+                    }`}>
+                      <div className="flex items-center space-x-3 mb-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
+                          <Activity className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className={`text-lg font-semibold transition-colors duration-300 ${
+                            isDarkMode ? 'text-white' : 'text-gray-800'
+                          }`}>
+                            Health Analysis
+                          </h3>
+                          <p className={`text-sm transition-colors duration-300 ${
+                            isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                          }`}>
+                            AI-powered livestock health assessment
+                          </p>
+                        </div>
+                      </div>
+                      <p className={`text-sm transition-colors duration-300 ${
+                        isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                      }`}>
+                        Get instant health analysis, disease detection, and treatment recommendations for your livestock.
+                      </p>
+                    </div>
+
+                    <div className={`rounded-xl shadow-lg p-6 transition-colors duration-300 ${
+                      isDarkMode ? 'bg-gray-800' : 'bg-white'
+                    }`}>
+                      <div className="flex items-center space-x-3 mb-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center">
+                          <ShoppingCart className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className={`text-lg font-semibold transition-colors duration-300 ${
+                            isDarkMode ? 'text-white' : 'text-gray-800'
+                          }`}>
+                            Market Insights
+                          </h3>
+                          <p className={`text-sm transition-colors duration-300 ${
+                            isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                          }`}>
+                            Real-time market analysis and pricing
+                          </p>
+                        </div>
+                      </div>
+                      <p className={`text-sm transition-colors duration-300 ${
+                        isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                      }`}>
+                        Access current market prices, selling recommendations, and optimal timing for livestock sales.
+                      </p>
+                    </div>
+
+                    <div className={`rounded-xl shadow-lg p-6 transition-colors duration-300 ${
+                      isDarkMode ? 'bg-gray-800' : 'bg-white'
+                    }`}>
+                      <div className="flex items-center space-x-3 mb-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center">
+                          <Bot className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className={`text-lg font-semibold transition-colors duration-300 ${
+                            isDarkMode ? 'text-white' : 'text-gray-800'
+                          }`}>
+                            Expert Advice
+                          </h3>
+                          <p className={`text-sm transition-colors duration-300 ${
+                            isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                          }`}>
+                            AI-powered livestock expertise
+                          </p>
+                        </div>
+                      </div>
+                      <p className={`text-sm transition-colors duration-300 ${
+                        isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                      }`}>
+                        Get expert advice on nutrition, breeding, care management, and best practices for livestock farming.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* AI Chat Integration */}
+                  <div className={`rounded-xl shadow-lg p-6 transition-colors duration-300 ${
+                    isDarkMode ? 'bg-gray-800' : 'bg-white'
+                  }`}>
+                    <h3 className={`text-xl font-semibold mb-4 transition-colors duration-300 ${
+                      isDarkMode ? 'text-white' : 'text-gray-800'
+                    }`}>
+                      Start Your AI Conversation
+                    </h3>
+                    <p className={`mb-6 transition-colors duration-300 ${
+                      isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                    }`}>
+                      Click the chat button below to start a conversation with Mali AI. Ask about health, market prices, nutrition, breeding, or any livestock-related questions.
+                    </p>
+                    <div className="flex flex-wrap gap-3">
+                      <button
+                        onClick={() => setShowChat(true)}
+                        className="px-6 py-3 bg-gradient-to-r from-pink-400 to-rose-500 text-white rounded-lg hover:from-pink-500 hover:to-rose-600 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center space-x-2"
+                      >
+                        <MessageCircle className="w-5 h-5" />
+                        <span>Chat with Mali AI</span>
+                      </button>
+                      <button
+                        onClick={() => setShowChat(true)}
+                        className="px-6 py-3 bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded-lg hover:from-blue-500 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center space-x-2"
+                      >
+                        <Activity className="w-5 h-5" />
+                        <span>Health Analysis</span>
+                      </button>
+                      <button
+                        onClick={() => setShowChat(true)}
+                        className="px-6 py-3 bg-gradient-to-r from-green-400 to-green-600 text-white rounded-lg hover:from-green-500 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center space-x-2"
+                      >
+                        <ShoppingCart className="w-5 h-5" />
+                        <span>Market Insights</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {activeSection === 'sms-simulator' && (
                 <Suspense fallback={<div className="flex items-center justify-center h-96 text-lg">Loading SMS Simulator...</div>}>
                   <SmsSimulator />

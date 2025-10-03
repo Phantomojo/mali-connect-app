@@ -96,6 +96,23 @@ const MaliChat: React.FC<MaliChatProps> = ({ maliScore, selectedImage, isOpen, o
   }
 
   const generateAIResponse = async (userInput: string): Promise<string> => {
+    // Use the real AI service for intelligent responses
+    const context = {
+      maliScore: maliScore?.totalScore,
+      selectedImage: selectedImage,
+      location: 'East Africa'
+    }
+    
+    try {
+      return await chatWithAI(userInput, context)
+    } catch (error) {
+      console.error('AI response error:', error)
+      // Fallback to local responses if AI fails
+      return generateFallbackResponse(userInput)
+    }
+  }
+
+  const generateFallbackResponse = (userInput: string): string => {
     const input = userInput.toLowerCase()
     
     // Health-related questions

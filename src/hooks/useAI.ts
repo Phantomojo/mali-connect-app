@@ -8,6 +8,7 @@ interface UseAIResult {
   error: string | null
   analyzeImage: (imageUrl: string, description?: string) => Promise<void>
   getMarketAnalysis: (maliScore: number, location?: string) => Promise<void>
+  chatWithAI: (message: string, context?: any) => Promise<string>
   testConnectivity: () => Promise<{ groq: boolean; huggingFace: boolean }>
   clearError: () => void
 }
@@ -45,6 +46,18 @@ export const useAI = (): UseAIResult => {
     }
   }, [])
 
+  const chatWithAI = useCallback(async (message: string, context?: any) => {
+    setError(null)
+    
+    try {
+      return await aiService.chatWithAI(message, context)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'AI chat failed')
+      console.error('AI chat error:', err)
+      return "I'm sorry, I'm having trouble connecting right now. Please try again later."
+    }
+  }, [])
+
   const testConnectivity = useCallback(async () => {
     try {
       return await aiService.testConnectivity()
@@ -65,6 +78,7 @@ export const useAI = (): UseAIResult => {
     error,
     analyzeImage,
     getMarketAnalysis,
+    chatWithAI,
     testConnectivity,
     clearError
   }

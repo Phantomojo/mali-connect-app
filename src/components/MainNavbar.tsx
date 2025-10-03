@@ -1,5 +1,5 @@
 import React from 'react'
-import { BarChart, Map, ShoppingCart, CreditCard, Activity, Menu, X, MessageSquare } from 'react-feather'
+import { BarChart, Map, ShoppingCart, CreditCard, Activity, Menu, X, MessageSquare, Bot } from 'react-feather'
 import { useTheme } from '../contexts/ThemeContext'
 
 interface MainNavbarProps {
@@ -41,6 +41,12 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ activeSection, onSectionChange,
       label: 'Financial Services',
       icon: CreditCard,
       color: 'from-orange-400 to-red-500'
+    },
+    {
+      id: 'ai-chat',
+      label: 'AI Assistant',
+      icon: Bot,
+      color: 'from-pink-400 to-rose-500'
     },
     {
       id: 'sms-simulator',
