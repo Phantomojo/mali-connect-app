@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Activity, Cpu, Eye, CheckCircle, AlertTriangle, Shield } from 'react-feather'
 import Lottie from 'lottie-react'
 import loadingAnimation from '../assets/animations/loading-analysis.json'
-import { livestockDiseases, LivestockDisease } from '../data/livestockDiseases'
+import { livestockDiseases } from '../data/livestockDiseases'
+import type { LivestockDisease } from '../data/livestockDiseases'
 
 interface AnalysisStep {
   id: string

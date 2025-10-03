@@ -11,6 +11,33 @@ export interface AIImageAnalysis {
   ageEstimation: number
   totalScore: number
   confidence: number
+  diseaseDetection: {
+    detectedDiseases: Array<{
+      disease: {
+        id: string
+        name: string
+        localName: string
+        scientificName: string
+        symptoms: string[]
+        causes: string[]
+        prevention: string[]
+        treatment: string[]
+        severity: 'low' | 'medium' | 'high' | 'critical'
+        contagious: boolean
+        mortalityRate: string
+        economicImpact: string
+        commonIn: string[]
+        seasonality: string[]
+        imagePath: string
+        maliScoreImpact: number
+      }
+      confidence: number
+      severity: 'low' | 'medium' | 'high' | 'critical'
+      symptoms: string[]
+    }>
+    healthStatus: 'healthy' | 'suspicious' | 'diseased' | 'critical'
+    recommendations: string[]
+  }
   analysis: {
     bodyConditionAnalysis: string
     physicalHealthAnalysis: string
@@ -227,6 +254,15 @@ Provide your analysis in this exact JSON format:
       ageEstimation: 75,
       totalScore: 75,
       confidence: 0.75,
+      diseaseDetection: {
+        detectedDiseases: [],
+        healthStatus: 'healthy',
+        recommendations: [
+          'Continue regular health monitoring',
+          'Maintain current feeding regimen',
+          'Schedule routine veterinary checkups'
+        ]
+      },
       analysis: this.getDefaultAnalysis()
     }
   }
