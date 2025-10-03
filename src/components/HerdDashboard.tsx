@@ -116,7 +116,7 @@ const HerdDashboard: React.FC<HerdDashboardProps> = ({ onAnimalSelect, selectedA
             <div className={`text-lg font-bold transition-colors duration-300 ${
               isDarkMode ? 'text-green-400' : 'text-green-600'
             }`}>
-              {herderAnimals.filter(a => a.status === 'Approved').length}
+              {herderAnimals.filter(a => a.submissionStatus === 'Approved').length}
             </div>
             <div className={`text-xs transition-colors duration-300 ${
               isDarkMode ? 'text-gray-400' : 'text-gray-600'
@@ -130,7 +130,7 @@ const HerdDashboard: React.FC<HerdDashboardProps> = ({ onAnimalSelect, selectedA
             <div className={`text-lg font-bold transition-colors duration-300 ${
               isDarkMode ? 'text-yellow-400' : 'text-yellow-600'
             }`}>
-              {herderAnimals.filter(a => a.status === 'Pending').length}
+              {herderAnimals.filter(a => a.submissionStatus === 'Pending').length}
             </div>
             <div className={`text-xs transition-colors duration-300 ${
               isDarkMode ? 'text-gray-400' : 'text-gray-600'
