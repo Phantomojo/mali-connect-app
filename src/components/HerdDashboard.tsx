@@ -77,29 +77,85 @@ const HerdDashboard: React.FC<HerdDashboardProps> = ({ onAnimalSelect, selectedA
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className={`rounded-2xl shadow-xl p-6 transition-colors duration-300 ${
+      {/* Header Section */}
+      <div className={`rounded-xl shadow-lg p-6 transition-colors duration-300 ${
         isDarkMode ? 'bg-gray-800' : 'bg-white'
       }`}>
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className={`text-2xl font-bold transition-colors duration-300 ${
-              isDarkMode ? 'text-gray-100' : 'text-gray-800'
-            }`}>My Herd Dashboard</h2>
-            <p className={`transition-colors duration-300 ${
-              isDarkMode ? 'text-gray-300' : 'text-gray-600'
-            }`}>Manage and monitor your livestock health assessments</p>
+              isDarkMode ? 'text-white' : 'text-gray-800'
+            }`}>
+              My Herd Dashboard
+            </h2>
+            <p className={`text-sm transition-colors duration-300 ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-600'
+            }`}>
+              Manage and monitor your livestock with AI-powered insights
+            </p>
           </div>
           <div className="text-right">
-            <div className="text-3xl font-bold text-green-600">{mockHerd.length}</div>
+            <div className={`text-3xl font-bold transition-colors duration-300 ${
+              isDarkMode ? 'text-green-400' : 'text-green-600'
+            }`}>
+              {herderAnimals.length}
+            </div>
             <div className={`text-sm transition-colors duration-300 ${
-              isDarkMode ? 'text-gray-400' : 'text-gray-500'
-            }`}>Total Animals</div>
+              isDarkMode ? 'text-gray-400' : 'text-gray-600'
+            }`}>
+              Total Animals
+            </div>
           </div>
         </div>
         
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-3 gap-4">
+          <div className={`text-center p-3 rounded-lg transition-colors duration-300 ${
+            isDarkMode ? 'bg-gray-700' : 'bg-gray-50'
+          }`}>
+            <div className={`text-lg font-bold transition-colors duration-300 ${
+              isDarkMode ? 'text-green-400' : 'text-green-600'
+            }`}>
+              {herderAnimals.filter(a => a.status === 'Approved').length}
+            </div>
+            <div className={`text-xs transition-colors duration-300 ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-600'
+            }`}>
+              Approved
+            </div>
+          </div>
+          <div className={`text-center p-3 rounded-lg transition-colors duration-300 ${
+            isDarkMode ? 'bg-gray-700' : 'bg-gray-50'
+          }`}>
+            <div className={`text-lg font-bold transition-colors duration-300 ${
+              isDarkMode ? 'text-yellow-400' : 'text-yellow-600'
+            }`}>
+              {herderAnimals.filter(a => a.status === 'Pending').length}
+            </div>
+            <div className={`text-xs transition-colors duration-300 ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-600'
+            }`}>
+              Pending
+            </div>
+          </div>
+          <div className={`text-center p-3 rounded-lg transition-colors duration-300 ${
+            isDarkMode ? 'bg-gray-700' : 'bg-gray-50'
+          }`}>
+            <div className={`text-lg font-bold transition-colors duration-300 ${
+              isDarkMode ? 'text-blue-400' : 'text-blue-600'
+            }`}>
+              {Math.round(herderAnimals.reduce((sum, a) => sum + a.maliScore.totalScore, 0) / herderAnimals.length) || 0}
+            </div>
+            <div className={`text-xs transition-colors duration-300 ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-600'
+            }`}>
+              Avg Score
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Animal Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className={`rounded-lg p-4 transition-colors duration-300 ${
             isDarkMode ? 'bg-green-900/30' : 'bg-green-50'
           }`}>

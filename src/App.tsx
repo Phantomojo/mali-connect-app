@@ -462,14 +462,6 @@ function AppContent() {
                 <>
                   {activeSection === 'dashboard' && (
                 <>
-                  <div className="mb-8">
-                    <Suspense fallback={<div>Loading Case Selection...</div>}>
-                      <CaseSelection onCaseSelect={(caseData) => {
-                        console.log('Selected case:', caseData)
-                      }} />
-                    </Suspense>
-                  </div>
-                  
                   {viewMode === 'herder' ? (
                     <HerdDashboard 
                       onAnimalSelect={handleAnimalSelect}
