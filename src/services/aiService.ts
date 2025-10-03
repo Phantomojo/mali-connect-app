@@ -216,6 +216,15 @@ Provide your analysis in this exact JSON format:
           ageEstimation: parsed.ageEstimation || 75,
           totalScore: parsed.totalScore || 75,
           confidence: parsed.confidence || 0.85,
+          diseaseDetection: parsed.diseaseDetection || {
+            detectedDiseases: [],
+            healthStatus: 'healthy',
+            recommendations: [
+              'Continue regular health monitoring',
+              'Maintain current feeding regimen',
+              'Schedule routine veterinary checkups'
+            ]
+          },
           analysis: parsed.analysis || this.getDefaultAnalysis()
         }
       }
