@@ -52,6 +52,42 @@ const mockCases: AssessmentCase[] = [
     expectedScore: 92,
     healthIssues: [],
     marketValue: 720
+  },
+  {
+    id: 'case-5',
+    name: 'Unhealthy Cattle - Sample 1',
+    description: 'Cattle showing signs of malnutrition and poor health - visible rib bones, dull coat, lethargic behavior',
+    images: ['/images/unhealthy/cattle-unhealthy-1.jpg', '/images/unhealthy/cattle-unhealthy-2.jpeg'],
+    expectedScore: 35,
+    healthIssues: ['Malnutrition', 'Poor body condition', 'Dull coat'],
+    marketValue: 180
+  },
+  {
+    id: 'case-6',
+    name: 'Unhealthy Cattle - Sample 2',
+    description: 'Cattle with visible health issues - underweight, signs of illness, poor physical condition',
+    images: ['/images/unhealthy/cattle-unhealthy-3.jpeg', '/images/unhealthy/cattle-unhealthy-4.jpeg'],
+    expectedScore: 28,
+    healthIssues: ['Underweight', 'Signs of illness', 'Poor conformation'],
+    marketValue: 150
+  },
+  {
+    id: 'case-7',
+    name: 'Unhealthy Cattle - Sample 3',
+    description: 'Severely malnourished cattle - extremely poor body condition, health concerns, low market value',
+    images: ['/images/unhealthy/cattle-unhealthy-5.jpeg', '/images/unhealthy/cattle-unhealthy-6.jpeg'],
+    expectedScore: 22,
+    healthIssues: ['Severe malnutrition', 'Health concerns', 'Poor age estimation'],
+    marketValue: 120
+  },
+  {
+    id: 'case-8',
+    name: 'Unhealthy Cattle - Sample 4',
+    description: 'Cattle with multiple health issues - requires immediate veterinary attention and care',
+    images: ['/images/unhealthy/cattle-unhealthy-7.jpeg'],
+    expectedScore: 18,
+    healthIssues: ['Multiple health issues', 'Requires veterinary care', 'Poor physical condition'],
+    marketValue: 90
   }
 ]
 

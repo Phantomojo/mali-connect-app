@@ -121,13 +121,49 @@ const SmsSimulator: React.FC = () => {
     if (input.includes('health') || input.includes('sick')) {
       const healthyCount = herdData.filter(a => a.health.toLowerCase().includes('healthy')).length
       const sickCount = herdData.filter(a => a.health.toLowerCase().includes('sick')).length
-      return `Health Status Report:\n\n✅ Healthy: ${healthyCount} animals\n⚠️ Sick: ${sickCount} animals\n\n${sickCount > 0 ? 'Consider scheduling a veterinary checkup for sick animals.' : 'All animals appear to be in good health!'}`
+      const unhealthyCount = herdData.filter(a => a.health.toLowerCase().includes('unhealthy')).length
+      
+      let healthReport = `Health Status Report:\n\n✅ Healthy: ${healthyCount} animals\n`
+      
+      if (sickCount > 0) {
+        healthReport += `⚠️ Sick: ${sickCount} animals\n`
+      }
+      
+      if (unhealthyCount > 0) {
+        healthReport += `❌ Unhealthy: ${unhealthyCount} animals\n`
+      }
+      
+      if (sickCount > 0 || unhealthyCount > 0) {
+        healthReport += `\n🚨 Action needed: ${sickCount + unhealthyCount} animals require immediate attention.\nConsider scheduling veterinary checkups and improving nutrition.`
+      } else {
+        healthReport += `\n🎉 All animals appear to be in good health!`
+      }
+      
+      return healthReport
     }
     
     if (input.includes('market') || input.includes('price') || input.includes('sell')) {
+      const healthyAnimals = herdData.filter(a => a.health.toLowerCase().includes('healthy'))
+      const unhealthyAnimals = herdData.filter(a => a.health.toLowerCase().includes('unhealthy') || a.health.toLowerCase().includes('sick'))
+      
       const avgWeight = herdData.reduce((sum, a) => sum + a.weight, 0) / herdData.length
-      const estimatedValue = avgWeight * 2.5 // Rough estimate
-      return `Market Information:\n\n📊 Average weight: ${avgWeight.toFixed(1)}kg\n💰 Estimated value: $${estimatedValue.toFixed(0)} per animal\n\nMarket prices are currently stable. Good time to sell healthy animals!`
+      const healthyValue = healthyAnimals.length > 0 ? healthyAnimals.reduce((sum, a) => sum + a.weight, 0) / healthyAnimals.length * 2.5 : 0
+      const unhealthyValue = unhealthyAnimals.length > 0 ? unhealthyAnimals.reduce((sum, a) => sum + a.weight, 0) / unhealthyAnimals.length * 1.2 : 0
+      
+      let marketReport = `Market Information:\n\n📊 Average weight: ${avgWeight.toFixed(1)}kg\n`
+      
+      if (healthyAnimals.length > 0) {
+        marketReport += `💰 Healthy animals: $${healthyValue.toFixed(0)} each (${healthyAnimals.length} animals)\n`
+      }
+      
+      if (unhealthyAnimals.length > 0) {
+        marketReport += `⚠️ Unhealthy animals: $${unhealthyValue.toFixed(0)} each (${unhealthyAnimals.length} animals)\n`
+        marketReport += `\n🚨 Note: Unhealthy animals have significantly reduced market value. Consider veterinary care and improved nutrition before selling.`
+      }
+      
+      marketReport += `\n\nMarket prices are currently stable. Focus on improving animal health for better returns!`
+      
+      return marketReport
     }
     
     if (input.includes('location') || input.includes('where')) {
