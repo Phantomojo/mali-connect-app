@@ -128,9 +128,8 @@ const InteractiveWalkthrough: React.FC<InteractiveWalkthroughProps> = ({
           }>
             <CattleViewer3D 
               maliScore={85}
-              viewMode="herder"
-              selectedAnimal={null}
-              onAnimalSelect={() => {}}
+              activeSection="score"
+              isAnalyzing={false}
             />
           </Suspense>
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
