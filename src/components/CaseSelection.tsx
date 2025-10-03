@@ -95,7 +95,11 @@ const CaseSelection: React.FC<CaseSelectionProps> = ({ onCaseSelect }) => {
   const { isDarkMode } = useTheme()
   
   return (
-    <div className="card">
+    <div className={`rounded-xl shadow-lg p-6 border transition-colors duration-300 ${
+      isDarkMode 
+        ? 'bg-gray-800 border-gray-700' 
+        : 'bg-white border-gray-100'
+    }`}>
       <h2 className={`text-2xl font-bold mb-4 flex items-center transition-colors duration-300 ${
         isDarkMode ? 'text-white' : 'text-mali-dark'
       }`}>
@@ -108,7 +112,7 @@ const CaseSelection: React.FC<CaseSelectionProps> = ({ onCaseSelect }) => {
         Choose a livestock case to demonstrate the Mali-Connect AI assessment system.
         <br />
         <span className="text-sm text-mali-green font-medium">
-          Currently showing healthy cattle samples. More health condition categories coming soon!
+          Now showing both healthy and unhealthy cattle samples for comprehensive AI assessment!
         </span>
       </p>
       
