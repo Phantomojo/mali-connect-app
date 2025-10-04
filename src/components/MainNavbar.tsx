@@ -1,5 +1,5 @@
 import React from 'react'
-import { BarChart, Map, ShoppingCart, CreditCard, Activity, Menu, X, MessageSquare, Zap, Github, Play } from 'react-feather'
+import { BarChart, Map, ShoppingCart, CreditCard, Activity, Menu, X, MessageSquare, Zap, GitHub, Play } from 'react-feather'
 import { useTheme } from '../contexts/ThemeContext'
 
 interface MainNavbarProps {
@@ -174,7 +174,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ activeSection, onSectionChange,
               <div className={`p-2 rounded-lg ${
                 isDarkMode ? 'bg-gray-700/50' : 'bg-gray-200/50'
               }`}>
-                <Github className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+                <GitHub className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
               </div>
               <div className="flex-1 text-left">
                 <span className="font-semibold text-sm block">View Repository</span>
