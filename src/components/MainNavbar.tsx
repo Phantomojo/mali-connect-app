@@ -157,33 +157,22 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ activeSection, onSectionChange,
         </div>
 
         {/* Footer */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-200/20">
-          {/* Action Buttons */}
-          <div className="space-y-3 mb-4">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200/20">
+          {/* Action Buttons - Compact Layout */}
+          <div className="flex space-x-2 mb-3">
             {/* Repository Button */}
             <a
               href="https://github.com/Phantomojo/mali-connect-app"
               target="_blank"
               rel="noopener noreferrer"
-              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 group ${
+              className={`flex-1 flex items-center justify-center space-x-2 px-3 py-2 rounded-lg transition-all duration-300 group ${
                 isDarkMode 
                   ? 'bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white' 
                   : 'bg-gray-100/50 hover:bg-gray-200/50 text-gray-600 hover:text-gray-800'
               }`}
             >
-              <div className={`p-2 rounded-lg ${
-                isDarkMode ? 'bg-gray-700/50' : 'bg-gray-200/50'
-              }`}>
-                <GitHub className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
-              </div>
-              <div className="flex-1 text-left">
-                <span className="font-semibold text-sm block">View Repository</span>
-                <span className={`text-xs ${
-                  isDarkMode ? 'text-gray-500' : 'text-gray-500'
-                }`}>
-                  GitHub source code
-                </span>
-              </div>
+              <GitHub className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+              <span className="text-xs font-medium">Repo</span>
             </a>
 
             {/* Presentation Button (Placeholder) */}
@@ -192,25 +181,14 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ activeSection, onSectionChange,
                 // Placeholder for presentation video
                 alert('Presentation video will be available soon!')
               }}
-              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 group ${
+              className={`flex-1 flex items-center justify-center space-x-2 px-3 py-2 rounded-lg transition-all duration-300 group ${
                 isDarkMode 
                   ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 hover:from-purple-500/30 hover:to-pink-500/30 text-purple-300 hover:text-purple-200 border border-purple-500/30' 
                   : 'bg-gradient-to-r from-purple-100 to-pink-100 hover:from-purple-200 hover:to-pink-200 text-purple-600 hover:text-purple-700 border border-purple-200'
               }`}
             >
-              <div className={`p-2 rounded-lg ${
-                isDarkMode ? 'bg-purple-500/20' : 'bg-purple-200/50'
-              }`}>
-                <Play className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
-              </div>
-              <div className="flex-1 text-left">
-                <span className="font-semibold text-sm block">Watch Presentation</span>
-                <span className={`text-xs ${
-                  isDarkMode ? 'text-purple-400' : 'text-purple-500'
-                }`}>
-                  Demo video (coming soon)
-                </span>
-              </div>
+              <Play className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+              <span className="text-xs font-medium">Demo</span>
             </button>
           </div>
 
@@ -219,8 +197,6 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ activeSection, onSectionChange,
             isDarkMode ? 'text-gray-500' : 'text-gray-400'
           }`}>
             Mali Connect v1.0
-            <br />
-            Next-Gen Livestock Intelligence
           </div>
         </div>
       </div>
