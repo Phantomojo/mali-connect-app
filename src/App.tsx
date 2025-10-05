@@ -284,7 +284,7 @@ function AppContent() {
               className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg font-medium hover:from-purple-600 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl"
             >
               <Play className="w-4 h-4" />
-              <span>Interactive Demo</span>
+              <span>Interactive Presentation</span>
             </button>
           </div>
           <div className="text-center flex-1">
